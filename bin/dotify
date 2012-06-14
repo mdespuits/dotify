@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+# -*- mode: ruby -*-
+
+$:.unshift File.expand_path("../../lib", __FILE__)
+require 'dotify/cli'
+Dotify::CLI.start

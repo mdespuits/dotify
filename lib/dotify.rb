@@ -1,5 +1,6 @@
-require "dotify/version"
-
 module Dotify
-  # Your code goes here...
 end
+
+require "thor"
+require "fileutils"
+require "dotify/version"
