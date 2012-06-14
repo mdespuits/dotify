@@ -33,7 +33,7 @@ module Dotify
         if template? file
           say "It's a template!", :blue
         else
-          create_link file, "#{Thor::Util.user_home}/#{filename(file)}"
+          create_link "#{Thor::Util.user_home}/#{filename(file)}", file
         end
       end
     end
