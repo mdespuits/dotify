@@ -22,4 +22,16 @@ describe Dotify::CLI do
     end
   end
 
+  describe Dotify::CLI, "#dotfile_list" do
+    it "should yield the correct filenames" do
+      Thor.no_tasks do
+        files = ['.', '..', '.vimrc', '.gemrc']
+        Dir.stub!(:[]) { files }
+        expectation = cli.any_instance.should_receive(:dotfile_list)
+        files.each { |f| expectation.and_yield(f) unless File.directory?(f) }
+        cli.new.dotfile_list { |file| }
+      end
+    end
+  end
+
 end
