@@ -53,8 +53,12 @@ module Dotify
     no_tasks do
 
       def dotfile_list
-        Dir["#{DOTIFY_PATH}/.*"].each do |file|
-          yield file unless File.directory?(file)
+        files = Dir["#{DOTIFY_PATH}/.*"]
+        files.delete_if { |f| File.directory? f }
+        if block_given?
+          files.each { |f| yield f }
+        else
+          files
         end
       end
 
@@ -63,7 +67,7 @@ module Dotify
       end
 
       def template?(file)
-        filename(file).match(/(tt|erb)/)
+        filename(file).match(/(tt|erb)$/)
       end
 
     end
