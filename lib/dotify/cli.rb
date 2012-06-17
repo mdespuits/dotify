@@ -33,7 +33,7 @@ module Dotify
         if template? file
           say "It's a template!", :blue
         else
-          create_link "#{Thor::Util.user_home}/#{filename(file)}", file
+          create_link "#{home}/#{filename(file)}", file
         end
       end
     end
@@ -51,6 +51,10 @@ module Dotify
     end
 
     no_tasks do
+
+      def home
+        Thor::Util.user_home
+      end
 
       def dotfile_list
         files = Dir["#{DOTIFY_PATH}/.*"]
