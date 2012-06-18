@@ -28,7 +28,7 @@ module Dotify
     end
 
     desc :link, "Link up your dotfiles"
-    method_option :force, default: false, type: :boolean, aliases: '-f', desc: "Definitely remove all dotfiles"
+    method_option :force, default: false, type: :boolean, aliases: '-f', desc: "Definitely link all dotfiles"
     def link
       dotfile_list do |file|
         if template? file
