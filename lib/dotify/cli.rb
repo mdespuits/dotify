@@ -28,12 +28,17 @@ module Dotify
     end
 
     desc :link, "Link up your dotfiles"
+    method_option :force, default: false, type: :boolean, aliases: '-f', desc: "Definitely remove all dotfiles"
     def link
       dotfile_list do |file|
         if template? file
           template file, dotfile_location(no_extension(filename(file)))
         else
-          create_link dotfile_location(file), file
+          if options.force?
+            replace_link dotfile_location(file), file
+          else
+            create_link dotfile_location(file), file
+          end
         end
       end
     end
@@ -43,7 +48,7 @@ module Dotify
     def unlink
       dotfile_list do |file|
         destination = filename(file)
-        if yes? "Are you sure you want to remove ~/#{destination}? [Yn]", :blue
+        if options.force? || yes?("Are you sure you want to remove ~/#{destination}? [Yn]", :blue)
           remove_file dotfile_location(file), verbose: true
         end
       end
@@ -71,6 +76,11 @@ module Dotify
 
       def home
         Thor::Util.user_home
+      end
+
+      def replace_link(dotfile, file)
+        remove_file dotfile
+        create_link dotfile, file
       end
 
       def dotfile_list
