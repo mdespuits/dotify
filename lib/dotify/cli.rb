@@ -31,9 +31,9 @@ module Dotify
     def link
       dotfile_list do |file|
         if template? file
-          say "It's a template!", :blue
+          template file, dotfile_location(no_extension(filename(file)))
         else
-          create_link "#{home}/#{filename(file)}", file
+          create_link dotfile_location(file), file
         end
       end
     end
@@ -51,6 +51,16 @@ module Dotify
     end
 
     no_tasks do
+
+      def dotfile_location(file)
+        "#{home}/#{filename(file)}"
+      end
+
+      def no_extension(file)
+        file = file.split('.')
+        file.pop
+        file.join('.')
+      end
 
       def home
         Thor::Util.user_home
