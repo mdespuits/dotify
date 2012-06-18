@@ -1,6 +1,5 @@
-ENV['DOTIFY_DIR_NAME'] = '.dotify-test'
-
-require File.expand_path('../../../lib/dotify/cli.rb', __FILE__)
+require 'spec_helper'
+require 'dotify/cli'
 
 describe Dotify::CLI do
 
