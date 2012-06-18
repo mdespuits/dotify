@@ -39,7 +39,14 @@ module Dotify
     end
 
     desc :unlink, "Unlink individual dotfiles"
+    method_option :force, default: false, type: :boolean, aliases: '-f', desc: "Definitely remove all dotfiles"
     def unlink
+      dotfile_list do |file|
+        destination = filename(file)
+        if yes? "Are you sure you want to remove ~/#{destination}? [Yn]", :blue
+          remove_file dotfile_location(file), verbose: true
+        end
+      end
     end
 
     desc :backup, "Backup your dotfiles for quick recovery if something goes wrong"
