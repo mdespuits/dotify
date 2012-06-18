@@ -16,7 +16,7 @@ module Dotify
     map "-r" => "restore"
 
     DOTIFY_DIR_NAME = ENV['DOTIFY_DIR_NAME'] || '.dotify'
-    DOTIFY_PATH = "#{Thor::Util.user_home}/#{DOTIFY_DIR_NAME}"
+    DOTIFY_PATH = ENV['DOTIFY_PATH'] || "#{Thor::Util.user_home}/#{DOTIFY_DIR_NAME}"
 
     def self.source_root
       DOTIFY_PATH
