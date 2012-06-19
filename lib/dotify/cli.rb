@@ -17,6 +17,7 @@ module Dotify
 
     DOTIFY_DIR_NAME = ENV['DOTIFY_DIR_NAME'] || '.dotify'
     DOTIFY_PATH = ENV['DOTIFY_PATH'] || "#{Thor::Util.user_home}/#{DOTIFY_DIR_NAME}"
+    DOTIFY_BACKUP_PATH = ENV['DOTIFY_BACKUP_PATH'] || "#{DOTIFY_PATH}/.backup"
 
     def self.source_root
       DOTIFY_PATH
@@ -56,10 +57,25 @@ module Dotify
 
     desc :backup, "Backup your dotfiles for quick recovery if something goes wrong"
     def backup
+      dotfile_list do |file|
+        file = filename(file)
+        backup = "#{DOTIFY_BACKUP_PATH}/#{file}"
+        if File.exists?(dotfile_location(file))
+          remove_file backup if File.exists?(backup)
+          copy_file dotfile_location(file), backup
+        end
+      end
     end
 
     desc :restore, "Restore your backed-up dotfiles"
     def restore
+      backup_list do |file|
+        filename = filename(file)
+        if File.exists?(dotfile_location(filename))
+          remove_file dotfile_location(filename)
+          copy_file file, dotfile_location(filename)
+        end
+      end
     end
 
     no_tasks do
@@ -85,6 +101,16 @@ module Dotify
 
       def dotfile_list
         files = Dir["#{DOTIFY_PATH}/.*"]
+        files.delete_if { |f| File.directory? f }
+        if block_given?
+          files.each { |f| yield f }
+        else
+          files
+        end
+      end
+
+      def backup_list
+        files = Dir["#{DOTIFY_BACKUP_PATH}/.*"]
         files.delete_if { |f| File.directory? f }
         if block_given?
           files.each { |f| yield f }
