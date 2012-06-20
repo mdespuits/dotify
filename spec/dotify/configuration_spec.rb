@@ -3,6 +3,7 @@ require 'dotify/errors'
 require 'dotify/configuration'
 
 describe Dotify::Configuration do
+  let(:here) { %x{pwd}.chomp }
   describe "setters" do
     it "should be able to set the current shell (not actually yet used)" do
       Dotify::Configuration.shell = :zsh
@@ -39,6 +40,14 @@ describe Dotify::Configuration do
       Dotify::Configuration.backup_dirname = '.backup2'
       Dotify::Configuration.backup.should == '/Users/dotify-test/.dotify/.backup2'
       Dotify::Configuration.backup_dirname = '.backup' # resetting settings
+    end
+  end
+  describe "configuration files" do
+    it "should load the config file" do
+      Dotify::Configuration.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-mattbridges" }
+      config = Dotify::Configuration.load_config_file!
+      config['shell'].should == :zsh
+      config['profile'].should == 'mattdbridges'
     end
   end
 end

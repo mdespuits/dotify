@@ -1,5 +1,6 @@
 require 'dotify/errors'
 require 'thor/util'
+require 'yaml'
 
 module Dotify
   class Configuration
@@ -57,10 +58,18 @@ module Dotify
         @backup_dirname = backup
       end
 
+      def load_config_file!
+        config = File.exists?(config_file) ? YAML.load_file(config_file) : {}
+      end
+
       private
 
         def home
           Thor::Util.user_home
+        end
+
+        def config_file
+          location = File.join(home, '.dotifyrc')
         end
 
     end
