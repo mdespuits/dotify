@@ -17,5 +17,28 @@ describe Dotify::Configuration do
       Dotify::Configuration.profile = :james
       Dotify::Configuration.profile.should == 'james'
     end
+    it "should be able to set the directory name to store .dotify files" do
+      Dotify::Configuration.directory.should == '.dotify'
+      Dotify::Configuration.directory = '.dotify2'
+      Dotify::Configuration.directory.should == '.dotify2'
+      Dotify::Configuration.directory = '.dotify' # for resetting in other tests
+    end
+    it "should be able to show the dotify path" do
+      Dotify::Configuration.stub(:home) { '/Users/dotify-test' }
+      Dotify::Configuration.directory = '.dotify'
+      Dotify::Configuration.path.should == '/Users/dotify-test/.dotify'
+    end
+    it "should be able to show the dotify backup path" do
+      Dotify::Configuration.stub(:home) { '/Users/dotify-test' }
+      Dotify::Configuration.directory = '.dotify'
+      Dotify::Configuration.backup.should == '/Users/dotify-test/.dotify/.backup'
+    end
+    it "should be able to customize the backup path" do
+      Dotify::Configuration.backup_dirname = '.backup2'
+      Dotify::Configuration.stub(:path) { '/Users/dotify-test/.dotify' }
+      Dotify::Configuration.backup_dirname = '.backup2'
+      Dotify::Configuration.backup.should == '/Users/dotify-test/.dotify/.backup2'
+      Dotify::Configuration.backup_dirname = '.backup' # resetting settings
+    end
   end
 end

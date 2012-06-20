@@ -1,8 +1,11 @@
 require 'dotify/errors'
+require 'thor/util'
 
 module Dotify
   class Configuration
 
+    DEFAULT_DIR = '.dotify'
+    DEFAULT_BACKUP = '.backup'
     SHELLS = {
       :zsh => '/bin/zsh',
       :bash => '/bin/bash',
@@ -29,6 +32,36 @@ module Dotify
       def profile
         @name
       end
+
+      def directory=(dir)
+        @directory = dir
+      end
+
+      def directory
+        !@directory.nil? ? @directory : DEFAULT_DIR
+      end
+
+      def path
+        "#{home}/#{directory}"
+      end
+
+      def backup
+        "#{path}/#{backup_dirname}"
+      end
+
+      def backup_dirname
+        !@backup_dirname.nil? ? @backup_dirname : DEFAULT_BACKUP
+      end
+
+      def backup_dirname=(backup)
+        @backup_dirname = backup
+      end
+
+      private
+
+        def home
+          Thor::Util.user_home
+        end
 
     end
   end
