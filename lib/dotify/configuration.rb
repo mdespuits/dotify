@@ -58,8 +58,16 @@ module Dotify
       end
 
       def load_config!
-        config = File.exists?(config_file) ? YAML.load_file(config_file) : {}
-        symbolize_keys!(config)
+        config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
+        @config = symbolize_keys!(config)
+        @config.each do |key, value|
+          self.__send__("#{key}=", value) unless value.nil?
+        end
+        @config
+      end
+
+      def config
+        @config || load_config!
       end
 
       private

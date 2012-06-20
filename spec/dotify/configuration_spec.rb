@@ -5,6 +5,11 @@ require 'dotify/configuration'
 describe Dotify::Configuration do
   let(:here) { %x{pwd}.chomp }
   describe "setters" do
+    before do
+      # resets the Configuration class for every change
+      Dotify::Configuration.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-default" }
+      Dotify::Configuration.load_config!
+    end
     it "should be able to set the current shell (not actually yet used)" do
       Dotify::Configuration.shell = :zsh
       Dotify::Configuration.shell.should == :zsh
@@ -22,7 +27,6 @@ describe Dotify::Configuration do
       Dotify::Configuration.directory.should == '.dotify'
       Dotify::Configuration.directory = '.dotify2'
       Dotify::Configuration.directory.should == '.dotify2'
-      Dotify::Configuration.directory = '.dotify' # for resetting in other tests
     end
     it "should be able to show the dotify path" do
       Dotify::Configuration.stub(:home) { '/Users/dotify-test' }
@@ -39,15 +43,21 @@ describe Dotify::Configuration do
       Dotify::Configuration.stub(:path) { '/Users/dotify-test/.dotify' }
       Dotify::Configuration.backup_dirname = '.backup2'
       Dotify::Configuration.backup.should == '/Users/dotify-test/.dotify/.backup2'
-      Dotify::Configuration.backup_dirname = '.backup' # resetting settings
     end
   end
   describe "configuration files" do
-    it "should load the config file" do
+    before do
       Dotify::Configuration.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-mattbridges" }
-      config = Dotify::Configuration.load_config!
+      Dotify::Configuration.load_config!
+    end
+    it "should load the config file" do
+      config = Dotify::Configuration.config
       config[:shell].should == :zsh
       config[:profile].should == 'mattdbridges'
+    end
+    it "should load the config and set the variables" do
+      Dotify::Configuration.profile.should == 'mattdbridges'
+      Dotify::Configuration.shell.should == :zsh
     end
   end
 end
