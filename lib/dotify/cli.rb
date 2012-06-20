@@ -2,8 +2,11 @@ require 'thor'
 require 'thor/util'
 require 'dotify'
 require 'dotify/version'
+require 'dotify/configuration'
 require 'erb'
 require 'fileutils'
+
+Dotify::Configuration.load_config!
 
 module Dotify
   class CLI < Thor
@@ -15,17 +18,13 @@ module Dotify
     map "-b" => "backup"
     map "-r" => "restore"
 
-    DOTIFY_DIR_NAME = ENV['DOTIFY_DIR_NAME'] || '.dotify'
-    DOTIFY_PATH = ENV['DOTIFY_PATH'] || "#{Thor::Util.user_home}/#{DOTIFY_DIR_NAME}"
-    DOTIFY_BACKUP_PATH = ENV['DOTIFY_BACKUP_PATH'] || "#{DOTIFY_PATH}/.backup"
-
     def self.source_root
-      DOTIFY_PATH
+      Configuration.path
     end
 
     desc :setup, "Get your system setup for dotfile management"
     def setup
-      ::FileUtils.mkdir_p DOTIFY_PATH
+      ::FileUtils.mkdir_p Configuration.path
     end
 
     desc :link, "Link up your dotfiles"
@@ -59,7 +58,7 @@ module Dotify
     def backup
       dotfile_list do |file|
         file = filename(file)
-        backup = "#{DOTIFY_BACKUP_PATH}/#{file}"
+        backup = "#{Configuration.backup}/#{file}"
         if File.exists?(dotfile_location(file))
           remove_file backup, :verbose => false if File.exists?(backup)
           copy_file dotfile_location(file), backup, :verbose => false
@@ -105,7 +104,7 @@ module Dotify
       end
 
       def dotfile_list
-        files = Dir["#{DOTIFY_PATH}/.*"]
+        files = Dir["#{Configuration.path}/.*"]
         files.delete_if { |f| File.directory? f }
         if block_given?
           files.each { |f| yield f }
@@ -115,7 +114,7 @@ module Dotify
       end
 
       def backup_list
-        files = Dir["#{DOTIFY_BACKUP_PATH}/.*"]
+        files = Dir["#{Configuration.backup}/.*"]
         files.delete_if { |f| File.directory? f }
         if block_given?
           files.each { |f| yield f }

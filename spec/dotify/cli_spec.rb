@@ -4,9 +4,10 @@ require 'dotify/cli'
 describe Dotify::CLI do
 
   let(:cli) { Dotify::CLI }
-  let(:dotify_path) { cli::DOTIFY_PATH }
+  let(:dotify_path) { Dotify::Configuration.path }
 
   before do
+    Dotify::Configuration.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-default" }
     FileUtils.mkdir_p dotify_path
   end
 
