@@ -1,0 +1,21 @@
+require 'spec_helper'
+require 'dotify/errors'
+require 'dotify/configuration'
+
+describe Dotify::Configuration do
+  describe "setters" do
+    it "should be able to set the current shell (not actually yet used)" do
+      Dotify::Configuration.shell = :zsh
+      Dotify::Configuration.shell.should == :zsh
+      Dotify::Configuration.shell = :bash
+      Dotify::Configuration.shell.should == :bash
+    end
+    it "should raise an error if the shell specified does not exist" do
+      expect { Dotify::Configuration.shell = :fake }.to raise_error Dotify::NonValidShell
+    end
+    it "should be able to set the current profile name (not actually yet used)" do
+      Dotify::Configuration.profile = :james
+      Dotify::Configuration.profile.should == 'james'
+    end
+  end
+end
