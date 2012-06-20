@@ -1,4 +1,3 @@
-require 'dotify/errors'
 require 'thor/util'
 require 'yaml'
 
@@ -60,6 +59,7 @@ module Dotify
 
       def load_config_file!
         config = File.exists?(config_file) ? YAML.load_file(config_file) : {}
+        symbolize_keys!(config)
       end
 
       private
@@ -70,6 +70,14 @@ module Dotify
 
         def config_file
           location = File.join(home, '.dotifyrc')
+        end
+
+        def symbolize_keys!(opts)
+          sym_opts = {}
+          opts.each do |key, value|
+            sym_opts[key.to_sym] = value.is_a?(Hash) ? symbolize_keys!(value) : value
+          end
+          sym_opts
         end
 
     end

@@ -46,8 +46,8 @@ describe Dotify::Configuration do
     it "should load the config file" do
       Dotify::Configuration.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-mattbridges" }
       config = Dotify::Configuration.load_config_file!
-      config['shell'].should == :zsh
-      config['profile'].should == 'mattdbridges'
+      config[:shell].should == :zsh
+      config[:profile].should == 'mattdbridges'
     end
   end
 end
