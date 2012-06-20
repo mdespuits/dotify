@@ -1,5 +1,7 @@
 # Dotify
 
+[![Build Status](https://secure.travis-ci.org/mattdbridges/dotify.png)](http://travis-ci.org/mattdbridges/dotify)
+
 Dotify is a simple CLI tool to make managing dotfiles on your system easy and configurable.
 
 ## Installation
