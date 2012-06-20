@@ -57,7 +57,7 @@ module Dotify
         @backup_dirname = backup
       end
 
-      def load_config_file!
+      def load_config!
         config = File.exists?(config_file) ? YAML.load_file(config_file) : {}
         symbolize_keys!(config)
       end
