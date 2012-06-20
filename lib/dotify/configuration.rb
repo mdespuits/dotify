@@ -26,11 +26,11 @@ module Dotify
       end
 
       def profile=(name)
-        @name = name.to_s
+        @profile = name.to_s
       end
 
       def profile
-        @name
+        @profile
       end
 
       def directory=(dir)
