@@ -66,4 +66,20 @@ describe Dotify::Files do
       expect { |b| Dotify::Files.templates(&b) }.to yield_successive_args(*templates)
     end
   end
+
+  describe Dotify::Files, "#template?" do
+    it "should return true if the string given is a .tt or .erb template" do
+      Dotify::Files.template?("testing.erb").should == true
+      Dotify::Files.template?("testing.tt").should == true
+      Dotify::Files.template?("/Users/fake/path/to/testing.tt").should == true
+      Dotify::Files.template?("/Users/another/fake/path/to/testing.erb").should == true
+    end
+    it "should return false if the string given is not a .tt or .erb template" do
+      Dotify::Files.template?(".tt.testing").should == false
+      Dotify::Files.template?("erbit.txt").should == false
+      Dotify::Files.template?("erbit.txt").should == false
+      Dotify::Files.template?("/Users/fake/path/to/testing.txt").should == false
+      Dotify::Files.template?("/Users/another/fake/path/to/testing.rb").should == false
+    end
+  end
 end

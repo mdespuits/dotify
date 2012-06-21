@@ -30,6 +30,10 @@ module Dotify
         file.split("/").last
       end
 
+      def template?(file)
+        file_name(file).match(/(tt|erb)$/) ? true : false
+      end
+
       private
 
         def file_list(dir_glob)
