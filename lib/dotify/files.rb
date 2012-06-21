@@ -31,7 +31,7 @@ module Dotify
         end
 
         def filter_dot_directories!(files)
-          files.keep_if { |f| !['.', '..'].include?(file_name(f)) }
+          files.select { |f| !['.', '..'].include?(file_name(f)) }
         end
 
         def path
