@@ -11,7 +11,6 @@ class Fake
 
   def self.tearup
     fake_root, dotify = paths
-    FileUtils.rm_rf fake_root
     FileUtils.mkdir_p fake_root
     FileUtils.mkdir_p dotify
     FileUtils.touch File.join(dotify, '.vimrc')
