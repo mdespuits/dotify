@@ -43,7 +43,7 @@ module Dotify
       end
     end
 
-    desc :unlink, "Unlink individual dotfiles"
+    desc :unlink, "Unlink all of your dotfiles"
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Definitely remove all dotfiles"
     def unlink
       dotfile_list do |file|
