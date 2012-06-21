@@ -16,6 +16,11 @@ describe Dotify::Files do
     Dotify::Files.should respond_to :templates
   end
 
+  it "should split a file_name correct" do
+    Dotify::Files.file_name("some/random/path/to/file.txt").should == 'file.txt'
+    Dotify::Files.file_name("another/path/no_extension").should == 'no_extension'
+  end
+
   it "should return the list of dotfiles in the dotify path" do
     files = Dotify::Files.dots.map { |f| Dotify::Files.file_name(f) }
     files.should include '.vimrc'
