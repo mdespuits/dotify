@@ -2,7 +2,7 @@ require 'thor/util'
 require 'yaml'
 
 module Dotify
-  class Configuration
+  class Config
 
     DEFAULT_DIR = '.dotify'
     DEFAULT_BACKUP = '.backup'

@@ -1,6 +1,6 @@
-require 'dotify/configuration'
+require 'dotify/config'
 
-Dotify::Configuration.load_config!
+Dotify::Config.load_config!
 
 module Dotify
   class Files
@@ -37,7 +37,7 @@ module Dotify
         end
 
         def path
-          Configuration.path
+          Config.path
         end
     end
   end

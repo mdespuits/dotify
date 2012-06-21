@@ -6,4 +6,4 @@ require "fileutils"
 
 require "dotify/version"
 require 'dotify/errors'
-require "dotify/configuration"
+require "dotify/config"

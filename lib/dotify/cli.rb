@@ -2,11 +2,11 @@ require 'thor'
 require 'thor/util'
 require 'dotify'
 require 'dotify/version'
-require 'dotify/configuration'
+require 'dotify/config'
 require 'erb'
 require 'fileutils'
 
-Dotify::Configuration.load_config!
+Dotify::Config.load_config!
 
 module Dotify
   class CLI < Thor
@@ -19,12 +19,12 @@ module Dotify
     map "-r" => "restore"
 
     def self.source_root
-      Configuration.path
+      Config.path
     end
 
     desc :setup, "Get your system setup for dotfile management"
     def setup
-      ::FileUtils.mkdir_p Configuration.path
+      ::FileUtils.mkdir_p Config.path
     end
 
     desc :link, "Link up your dotfiles"
@@ -58,7 +58,7 @@ module Dotify
     def backup
       dotfile_list do |file|
         file = filename(file)
-        backup = "#{Configuration.backup}/#{file}"
+        backup = "#{Config.backup}/#{file}"
         if File.exists?(dotfile_location(file))
           remove_file backup, :verbose => false if File.exists?(backup)
           copy_file dotfile_location(file), backup, :verbose => false
@@ -104,7 +104,7 @@ module Dotify
       end
 
       def dotfile_list
-        files = Dir["#{Configuration.path}/.*"]
+        files = Dir["#{Config.path}/.*"]
         files.delete_if { |f| File.directory? f }
         if block_given?
           files.each { |f| yield f }
@@ -114,7 +114,7 @@ module Dotify
       end
 
       def backup_list
-        files = Dir["#{Configuration.backup}/.*"]
+        files = Dir["#{Config.backup}/.*"]
         files.delete_if { |f| File.directory? f }
         if block_given?
           files.each { |f| yield f }
