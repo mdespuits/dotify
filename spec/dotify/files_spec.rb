@@ -21,13 +21,19 @@ describe Dotify::Files do
     Dotify::Files.file_name("another/path/no_extension").should == 'no_extension'
   end
 
-  it "should return the list of dotfiles in the dotify path" do
-    files = Dotify::Files.dots.map { |f| Dotify::Files.file_name(f) }
-    files.should include '.vimrc'
-    files.should include '.bashrc'
-    files.should include '.zshrc'
-    files.should_not include '.' # current and upper directories
-    files.should_not include '..'
+  describe Dotify::Files, "#dots" do
+    it "should return the list of dotfiles in the dotify path" do
+      files = Dotify::Files.dots.map { |f| Dotify::Files.file_name(f) }
+      files.should include '.vimrc'
+      files.should include '.bashrc'
+      files.should include '.zshrc'
+      files.should_not include '.' # current and upper directories
+      files.should_not include '..'
+    end
+    it "shoud yield the files if a block is given" do
+      files = Dotify::Files.dots
+      expect { |b| Dotify::Files.dots(&b) }.to yield_successive_args(*files)
+    end
   end
 
   it "should return the list of installed dotfiles in the root path" do

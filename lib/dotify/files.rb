@@ -8,6 +8,8 @@ module Dotify
 
       def dots
         @dots ||= file_list("#{path}/.dotify/.*")
+        return @dots unless block_given?
+        @dots.each {|d| yield(d) }
       end
 
       def installed
