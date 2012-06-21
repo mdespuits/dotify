@@ -17,7 +17,7 @@ module Dotify
       end
 
       def templates
-        dots = self.dots.keep_if { |f| file_name(f) =~ /\.erb$/ }
+        dots = self.dots.select { |f| file_name(f) =~ /\.erb$/ }
       end
 
       def file_name(file)
