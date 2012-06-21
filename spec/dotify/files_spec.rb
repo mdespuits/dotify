@@ -6,6 +6,7 @@ describe Dotify::Files do
   before do
     Fake.tearup
     Dotify::Files.stub(:path) { Fake.root_path }
+    Dotify::Files.stub(:dotify_path) { Fake.dotify_path }
   end
   after do
     Fake.teardown
@@ -47,6 +48,7 @@ describe Dotify::Files do
       installed.should include '.vimrc'
       installed.should include '.bashrc'
       installed.should_not include '.zshrc'
+      installed.should_not include '.dotify'
     end
     it "shoud yield the installed files if a block is given" do
       installed = Dotify::Files.installed
@@ -80,6 +82,26 @@ describe Dotify::Files do
       Dotify::Files.template?("erbit.txt").should == false
       Dotify::Files.template?("/Users/fake/path/to/testing.txt").should == false
       Dotify::Files.template?("/Users/another/fake/path/to/testing.rb").should == false
+    end
+  end
+
+  describe Dotify::Files, "#link_dotfile" do
+    it "should receive a file and link it into the root path" do
+      Dotify::Files.link_dotfile(Dotify::Files.dots.first)
+      installed = Dotify::Files.installed.map { |i| Dotify::Files.file_name(i) }
+      installed.count.should == 1
+      installed.should include Dotify::Files.file_name(Dotify::Files.dots.first)
+    end
+  end
+
+  describe Dotify::Files, "#unlink_dotfile" do
+    it "should receive a file and remove it from the root" do
+      Dotify::Files.link_dotfile(Dotify::Files.dots.first)
+      dotfile_path = File.join(Dotify::Files.send(:path), \
+                            Dotify::Files.file_name(Dotify::Files.dots.first))
+      Dotify::Files.installed.should include dotfile_path
+      Dotify::Files.unlink_dotfile Dotify::Files.dots.first
+      Dotify::Files.installed.should_not include dotfile_path
     end
   end
 end

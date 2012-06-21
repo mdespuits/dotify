@@ -7,7 +7,7 @@ module Dotify
     class << self
 
       def dots
-        @dots ||= file_list("#{path}/.dotify/.*")
+        @dots ||= file_list("#{dotify_path}/.*")
         return @dots unless block_given?
         @dots.each {|d| yield(d) }
       end
@@ -15,7 +15,9 @@ module Dotify
       def installed
         dots = self.dots.map { |f| file_name(f) }
         installed = file_list("#{path}/.*")
-        installed.select { |i| dots.include?(file_name(i)) }
+        installed = installed.select do |i|
+          dots.include?(file_name(i))
+        end
         return installed unless block_given?
         installed.each {|i| yield(i) }
       end
@@ -34,6 +36,14 @@ module Dotify
         file_name(file).match(/(tt|erb)$/) ? true : false
       end
 
+      def link_dotfile(file)
+        FileUtils.ln_s(file_name(file), path) == 0 ? true : false
+      end
+
+      def unlink_dotfile(file)
+        FileUtils.rm_rf File.join(path, file_name(file))
+      end
+
       private
 
         def file_list(dir_glob)
@@ -47,6 +57,11 @@ module Dotify
         def path
           Config.path
         end
+
+        def dotify_path
+          Config.dotify_path
+        end
+
     end
   end
 end
