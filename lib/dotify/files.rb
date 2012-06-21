@@ -16,10 +16,14 @@ module Dotify
         dots = self.dots.map { |f| file_name(f) }
         installed = file_list("#{path}/.*")
         installed.select { |i| dots.include?(file_name(i)) }
+        return installed unless block_given?
+        installed.each {|i| yield(i) }
       end
 
       def templates
-        dots = self.dots.select { |f| file_name(f) =~ /\.erb$/ }
+        @templates ||= self.dots.select { |f| file_name(f) =~ /\.erb$/ }
+        return @templates unless block_given?
+        @templates.each {|i| yield(i) }
       end
 
       def file_name(file)
