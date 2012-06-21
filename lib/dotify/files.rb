@@ -13,7 +13,7 @@ module Dotify
       def installed
         dots = self.dots.map { |f| file_name(f) }
         installed = file_list("#{path}/.*")
-        installed.keep_if { |i| dots.include?(file_name(i)) }
+        installed.select { |i| dots.include?(file_name(i)) }
       end
 
       def templates
