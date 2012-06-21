@@ -1,10 +1,14 @@
 require 'dotify/config'
+require 'thor/actions'
+require 'thor/shell'
 
 Dotify::Config.load_config!
 
 module Dotify
   class Files
     class << self
+      include Thor::Shell
+      include Thor::Actions
 
       def dots
         @dots ||= file_list("#{dotify_path}/.*")
