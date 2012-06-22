@@ -56,7 +56,7 @@ describe Dotify::Files do
     end
   end
 
-  describe Dotify::Files, "#installed" do
+  describe Dotify::Files, "#templates" do
     it "should return the list of templates in the dotify directory" do
       templates = Dotify::Files.templates.map { |i| Dotify::Files.file_name(i) }
       templates.should include '.irbrc.erb'
