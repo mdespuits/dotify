@@ -3,6 +3,7 @@ require 'thor/util'
 require 'dotify'
 require 'dotify/version'
 require 'dotify/config'
+require 'dotify/files'
 require 'erb'
 require 'fileutils'
 
@@ -19,7 +20,7 @@ module Dotify
     map "-r" => "restore"
 
     def self.source_root
-      Config.path
+      Config.home
     end
 
     desc :setup, "Get your system setup for dotfile management"
@@ -30,7 +31,7 @@ module Dotify
     desc :link, "Link up your dotfiles"
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Definitely link all dotfiles"
     def link
-      dotfile_list do |file|
+      Files.dots do |file|
         if File.template? file
           template file, dotfile_location(no_extension(Files.file_name(file)))
         else
@@ -46,7 +47,7 @@ module Dotify
     desc :unlink, "Unlink all of your dotfiles"
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Definitely remove all dotfiles"
     def unlink
-      dotfile_list do |file|
+      Files.installed do |file|
         destination = Files.file_name(file)
         if options.force? || yes?("Are you sure you want to remove ~/#{destination}? [Yn]", :blue)
           remove_file dotfile_location(file), :verbose => true
@@ -56,7 +57,7 @@ module Dotify
 
     desc :backup, "Backup your dotfiles for quick recovery if something goes wrong"
     def backup
-      dotfile_list do |file|
+      Files.dots do |file|
         file = Files.file_name(file)
         backup = "#{Config.backup}/#{file}"
         if File.exists?(dotfile_location(file))
@@ -101,16 +102,6 @@ module Dotify
       def replace_link(dotfile, file)
         remove_file dotfile
         create_link dotfile, file
-      end
-
-      def dotfile_list
-        files = Dir["#{Config.path}/.*"]
-        files.delete_if { |f| File.directory? f }
-        if block_given?
-          files.each { |f| yield f }
-        else
-          files
-        end
       end
 
       def backup_list

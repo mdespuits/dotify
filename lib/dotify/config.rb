@@ -70,11 +70,11 @@ module Dotify
         @config || load_config!
       end
 
-      private
+      def home
+        Thor::Util.user_home
+      end
 
-        def home
-          Thor::Util.user_home
-        end
+      private
 
         def config_file
           location = File.join(home, '.dotifyrc')

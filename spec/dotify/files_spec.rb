@@ -5,7 +5,7 @@ require 'fileutils'
 describe Dotify::Files do
   before do
     Fake.tearup
-    Dotify::Files.stub(:path) { Fake.root_path }
+    Dotify::Files.stub(:home) { Fake.root_path }
     Dotify::Files.stub(:dotify_path) { Fake.dotify_path }
   end
   after do
@@ -97,7 +97,7 @@ describe Dotify::Files do
   describe Dotify::Files, "#unlink_dotfile" do
     it "should receive a file and remove it from the root" do
       Dotify::Files.link_dotfile(Dotify::Files.dots.first)
-      dotfile_path = File.join(Dotify::Files.send(:path), \
+      dotfile_path = File.join(Dotify::Files.send(:home), \
                             Dotify::Files.file_name(Dotify::Files.dots.first))
       Dotify::Files.installed.should include dotfile_path
       Dotify::Files.unlink_dotfile Dotify::Files.dots.first
