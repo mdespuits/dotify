@@ -30,26 +30,4 @@ describe Dotify::CLI do
     end
   end
 
-  describe Dotify::CLI, "#filename" do
-    it "should return only the filename given a path" do
-      c = cli.new
-      c.filename("/Users/johndoe/filename").should == "filename"
-      c.filename("/Users/johndoe/..").should == ".."
-      c.filename("/Users/johndoe/.vimrc").should == ".vimrc"
-    end
-  end
-
-  describe Dotify::CLI, "#template?" do
-    it "should return true if the file ends in tt or erb" do
-      c = cli.new
-      c.template?("title.tt").should be_true
-      c.template?("title.erb").should be_true
-      c.template?("title.rb").should_not be_true
-      c.template?("title.rb").should_not be_true
-      c.template?("#{dotify_path}/title.rb").should_not be_true
-      c.template?("#{dotify_path}/tt.rb").should_not be_true
-      c.template?("#{dotify_path}/.vimrc.erb").should be_true
-    end
-  end
-
 end

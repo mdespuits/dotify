@@ -31,8 +31,8 @@ module Dotify
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Definitely link all dotfiles"
     def link
       dotfile_list do |file|
-        if template? file
-          template file, dotfile_location(no_extension(filename(file)))
+        if File.template? file
+          template file, dotfile_location(no_extension(Files.file_name(file)))
         else
           if options.force?
             replace_link dotfile_location(file), file
@@ -47,7 +47,7 @@ module Dotify
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Definitely remove all dotfiles"
     def unlink
       dotfile_list do |file|
-        destination = filename(file)
+        destination = Files.file_name(file)
         if options.force? || yes?("Are you sure you want to remove ~/#{destination}? [Yn]", :blue)
           remove_file dotfile_location(file), :verbose => true
         end
@@ -57,7 +57,7 @@ module Dotify
     desc :backup, "Backup your dotfiles for quick recovery if something goes wrong"
     def backup
       dotfile_list do |file|
-        file = filename(file)
+        file = Files.file_name(file)
         backup = "#{Config.backup}/#{file}"
         if File.exists?(dotfile_location(file))
           remove_file backup, :verbose => false if File.exists?(backup)
@@ -71,7 +71,7 @@ module Dotify
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Backup existing dotfiles"
     def restore
       backup_list do |file|
-        filename = filename(file)
+        filename = Files.file_name(file)
         if options.force? || yes?("Are you sure you want to restore ~/#{filename}? [Yn]", :red)
           if File.exists?(dotfile_location(filename))
             remove_file dotfile_location(filename), :verbose => false
@@ -85,7 +85,7 @@ module Dotify
     no_tasks do
 
       def dotfile_location(file)
-        "#{home}/#{filename(file)}"
+        "#{home}/#{Files.file_name(file)}"
       end
 
       def no_extension(file)
@@ -121,14 +121,6 @@ module Dotify
         else
           files
         end
-      end
-
-      def filename(file)
-        file.split("/").last
-      end
-
-      def template?(file)
-        filename(file).match(/(tt|erb)$/)
       end
 
     end
