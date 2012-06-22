@@ -18,8 +18,7 @@ module Dotify
 
       def installed
         dots = self.dots.map { |f| file_name(f) }
-        installed = file_list("#{path}/.*")
-        installed = installed.select do |i|
+        installed = file_list("#{path}/.*").select do |i|
           dots.include?(file_name(i))
         end
         return installed unless block_given?
