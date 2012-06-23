@@ -7,9 +7,9 @@ module Dotify
     DEFAULT_DIR = '.dotify'
     DEFAULT_BACKUP = '.backup'
     SHELLS = {
-      :zsh => '/bin/zsh',
-      :bash => '/bin/bash',
-      :sh => '/bin/sh'
+      'zsh' => '/bin/zsh',
+      'bash' => '/bin/bash',
+      'sh' => '/bin/sh'
     }
 
     class << self

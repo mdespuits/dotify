@@ -1,4 +1,4 @@
 profile: 'mattdbridges'
-shell: :zsh
+shell: 'zsh'
 directory: '.dotify'
 backup_dirname: '.backup'
