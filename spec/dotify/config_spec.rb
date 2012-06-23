@@ -10,6 +10,8 @@ describe Dotify::Config do
       Dotify::Config.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-default" }
       Dotify::Config.stub(:home) { Fake.root_path }
       Dotify::Config.load_config!
+      Dotify::Config.directory = '.dotify'
+      Dotify::Config.backup_dirname = '.backup'
     end
     after do
       Fake.teardown
@@ -27,18 +29,15 @@ describe Dotify::Config do
       Dotify::Config.profile = :james
       Dotify::Config.profile.should == 'james'
     end
+    it "should be able to show the dotify path" do
+      Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify')
+    end
     it "should be able to set the directory name to store .dotify files" do
-      Dotify::Config.directory.should == '.dotify'
       Dotify::Config.directory = '.dotify2'
       Dotify::Config.directory.should == '.dotify2'
-    end
-    it "should be able to show the dotify path" do
-      Dotify::Config.directory = '.dotify'
-      Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify')
-      Dotify::Config.backup.should == File.join(Dotify::Config.path, '.backup')
+      Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify2')
     end
     it "should be able to show the dotify backup path" do
-      Dotify::Config.backup_dirname = '.backup'
       Dotify::Config.backup.should == File.join(Dotify::Config.path, '.backup')
     end
     it "should be able to customize the backup path" do
