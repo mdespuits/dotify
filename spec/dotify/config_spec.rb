@@ -7,7 +7,7 @@ describe Dotify::Config do
   describe "setters" do
     before do
       Fake.tearup
-      Dotify::Config.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-default" }
+      Dotify::Config.stub(:config_file) { "#{here}/spec/fixtures/.dotrc-default" }
       Dotify::Config.stub(:home) { Fake.root_path }
       Dotify::Config.load_config!
     end
@@ -45,7 +45,7 @@ describe Dotify::Config do
   end
   describe "config files" do
     before do
-      Dotify::Config.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-mattbridges" }
+      Dotify::Config.stub(:config_file) { "#{here}/spec/fixtures/.dotrc-mattbridges" }
       Dotify::Config.load_config!
     end
     it "should load the config file" do

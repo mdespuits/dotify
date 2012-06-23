@@ -77,7 +77,7 @@ module Dotify
       private
 
         def config_file
-          location = File.join(home, '.dotifyrc')
+          location = File.join(home, '.dotrc')
         end
 
         def symbolize_keys!(opts)
