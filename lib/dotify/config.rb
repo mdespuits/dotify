@@ -42,11 +42,11 @@ module Dotify
       end
 
       def path
-        "#{home}/#{directory}"
+        File.join(home, directory)
       end
 
       def backup
-        "#{path}/#{backup_dirname}"
+        File.join(path, backup_dirname)
       end
 
       def backup_dirname
