@@ -6,9 +6,13 @@ describe Dotify::Config do
   let(:here) { %x{pwd}.chomp }
   describe "setters" do
     before do
-      # resets the Config class for every change
+      Fake.tearup
       Dotify::Config.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-default" }
+      Dotify::Config.stub(:home) { Fake.root_path }
       Dotify::Config.load_config!
+    end
+    after do
+      Fake.teardown
     end
     it "should be able to set the current shell (not actually yet used)" do
       Dotify::Config.shell = :zsh
@@ -29,20 +33,17 @@ describe Dotify::Config do
       Dotify::Config.directory.should == '.dotify2'
     end
     it "should be able to show the dotify path" do
-      Dotify::Config.stub(:home) { '/Users/dotify-test' }
       Dotify::Config.directory = '.dotify'
-      Dotify::Config.path.should == '/Users/dotify-test/.dotify'
+      Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify')
+      Dotify::Config.backup.should == File.join(Dotify::Config.path, '.backup')
     end
     it "should be able to show the dotify backup path" do
-      Dotify::Config.stub(:home) { '/Users/dotify-test' }
       Dotify::Config.backup_dirname = '.backup'
-      Dotify::Config.directory = '.dotify'
-      Dotify::Config.backup.should == '/Users/dotify-test/.dotify/.backup'
+      Dotify::Config.backup.should == File.join(Dotify::Config.path, '.backup')
     end
     it "should be able to customize the backup path" do
-      Dotify::Config.stub(:path) { '/Users/dotify-test/.dotify' }
       Dotify::Config.backup_dirname = '.backup2'
-      Dotify::Config.backup.should == '/Users/dotify-test/.dotify/.backup2'
+      Dotify::Config.backup.should == File.join(Dotify::Config.path, '.backup2')
     end
   end
   describe "config files" do
