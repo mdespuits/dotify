@@ -5,9 +5,10 @@ describe Dotify::CLI do
 
   let(:cli) { Dotify::CLI }
   let(:dotify_path) { Dotify::Config.path }
+  let(:fixtures) { File.join(%x{pwd}.chomp, 'spec/fixtures') }
 
   before do
-    Dotify::Config.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-default" }
+    Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotifyrc-default') }
     Fake.tearup
   end
 
