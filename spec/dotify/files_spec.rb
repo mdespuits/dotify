@@ -79,7 +79,7 @@ describe Dotify::Files do
     it "should return false if the string given is not a .tt or .erb template" do
       Dotify::Files.template?(".tt.testing").should == false
       Dotify::Files.template?("erbit.txt").should == false
-      Dotify::Files.template?("erbit.txt").should == false
+      Dotify::Files.template?(".erb.erbit.txt").should == false
       Dotify::Files.template?("/Users/fake/path/to/testing.txt").should == false
       Dotify::Files.template?("/Users/another/fake/path/to/testing.rb").should == false
     end
@@ -87,20 +87,22 @@ describe Dotify::Files do
 
   describe Dotify::Files, "#link_dotfile" do
     it "should receive a file and link it into the root path" do
-      Dotify::Files.link_dotfile(Dotify::Files.dots.first)
+      first = Dotify::Files.dots.first
+      Dotify::Files.link_dotfile(first)
       installed = Dotify::Files.installed.map { |i| Dotify::Files.file_name(i) }
       installed.count.should == 1
-      installed.should include Dotify::Files.file_name(Dotify::Files.dots.first)
+      installed.should include Dotify::Files.file_name(first)
     end
   end
 
   describe Dotify::Files, "#unlink_dotfile" do
     it "should receive a file and remove it from the root" do
-      Dotify::Files.link_dotfile(Dotify::Files.dots.first)
+      first = Dotify::Files.dots.first
+      Dotify::Files.link_dotfile(first)
       dotfile_path = File.join(Dotify::Files.send(:home), \
-                            Dotify::Files.file_name(Dotify::Files.dots.first))
+                            Dotify::Files.file_name(first))
       Dotify::Files.installed.should include dotfile_path
-      Dotify::Files.unlink_dotfile Dotify::Files.dots.first
+      Dotify::Files.unlink_dotfile first
       Dotify::Files.installed.should_not include dotfile_path
     end
   end
