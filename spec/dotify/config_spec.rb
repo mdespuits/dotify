@@ -10,8 +10,6 @@ describe Dotify::Config do
       Dotify::Config.stub(:config_file) { "#{here}/spec/fixtures/.dotifyrc-default" }
       Dotify::Config.stub(:home) { Fake.root_path }
       Dotify::Config.load_config!
-      Dotify::Config.directory = '.dotify'
-      Dotify::Config.backup_dirname = '.backup'
     end
     after do
       Fake.teardown
