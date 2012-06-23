@@ -35,11 +35,11 @@ describe Dotify::Config do
     end
     it "should be able to show the dotify backup path" do
       Dotify::Config.stub(:home) { '/Users/dotify-test' }
+      Dotify::Config.backup_dirname = '.backup'
       Dotify::Config.directory = '.dotify'
       Dotify::Config.backup.should == '/Users/dotify-test/.dotify/.backup'
     end
     it "should be able to customize the backup path" do
-      Dotify::Config.backup_dirname = '.backup2'
       Dotify::Config.stub(:path) { '/Users/dotify-test/.dotify' }
       Dotify::Config.backup_dirname = '.backup2'
       Dotify::Config.backup.should == '/Users/dotify-test/.dotify/.backup2'
