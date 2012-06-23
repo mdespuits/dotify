@@ -32,7 +32,7 @@ describe Dotify::Files do
       files.should_not include '..'
     end
     it "shoud yield the files if a block is given" do
-      files = Dotify::Files.dots
+      files = Dotify::Files.dots.map { |d| [d, Dotify::Files.file_name(d)] }
       expect { |b| Dotify::Files.dots(&b) }.to yield_successive_args(*files)
     end
   end
@@ -51,7 +51,7 @@ describe Dotify::Files do
       installed.should_not include '.dotify'
     end
     it "shoud yield the installed files if a block is given" do
-      installed = Dotify::Files.installed
+      installed = Dotify::Files.installed.map { |i| [i, Dotify::Files.file_name(i)] }
       expect { |b| Dotify::Files.installed(&b) }.to yield_successive_args(*installed)
     end
   end
@@ -64,7 +64,7 @@ describe Dotify::Files do
       templates.should_not include '.zshrc'
     end
     it "should yield the templates in the dotify directory" do
-      templates = Dotify::Files.templates
+      templates = Dotify::Files.templates.map { |t| [t, Dotify::Files.file_name(t)] }
       expect { |b| Dotify::Files.templates(&b) }.to yield_successive_args(*templates)
     end
   end
