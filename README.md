@@ -22,11 +22,10 @@ Or install it yourself as:
 
 Right now, this tool is still under heavy development and brainstorming. For now, here is the output given by running `dotify help`:
 
+    $ dotify help
     Tasks:
-      dotify backup       # Backup your dotfiles for quick recovery if something goes wrong
       dotify help [TASK]  # Describe available tasks or one specific task
       dotify link         # Link up your dotfiles
-      dotify restore      # Restore your backed-up dotfiles
       dotify setup        # Get your system setup for dotfile management
       dotify unlink       # Unlink all of your dotfiles
 
