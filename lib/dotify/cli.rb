@@ -31,9 +31,9 @@ module Dotify
     desc :link, "Link up your dotfiles"
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Definitely link all dotfiles"
     def link
-      Files.dots do |file|
+      Files.dots do |file, dot|
         if File.template? file
-          template file, dotfile_location(no_extension(Files.file_name(file)))
+          template file, dotfile_location(no_extension(dot))
         else
           if options.force?
             replace_link dotfile_location(file), file
@@ -47,9 +47,8 @@ module Dotify
     desc :unlink, "Unlink all of your dotfiles"
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Definitely remove all dotfiles"
     def unlink
-      Files.installed do |file|
-        destination = Files.file_name(file)
-        if options.force? || yes?("Are you sure you want to remove ~/#{destination}? [Yn]", :blue)
+      Files.installed do |file, dot|
+        if options.force? || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :blue)
           remove_file dotfile_location(file), :verbose => true
         end
       end
@@ -57,7 +56,7 @@ module Dotify
 
     desc :backup, "Backup your dotfiles for quick recovery if something goes wrong"
     def backup
-      Files.dots do |file|
+      Files.dots do |file, dot|
         file = Files.file_name(file)
         backup = "#{Config.backup}/#{file}"
         if File.exists?(dotfile_location(file))
@@ -72,13 +71,12 @@ module Dotify
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Backup existing dotfiles"
     def restore
       backup_list do |file|
-        filename = Files.file_name(file)
-        if options.force? || yes?("Are you sure you want to restore ~/#{filename}? [Yn]", :red)
-          if File.exists?(dotfile_location(filename))
-            remove_file dotfile_location(filename), :verbose => false
+        if options.force? || yes?("Are you sure you want to restore ~/#{dot}? [Yn]", :red)
+          if File.exists?(dotfile_location(dot))
+            remove_file dotfile_location(dot), :verbose => false
           end
-          copy_file file, dotfile_location(filename), :verbose => false
-          say "Restoring up ~/#{filename}", :blue
+          copy_file file, dotfile_location(dot), :verbose => false
+          say "Restoring up ~/#{dot}", :blue
         end
       end
     end
