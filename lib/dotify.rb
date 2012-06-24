@@ -1,9 +1,7 @@
 module Dotify
 end
-
-require "thor"
+require 'bundler/setup'
 require "fileutils"
 
-require "dotify/version"
-require 'dotify/errors'
-require "dotify/config"
+path = File.expand_path(File.dirname(__FILE__))
+Dir[File.join(path, "**/*.rb")].each {|f| require f}
