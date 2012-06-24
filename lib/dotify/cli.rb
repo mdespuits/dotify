@@ -1,10 +1,5 @@
 require 'thor'
-require 'thor/util'
 require 'dotify'
-require 'dotify/version'
-require 'dotify/config'
-require 'dotify/files'
-require 'erb'
 require 'fileutils'
 
 Dotify::Config.load_config!
