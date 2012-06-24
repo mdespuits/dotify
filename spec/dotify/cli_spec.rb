@@ -4,12 +4,12 @@ require 'dotify/cli'
 describe Dotify::CLI do
 
   let(:cli) { Dotify::CLI }
-  let(:dotify_path) { Dotify::Config.path }
   let(:fixtures) { File.join(%x{pwd}.chomp, 'spec/fixtures') }
 
   before do
     Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotifyrc-default') }
     Fake.tearup
+    Dotify::Config.load_config!
   end
 
   after do
@@ -17,9 +17,16 @@ describe Dotify::CLI do
   end
 
   describe Dotify::CLI, "#setup" do
-    it "it should create the right directory" do
-      FileUtils.should_receive(:mkdir_p).with(dotify_path)
-      cli.new.setup
+    let(:cli) { Dotify::CLI.new }
+    it "it should create the right directory if it does not exist" do
+      Dir.stub(:exists?).with(Dotify::Config.path).and_return(false)
+      cli.should_receive(:empty_directory).with(Dotify::Config.path)
+      cli.setup
+    end
+    it "it should not try to create the right directory if it exists" do
+      Dir.stub(:exists?).with(Dotify::Config.path).and_return(true)
+      cli.should_not_receive(:empty_directory).with(Dotify::Config.path)
+      cli.setup
     end
   end
 

@@ -18,9 +18,9 @@ module Dotify
       Config.home
     end
 
-    desc :setup, "Get your system setup for dotfile management"
+    desc :setup, "Setup your system for Dotify to manage your dotfiles"
     def setup
-      ::FileUtils.mkdir_p Config.path
+      empty_directory Config.path unless Dir.exists?(Config.path)
     end
 
     desc :link, "Link up your dotfiles"
