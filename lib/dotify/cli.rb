@@ -23,14 +23,14 @@ module Dotify
       empty_directory Config.path unless Dir.exists?(Config.path)
     end
 
-    desc :link, "Link up your dotfiles"
-    method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Definitely link all dotfiles"
+    desc :link, "Link up all of your dotfiles"
+    method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => "Link dotfiles without confirmation"
     def link
       Files.dots do |file, dot|
         if File.template? file
           template file, dotfile_location(no_extension(dot))
         else
-          if options.force?
+          if options.all?
             replace_link dotfile_location(file), file
           else
             create_link dotfile_location(file), file
