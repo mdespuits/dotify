@@ -52,7 +52,7 @@ module Dotify
     no_tasks do
 
       def dotfile_location(file)
-        "#{home}/#{Files.file_name(file)}"
+        File.join(home, Files.file_name(file))
       end
 
       def no_extension(file)
