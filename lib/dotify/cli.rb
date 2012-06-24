@@ -40,10 +40,10 @@ module Dotify
     end
 
     desc :unlink, "Unlink all of your dotfiles"
-    method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Definitely remove all dotfiles"
+    method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => 'Remove all installed dotfiles without confirmation'
     def unlink
       Files.installed do |file, dot|
-        if options.force? || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :blue)
+        if options.all? || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :blue)
           remove_file dotfile_location(file), :verbose => true
         end
       end
