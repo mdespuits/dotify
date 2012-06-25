@@ -39,6 +39,12 @@ describe Dotify::Config do
       Dotify::Config.stub(:home) { Fake.root_path }
       Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotrc-mattbridges') }
     end
+    it "should not try to assign improper config values" do
+      Dotify::Config.should_receive(:profile=)
+      Dotify::Config.should_receive(:shell=)
+      Dotify::Config.should_not_receive(:something_fake=)
+      Dotify::Config.load_config!
+    end
     it "should load the config and set the variables" do
       Dotify::Config.load_config!
       Dotify::Config.profile.should == 'mattdbridges'
