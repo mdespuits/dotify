@@ -39,6 +39,10 @@ module Dotify
         file_name(file).match(/(tt|erb)$/) ? true : false
       end
 
+      def dotfile(file)
+        File.join(Config.home, file_name(file))
+      end
+
       def link_dotfile(file)
         FileUtils.ln_s(file_name(file), Config.home) == 0 ? true : false
       end
