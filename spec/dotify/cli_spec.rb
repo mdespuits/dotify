@@ -3,12 +3,12 @@ require 'dotify/cli'
 
 describe Dotify::CLI do
 
-  let(:cli) { Dotify::CLI }
   let(:fixtures) { File.join(%x{pwd}.chomp, 'spec/fixtures') }
 
   before do
-    Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotifyrc-default') }
     Fake.tearup
+    Dotify::Config.stub(:home) { Fake.root_path }
+    Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotifyrc-default') }
     Dotify::Config.load_config!
   end
 

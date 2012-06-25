@@ -5,8 +5,7 @@ require 'fileutils'
 describe Dotify::Files do
   before do
     Fake.tearup
-    Dotify::Files.stub(:home) { Fake.root_path }
-    Dotify::Files.stub(:dotify_path) { Fake.dotify_path }
+    Dotify::Config.stub(:home) { Fake.root_path }
   end
   after do
     Fake.teardown
