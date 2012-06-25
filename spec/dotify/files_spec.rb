@@ -97,12 +97,9 @@ describe Dotify::Files do
   describe Dotify::Files, "#unlink_dotfile" do
     it "should receive a file and remove it from the root" do
       first = Dotify::Files.dots.first
-      Dotify::Files.link_dotfile(first)
-      dotfile_path = File.join(Dotify::Files.send(:home), \
-                            Dotify::Files.file_name(first))
-      Dotify::Files.installed.should include dotfile_path
+      FileUtils.stub(:rm_rf).with(File.join(Dotify::Config.home, Dotify::Files.file_name(first))).once
       Dotify::Files.unlink_dotfile first
-      Dotify::Files.installed.should_not include dotfile_path
+      FileUtils.unstub(:rm_rf)
     end
   end
 end
