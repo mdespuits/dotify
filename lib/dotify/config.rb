@@ -54,7 +54,7 @@ module Dotify
         config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
         @config = symbolize_keys!(config)
         @config.each do |key, value|
-          if !value.nil? && methods.map(&:to_s).include?("#{key}=")
+          if !value.nil? && methods(false).map(&:to_s).include?("#{key}=")
             self.__send__("#{key}=", value)
           end
         end
