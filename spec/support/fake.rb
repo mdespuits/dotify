@@ -12,17 +12,22 @@ class Fake
   def self.tearup
     fake_root, dotify = paths
     FileUtils.mkdir_p fake_root
+    reset
+  end
+
+  def self.teardown
+    fake_root, dotify = paths
+    FileUtils.rm_rf fake_root
+  end
+
+  def self.reset
+    fake_root, dotify = paths
     FileUtils.mkdir_p dotify
     FileUtils.touch File.join(dotify, '.vimrc')
     FileUtils.touch File.join(dotify, '.bashrc')
     FileUtils.touch File.join(dotify, '.zshrc')
     FileUtils.touch File.join(dotify, '.irbrc.erb')
     FileUtils.touch File.join(dotify, '.fake.erb')
-  end
-
-  def self.teardown
-    fake_root, dotify = paths
-    FileUtils.rm_rf fake_root
   end
 
   def self.root_path
