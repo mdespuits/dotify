@@ -51,11 +51,13 @@ module Dotify
       end
 
       def load_config!
-        config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
-        @config = symbolize_keys!(config)
+        @config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
+        symbolize_keys!(@config)
         @config.each do |key, value|
           if !value.nil? && methods(false).map(&:to_s).include?("#{key}=")
             self.__send__("#{key}=", value)
+          else
+            @config.delete(key)
           end
         end
         @config
@@ -72,7 +74,7 @@ module Dotify
       private
 
         def config_file
-          location = File.join(home, '.dotrc')
+          File.join(home, '.dotrc')
         end
 
         def symbolize_keys!(opts)
