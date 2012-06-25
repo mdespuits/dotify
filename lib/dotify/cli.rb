@@ -66,11 +66,14 @@ module Dotify
     desc :unlink, "Unlink all of your dotfiles"
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => 'Remove all installed dotfiles without confirmation'
     def unlink
+      count = 0
       Files.installed do |file, dot|
         if options[:all] || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :blue)
           remove_file Files.dotfile(file)
+          count += 1
         end
       end
+      say "No files were unlinked.", :blue if count == 0
     end
 
     no_tasks do
