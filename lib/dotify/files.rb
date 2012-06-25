@@ -11,14 +11,14 @@ module Dotify
       include Thor::Actions
 
       def dots
-        @dots ||= file_list("#{dotify_path}/.*")
+        @dots ||= file_list(File.join(dotify_path, "/.*"))
         return @dots unless block_given?
         @dots.each {|d| yield(d, file_name(d)) }
       end
 
       def installed
         dots = self.dots.map { |f| file_name(f) }
-        installed = file_list("#{home}/.*").select do |i|
+        installed = file_list(File.join(home, ".*")).select do |i|
           dots.include?(file_name(i))
         end
         return installed unless block_given?
