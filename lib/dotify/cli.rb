@@ -64,16 +64,6 @@ module Dotify
 
     no_tasks do
 
-      def no_extension(file)
-        file = file.split('.')
-        file.pop
-        file.join('.')
-      end
-
-      def home
-        Config.home
-      end
-
       def replace_link(dotfile, file)
         remove_file dotfile, :verbose => false
         create_link dotfile, file, :verbose => false
