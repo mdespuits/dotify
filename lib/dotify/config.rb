@@ -15,24 +15,24 @@ module Dotify
 
     class << self
 
-      def shell=(shell)
-        if !SHELLS.keys.include?(shell)
-          raise NonValidShell, "You must specify a valid shell: #{SHELLS.keys.map(&:inspect).join(", ")}"
-        end
-        @shell = shell
-      end
+      #def shell=(shell)
+      #  if !SHELLS.keys.include?(shell)
+      #    raise NonValidShell, "You must specify a valid shell: #{SHELLS.keys.map(&:inspect).join(", ")}"
+      #  end
+      #  @shell = shell
+      #end
 
-      def shell
-        @shell
-      end
+      #def shell
+      #  @shell
+      #end
 
-      def profile=(name)
-        @profile = name
-      end
+      #def profile=(name)
+      #  @profile = name
+      #end
 
-      def profile
-        @profile
-      end
+      #def profile
+      #  @profile
+      #end
 
       def dirname
         @dirname ||= DOTIFY_DIRNAME
