@@ -1,5 +1,7 @@
 require 'thor'
 require 'dotify'
+require 'dotify/config'
+require 'dotify/files'
 require 'fileutils'
 
 Dotify::Config.load_config!
@@ -21,6 +23,21 @@ module Dotify
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
     def setup
       empty_directory(Config.path, :verbose => false) unless File.directory?(Config.path)
+      Dir[File.join(Config.home, ".*")].each do |file|
+        filename = Files.file_name(file)
+        dotify_file = File.join(Config.path, filename)
+        unless ['.', '..', Config.directory].include? filename
+          if yes?("Do you want to add #{filename} to Dotify? [Yn]")
+            if File.directory?(Files.dotfile(file))
+              FileUtils.rm_rf dotify_file
+              FileUtils.cp_r Files.dotfile(file), dotify_file
+              say_status :create, dotify_file, :verbose => false
+            else
+              copy_file Files.dotfile(file), dotify_file, :verbose => false
+            end
+          end
+        end
+      end
     end
 
     desc :link, "Link up all of your dotfiles"

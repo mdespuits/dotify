@@ -20,8 +20,14 @@ describe Dotify::CLI do
   end
 
   describe Dotify::CLI, "#setup" do
-    it "it should create the right directory if it does not exist" do
+    let(:file) { File.join(Dotify::Config.home, '.zshrc') }
+    before do
+      $stdin.stub(:gets).and_return("N")
+      $stdout.stub(:print).and_return("")
+    end
+    it "should create the right directory if it does not exist" do
       FileUtils.rm_rf Dotify::Config.path
+      FileUtils.touch file
       cli.invoke :setup
       File.directory?(Dotify::Config.path).should be_true
     end
