@@ -28,9 +28,9 @@ module Dotify
     def link
       Files.dots do |file, dot|
         if options.all?
-          replace_link dotfile_location(file), file
+          replace_link Files.dotfile(file), file
         else
-          create_link dotfile_location(file), file, :verbose => false
+          create_link Files.dotfile(file), file, :verbose => false
         end
       end
     end
@@ -40,16 +40,12 @@ module Dotify
     def unlink
       Files.installed do |file, dot|
         if options.all? || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :blue)
-          remove_file dotfile_location(file), :verbose => true
+          remove_file Files.dotfile(file), :verbose => true
         end
       end
     end
 
     no_tasks do
-
-      def dotfile_location(file)
-        File.join(home, Files.file_name(file))
-      end
 
       def no_extension(file)
         file = file.split('.')
