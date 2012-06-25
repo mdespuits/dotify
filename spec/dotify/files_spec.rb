@@ -3,9 +3,12 @@ require 'dotify/files'
 require 'fileutils'
 
 describe Dotify::Files do
+  let(:fixtures) { File.join(%x{pwd}.chomp, 'spec/fixtures') }
   before do
     Fake.tearup
+    Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotrc-default') }
     Dotify::Config.stub(:home) { Fake.root_path }
+    Dotify::Config.load_config!
   end
   after do
     Fake.teardown
@@ -86,17 +89,15 @@ describe Dotify::Files do
 
   describe Dotify::Files, "#link_dotfile" do
     it "should receive a file and link it into the root path" do
-      first = Dotify::Files.dots.first
-      Dotify::Files.link_dotfile(first)
-      installed = Dotify::Files.installed.map { |i| Dotify::Files.file_name(i) }
-      installed.count.should == 1
-      installed.should include Dotify::Files.file_name(first)
+      first = File.join(Dotify::Files.send(:dotify_path), ".vimrc")
+      FileUtils.should_receive(:ln_s).with(Dotify::Files.file_name(first), Dotify::Config.home).once
+      Dotify::Files.link_dotfile first
     end
   end
 
   describe Dotify::Files, "#unlink_dotfile" do
     it "should receive a file and remove it from the root" do
-      first = Dotify::Files.dots.first
+      first = "/spec/test/.file"
       FileUtils.stub(:rm_rf).with(File.join(Dotify::Config.home, Dotify::Files.file_name(first))).once
       Dotify::Files.unlink_dotfile first
       FileUtils.unstub(:rm_rf)
