@@ -18,7 +18,7 @@ module Dotify
 
       def installed
         dots = self.dots.map { |f| file_name(f) }
-        installed = file_list(File.join(home, ".*")).select do |i|
+        installed = file_list(File.join(Config.home, ".*")).select do |i|
           dots.include?(file_name(i))
         end
         return installed unless block_given?
@@ -40,11 +40,11 @@ module Dotify
       end
 
       def link_dotfile(file)
-        FileUtils.ln_s(file_name(file), home) == 0 ? true : false
+        FileUtils.ln_s(file_name(file), Config.home) == 0 ? true : false
       end
 
       def unlink_dotfile(file)
-        FileUtils.rm_rf File.join(home, file_name(file))
+        FileUtils.rm_rf File.join(Config.home, file_name(file))
       end
 
       private
@@ -55,10 +55,6 @@ module Dotify
 
         def filter_dot_directories!(files)
           files.select { |f| !['.', '..'].include?(file_name(f)) }
-        end
-
-        def home
-          Config.home
         end
 
         def dotify_path
