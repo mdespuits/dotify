@@ -26,8 +26,6 @@ class Fake
     FileUtils.touch File.join(dotify, '.vimrc')
     FileUtils.touch File.join(dotify, '.bashrc')
     FileUtils.touch File.join(dotify, '.zshrc')
-    FileUtils.touch File.join(dotify, '.irbrc.erb')
-    FileUtils.touch File.join(dotify, '.fake.erb')
   end
 
   def self.root_path

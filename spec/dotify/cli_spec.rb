@@ -28,7 +28,7 @@ describe Dotify::CLI do
 
   describe Dotify::CLI, "#link" do
     it "should link up all the files properly" do
-      count = Dotify::Files.dots.size - Dotify::Files.templates.size
+      count = Dotify::Files.dots.size
       cli.invoke :link
       count.should == Dotify::Files.installed.size
     end

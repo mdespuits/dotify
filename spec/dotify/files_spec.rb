@@ -56,13 +56,13 @@ describe Dotify::Files do
   end
 
   describe Dotify::Files, "#templates" do
-    it "should return the list of templates in the dotify directory" do
+    xit "should return the list of templates in the dotify directory" do
       templates = Dotify::Files.templates.map { |i| Dotify::Files.file_name(i) }
       templates.should include '.irbrc.erb'
       templates.should include '.fake.erb'
       templates.should_not include '.zshrc'
     end
-    it "should yield the templates in the dotify directory" do
+    xit "should yield the templates in the dotify directory" do
       templates = Dotify::Files.templates.map { |t| [t, Dotify::Files.file_name(t)] }
       expect { |b| Dotify::Files.templates(&b) }.to yield_successive_args(*templates)
     end

@@ -20,21 +20,17 @@ module Dotify
 
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
     def setup
-      empty_directory(Config.path, :verbose => false) unless Dir.exists?(Config.path)
+      empty_directory(Config.path, :verbose => false) unless File.directory?(Config.path)
     end
 
     desc :link, "Link up all of your dotfiles"
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => "Link dotfiles without confirmation"
     def link
       Files.dots do |file, dot|
-        if Files.template? file
-          template file, dotfile_location(no_extension(dot)), :verbose => false
+        if options.all?
+          replace_link dotfile_location(file), file
         else
-          if options.all?
-            replace_link dotfile_location(file), file
-          else
-            create_link dotfile_location(file), file, :verbose => false
-          end
+          create_link dotfile_location(file), file, :verbose => false
         end
       end
     end
