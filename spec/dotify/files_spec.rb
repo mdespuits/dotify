@@ -25,6 +25,11 @@ describe Dotify::Files do
   end
 
   describe Dotify::Files, "#dots" do
+    before do
+      Dotify::Files.stub(:file_list) do
+        ['/spec/test/.vimrc', '/spec/test/.bashrc', '/spec/test/.zshrc']
+      end
+    end
     it "should return the list of dotfiles in the dotify path" do
       files = Dotify::Files.dots.map { |f| Dotify::Files.file_name(f) }
       files.should include '.vimrc'
