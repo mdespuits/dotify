@@ -20,20 +20,20 @@ module Dotify
 
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
     def setup
-      empty_directory Config.path unless Dir.exists?(Config.path)
+      empty_directory(Config.path, :verbose => false) unless Dir.exists?(Config.path)
     end
 
     desc :link, "Link up all of your dotfiles"
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => "Link dotfiles without confirmation"
     def link
       Files.dots do |file, dot|
-        if File.template? file
-          template file, dotfile_location(no_extension(dot))
+        if Files.template? file
+          template file, dotfile_location(no_extension(dot)), :verbose => false
         else
           if options.all?
             replace_link dotfile_location(file), file
           else
-            create_link dotfile_location(file), file
+            create_link dotfile_location(file), file, :verbose => false
           end
         end
       end
@@ -62,12 +62,12 @@ module Dotify
       end
 
       def home
-        Thor::Util.user_home
+        Config.home
       end
 
       def replace_link(dotfile, file)
-        remove_file dotfile
-        create_link dotfile, file
+        remove_file dotfile, :verbose => false
+        create_link dotfile, file, :verbose => false
       end
 
     end

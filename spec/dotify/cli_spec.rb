@@ -1,9 +1,11 @@
 require 'spec_helper'
 require 'dotify/cli'
+require 'thor'
 
 describe Dotify::CLI do
 
   let(:fixtures) { File.join(%x{pwd}.chomp, 'spec/fixtures') }
+  let(:cli) { Dotify::CLI.new }
 
   before do
     Fake.tearup
@@ -17,16 +19,18 @@ describe Dotify::CLI do
   end
 
   describe Dotify::CLI, "#setup" do
-    let(:cli) { Dotify::CLI.new }
     it "it should create the right directory if it does not exist" do
-      Dir.stub(:exists?).with(Dotify::Config.path).and_return(false)
-      cli.should_receive(:empty_directory).with(Dotify::Config.path)
-      cli.setup
+      FileUtils.rm_rf Dotify::Config.path
+      cli.invoke :setup
+      Dir.exists?(Dotify::Config.path).should be_true
     end
-    it "it should not try to create the right directory if it exists" do
-      Dir.stub(:exists?).with(Dotify::Config.path).and_return(true)
-      cli.should_not_receive(:empty_directory).with(Dotify::Config.path)
-      cli.setup
+  end
+
+  describe Dotify::CLI, "#link" do
+    it "should link up all the files properly" do
+      count = Dotify::Files.dots.size - Dotify::Files.templates.size
+      cli.invoke :link
+      count.should == Dotify::Files.installed.size
     end
   end
 
