@@ -7,11 +7,11 @@ module Dotify
 
     DOTIFY_DIRNAME = '.dotify'
     DOTIFY_BACKUP = '.backup'
-    SHELLS = {
-      'zsh' => '/bin/zsh',
-      'bash' => '/bin/bash',
-      'sh' => '/bin/sh'
-    }
+    #SHELLS = {
+    #  'zsh' => '/bin/zsh',
+    #  'bash' => '/bin/bash',
+    #  'sh' => '/bin/sh'
+    #}
 
     class << self
 
@@ -51,16 +51,16 @@ module Dotify
       end
 
       def load_config!
-        @config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
-        symbolize_keys!(@config)
-        @config.each do |key, value|
-          if !value.nil? && methods(false).map(&:to_s).include?("#{key}=")
-            self.__send__("#{key}=", value)
-          else
-            @config.delete(key)
-          end
-        end
-        @config
+        #@config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
+        #symbolize_keys!(@config)
+        #@config.each do |key, value|
+        #  if !value.nil? && methods(false).map(&:to_s).include?("#{key}=")
+        #    self.__send__("#{key}=", value)
+        #  else
+        #    @config.delete(key)
+        #  end
+        #end
+        #@config
       end
 
       def config
@@ -74,7 +74,7 @@ module Dotify
       private
 
         def config_file
-          File.join(home, '.dotrc')
+          #File.join(home, '.dotrc')
         end
 
         def symbolize_keys!(opts)
