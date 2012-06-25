@@ -22,7 +22,7 @@ describe Dotify::CLI do
     it "it should create the right directory if it does not exist" do
       FileUtils.rm_rf Dotify::Config.path
       cli.invoke :setup
-      Dir.exists?(Dotify::Config.path).should be_true
+      File.directory?(Dotify::Config.path).should be_true
     end
   end
 
