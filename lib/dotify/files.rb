@@ -25,12 +25,6 @@ module Dotify
         installed.each {|i| yield(i, file_name(i)) }
       end
 
-      def templates
-        @templates ||= self.dots.select { |f| file_name(f) =~ /\.erb$/ }
-        return @templates unless block_given?
-        @templates.each {|i| yield(i, file_name(i)) }
-      end
-
       def file_name(file)
         file.split("/").last
       end

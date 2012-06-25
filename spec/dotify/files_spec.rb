@@ -16,7 +16,6 @@ describe Dotify::Files do
   it "should respond to the right methods" do
     Dotify::Files.should respond_to :dots
     Dotify::Files.should respond_to :installed
-    Dotify::Files.should respond_to :templates
   end
 
   it "should split a file_name correct" do
@@ -67,19 +66,6 @@ describe Dotify::Files do
     it "shoud yield the installed files if a block is given" do
       installed = Dotify::Files.installed.map { |i| [i, Dotify::Files.file_name(i)] }
       expect { |b| Dotify::Files.installed(&b) }.to yield_successive_args(*installed)
-    end
-  end
-
-  describe Dotify::Files, "#templates" do
-    xit "should return the list of templates in the dotify directory" do
-      templates = Dotify::Files.templates.map { |i| Dotify::Files.file_name(i) }
-      templates.should include '.irbrc.erb'
-      templates.should include '.fake.erb'
-      templates.should_not include '.zshrc'
-    end
-    xit "should yield the templates in the dotify directory" do
-      templates = Dotify::Files.templates.map { |t| [t, Dotify::Files.file_name(t)] }
-      expect { |b| Dotify::Files.templates(&b) }.to yield_successive_args(*templates)
     end
   end
 

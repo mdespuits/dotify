@@ -6,7 +6,7 @@ describe Dotify::Config do
   let(:fixtures) { File.join(%x{pwd}.chomp, 'spec/fixtures') }
   before do
     Fake.tearup
-    Dotify::Config.stub(:home) { Fake.root_path }
+    Dotify::Config.stub(:user_home) { Fake.root_path }
     #Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotrc-default') }
     #Dotify::Config.load_config!
   end
