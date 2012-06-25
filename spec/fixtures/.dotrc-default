@@ -1,3 +1,2 @@
 profile: 'mattdbridges'
 shell: 'zsh'
-backup_dirname: '.backup'

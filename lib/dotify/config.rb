@@ -6,7 +6,7 @@ module Dotify
   class Config
 
     DOTIFY_DIRNAME = '.dotify'
-    DEFAULT_BACKUP = '.backup'
+    DOTIFY_BACKUP = '.backup'
     SHELLS = {
       'zsh' => '/bin/zsh',
       'bash' => '/bin/bash',
@@ -47,11 +47,7 @@ module Dotify
       end
 
       def backup_dirname
-        !@backup_dirname.nil? ? @backup_dirname : DEFAULT_BACKUP
-      end
-
-      def backup_dirname=(backup)
-        @backup_dirname = backup
+        @backup ||= DOTIFY_BACKUP
       end
 
       def load_config!

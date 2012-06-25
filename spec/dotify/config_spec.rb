@@ -33,10 +33,6 @@ describe Dotify::Config do
     it "should be able to show the dotify backup path" do
       Dotify::Config.backup.should == File.join(Dotify::Config.path, '.backup')
     end
-    it "should be able to customize the backup path" do
-      Dotify::Config.backup_dirname = '.backup2'
-      Dotify::Config.backup.should == File.join(Dotify::Config.path, '.backup2')
-    end
   end
   describe "config files" do
     before do
