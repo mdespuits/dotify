@@ -5,7 +5,7 @@ require 'yaml'
 module Dotify
   class Config
 
-    DEFAULT_DIR = '.dotify'
+    DOTIFY_DIRNAME = '.dotify'
     DEFAULT_BACKUP = '.backup'
     SHELLS = {
       'zsh' => '/bin/zsh',
@@ -34,16 +34,12 @@ module Dotify
         @profile
       end
 
-      def directory=(dir)
-        @directory = dir
-      end
-
-      def directory
-        !@directory.nil? ? @directory : DEFAULT_DIR
+      def dirname
+        @dirname ||= DOTIFY_DIRNAME
       end
 
       def path
-        File.join(home, directory)
+        File.join(home, dirname)
       end
 
       def backup

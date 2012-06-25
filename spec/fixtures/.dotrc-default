@@ -1,4 +1,3 @@
 profile: 'mattdbridges'
 shell: 'zsh'
-directory: '.dotify'
 backup_dirname: '.backup'

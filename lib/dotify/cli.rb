@@ -26,7 +26,7 @@ module Dotify
       Dir[File.join(Config.home, ".*")].each do |file|
         filename = Files.file_name(file)
         dotify_file = File.join(Config.path, filename)
-        unless ['.', '..', Config.directory].include? filename
+        unless ['.', '..', Config.dirname].include? filename
           if yes?("Do you want to add #{filename} to Dotify? [Yn]")
             if File.directory?(Files.dotfile(file))
               FileUtils.rm_rf dotify_file

@@ -30,11 +30,6 @@ describe Dotify::Config do
     it "should be able to show the dotify path" do
       Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify')
     end
-    it "should be able to set the directory name to store .dotify files" do
-      Dotify::Config.directory = '.dotify2'
-      Dotify::Config.directory.should == '.dotify2'
-      Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify2')
-    end
     it "should be able to show the dotify backup path" do
       Dotify::Config.backup.should == File.join(Dotify::Config.path, '.backup')
     end
