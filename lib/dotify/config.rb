@@ -1,3 +1,4 @@
+require 'dotify'
 require 'thor/util'
 require 'yaml'
 

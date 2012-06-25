@@ -1,4 +1,4 @@
-require 'dotify/config'
+require 'dotify'
 require 'thor/actions'
 require 'thor/shell'
 
