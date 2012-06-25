@@ -4,16 +4,16 @@ require 'dotify/config'
 
 describe Dotify::Config do
   let(:fixtures) { File.join(%x{pwd}.chomp, 'spec/fixtures') }
+  before do
+    Fake.tearup
+    Dotify::Config.stub(:home) { Fake.root_path }
+    Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotrc-default') }
+    Dotify::Config.load_config!
+  end
+  after do
+    Fake.teardown
+  end
   describe "setters" do
-    before do
-      Fake.tearup
-      Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotrc-default') }
-      Dotify::Config.stub(:home) { Fake.root_path }
-      Dotify::Config.load_config!
-    end
-    after do
-      Fake.teardown
-    end
     it "should be able to set the current shell (not actually yet used)" do
       Dotify::Config.shell = 'zsh'
       Dotify::Config.shell.should == 'zsh'
@@ -24,7 +24,7 @@ describe Dotify::Config do
       expect { Dotify::Config.shell = 'fake' }.to raise_error Dotify::NonValidShell
     end
     it "should be able to set the current profile name (not actually yet used)" do
-      Dotify::Config.profile = :james
+      Dotify::Config.profile = 'james'
       Dotify::Config.profile.should == 'james'
     end
     it "should be able to show the dotify path" do
@@ -36,15 +36,11 @@ describe Dotify::Config do
   end
   describe "config files" do
     before do
+      Dotify::Config.stub(:home) { Fake.root_path }
       Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotrc-mattbridges') }
-      Dotify::Config.load_config!
-    end
-    it "should load the config file" do
-      config = Dotify::Config.config
-      config[:shell].should == 'zsh'
-      config[:profile].should == 'mattdbridges'
     end
     it "should load the config and set the variables" do
+      Dotify::Config.load_config!
       Dotify::Config.profile.should == 'mattdbridges'
       Dotify::Config.shell.should == 'zsh'
     end

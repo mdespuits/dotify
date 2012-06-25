@@ -27,7 +27,7 @@ module Dotify
       end
 
       def profile=(name)
-        @profile = name.to_s
+        @profile = name
       end
 
       def profile
@@ -54,7 +54,9 @@ module Dotify
         config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
         @config = symbolize_keys!(config)
         @config.each do |key, value|
-          self.__send__("#{key}=", value) unless value.nil?
+          if !value.nil? && methods.map(&:to_s).include?("#{key}=")
+            self.__send__("#{key}=", value)
+          end
         end
         @config
       end
