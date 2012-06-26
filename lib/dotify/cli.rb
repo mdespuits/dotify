@@ -21,6 +21,7 @@ module Dotify
     end
 
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
+    method_option :link, :default => false, :type => :boolean, :aliases => '-l', :desc => "Link dotfiles when setup is complete"
     def setup
       empty_directory(Config.path) unless File.directory?(Config.path)
       Dir[File.join(Config.home, ".*")].each do |file|
@@ -31,6 +32,10 @@ module Dotify
         end
       end
       say "Dotify has been successfully setup.", :blue
+      if options[:link]
+        say "Linking up the new dotfiles...", :blue
+        invoke :link, nil, { :all => true } if options[:link]
+      end
     end
 
     desc "add [FILENAME]", "Add a single dotfile to the Dotify directory"
