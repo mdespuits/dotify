@@ -15,9 +15,16 @@ describe Dotify::Files do
     Fake.teardown
   end
 
-  it "should respond to the right methods" do
-    Dotify::Files.should respond_to :dots
-    Dotify::Files.should respond_to :installed
+  describe "methods" do
+    it "should respond to dots" do
+      Dotify::Files.should respond_to :dots
+    end
+    it "should respond to installed" do
+      Dotify::Files.should respond_to :installed
+    end
+    it "should respond to unlinked" do
+      Dotify::Files.should respond_to :unlinked
+    end
   end
 
   it "should split a file_name correct" do
