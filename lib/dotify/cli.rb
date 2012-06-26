@@ -25,12 +25,8 @@ module Dotify
     method_option :link, :default => false, :type => :boolean, :aliases => '-l', :desc => "Link dotfiles when setup is complete"
     def setup
       empty_directory(Config.path) unless File.directory?(Config.path)
-      Dir[File.join(Config.home, ".*")].each do |file|
-        filename = Files.file_name(file)
-        dotify_file = File.join(Config.path, filename)
-        unless ['.', '..', Config.dirname].include? filename
-          add(filename)
-        end
+      Files.unlinked do |path, file|
+        add(file) unless Config.dirname == file
       end
       say "Dotify has been successfully setup.", :blue
       if options[:link]
