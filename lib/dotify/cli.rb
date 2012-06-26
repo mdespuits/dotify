@@ -61,6 +61,11 @@ module Dotify
       end
     end
 
+    desc "remove [FILENAME]", "Remove a single dotfile from Dotify"
+    def remove(file)
+      remove_file Files.dotfile(file)
+    end
+
     desc :link, "Link up all of your dotfiles"
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => "Link dotfiles without confirmation"
     def link
@@ -89,7 +94,7 @@ module Dotify
       count = 0
       Files.installed do |file, dot|
         if options[:all] || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :yellow)
-          remove_file Files.dotfile(file)
+          remove(file)
           count += 1
         end
       end
