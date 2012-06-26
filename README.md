@@ -32,9 +32,27 @@ To setup Dotify, you must first run `dotify setup` in your terminal.
     Do you want to add .gitconfig to Dotify? [Yn] y
     ...
 
-This will first create a `.dotify` directory in your home directory (yes, only one more dot directory, but this time it is a good thing). It will then ask which files you want to copy from your home directory into your `.dotify` directory. 
+This will first create a `.dotify` directory in your home directory (yes, only one more dot directory, but this time it is a good thing). It will then ask which files you want to copy from your home directory into your `.dotify` directory.
 
 **This will *not* link up the dotfiles. This command simply copies the files over for you without having to go searching for them manually.**
+
+### Add single files
+
+After you have setup Dotify, you can add files one by one if you did not add them during setup
+
+    $ dotify add .vimrc
+          create  /Users/mattbridges/.vimrc
+
+### Remove single files
+
+If you don't want a particular dotfile anymore? You can just remove it.
+
+***This actually removes the file from the home directory. Do this at your own risk***.
+
+    $ dotify remove .vimrc
+          remove  /Users/mattbridges/.vimrc
+
+If you do this and decide to change your mind, the file is still located in the `~/.dotify` directory. You can re-link it by running `dotify link` again.
 
 ### Link up your files
 
@@ -70,16 +88,18 @@ This tool is powered by the amazing library, [Thor](http://whatisthor.com/). You
 
     $ dotify help
     Tasks:
-      dotify help [TASK]  # Describe available tasks or one specific task
-      dotify link         # Link up all of your dotfiles
-      dotify setup        # Setup your system for Dotify to manage your dotfiles
-      dotify unlink       # Unlink all of your dotfiles
+      dotify add [FILENAME]     # Add a single dotfile to the Dotify directory
+      dotify help [TASK]        # Describe available tasks or one specific task
+      dotify link               # Link up all of your dotfiles
+      dotify remove [FILENAME]  # Remove a single dotfile from Dotify
+      dotify setup              # Setup your system for Dotify to manage your dotfiles
+      dotify unlink             # Unlink all of your dotfiles
 
 And if you want a little clarity on one of the command you can run `dotify help [TASK]` to find out what other options you have in the other tasks.
 
 ## Contributing
 
-This tool is developed with much influence from *37singals*' fantastic idea of **Do Less**. This is meant to be a *simple* tool. 
+This tool is developed with much influence from *37singals*' fantastic idea of **Do Less**. This is meant to be a *simple* tool.
 
 Contributions are welcome and encouraged. The contrubution process is the typical Github one.
 
