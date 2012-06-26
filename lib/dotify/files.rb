@@ -25,6 +25,14 @@ module Dotify
         installed.each {|i| yield(i, file_name(i)) }
       end
 
+      def unlinked
+        dots = self.dots.map { |f| file_name(f) }
+        installed = self.installed.map {|f| file_name(f)}
+        unlinked = (dots - installed).map{|f| dotfile(f) }
+        return unlinked unless block_given?
+        unlinked.each {|u| yield(u, file_name(u)) }
+      end
+
       def file_name(file)
         file.split("/").last
       end

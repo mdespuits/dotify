@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'dotify/config'
 require 'dotify/files'
 require 'fileutils'
 
@@ -13,6 +14,7 @@ describe Dotify::Files do
   after do
     Fake.teardown
   end
+
   it "should respond to the right methods" do
     Dotify::Files.should respond_to :dots
     Dotify::Files.should respond_to :installed
@@ -54,6 +56,26 @@ describe Dotify::Files do
     it "shoud yield the files if a block is given" do
       files = Dotify::Files.dots.map { |d| [d, Dotify::Files.file_name(d)] }
       expect { |b| Dotify::Files.dots(&b) }.to yield_successive_args(*files)
+    end
+  end
+
+  describe Dotify::Files, "#unlinked" do
+    before do
+      Dotify::Files.stub(:dots) do
+        ['/spec/test/.vimrc', '/spec/test/.bashrc', '/spec/test/.zshrc']
+      end
+      Dotify::Files.stub(:installed) do
+        ['/root/test/.bashrc', '/root/test/.zshrc']
+      end
+    end
+    it "should return the list of unlinked dotfiles in the root path" do
+      unlinked = Dotify::Files.unlinked.map { |u| Dotify::Files.file_name(u) }
+      unlinked.should include '.vimrc'
+      unlinked.should_not include '.bashrc'
+    end
+    it "shoud yield the unlinked files if a block is given" do
+      unlinked = Dotify::Files.unlinked.map { |u| [u, Dotify::Files.file_name(u)] }
+      expect { |b| Dotify::Files.unlinked(&b) }.to yield_successive_args(*unlinked)
     end
   end
 
