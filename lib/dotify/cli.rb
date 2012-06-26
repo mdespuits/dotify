@@ -15,6 +15,7 @@ module Dotify
     map "-u" => :unlink
     map "-s" => :setup
     map "-a" => :add
+    map "-r" => :remove
 
     def self.source_root
       Config.home
