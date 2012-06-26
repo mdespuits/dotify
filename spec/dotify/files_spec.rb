@@ -81,9 +81,9 @@ describe Dotify::Files do
 
   describe Dotify::Files, "#installed" do
     before do
-      fake_root, dotify = Fake.paths
-      FileUtils.touch File.join(fake_root, '.vimrc')
-      FileUtils.touch File.join(fake_root, '.bashrc')
+      Dotify::Files.stub(:list_of_dotfiles) do
+        ['/root/test/.bashrc', '/root/test/.vimrc']
+      end
     end
     it "should return the list of installed dotfiles in the root path" do
       installed = Dotify::Files.installed.map { |i| Dotify::Files.file_name(i) }
