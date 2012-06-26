@@ -1,2 +1,4 @@
-profile: 'mattdbridges'
-shell: 'zsh'
+dotfiles_to_ignore:
+- ".gemrc"
+dotify_files_to_ignore:
+- ".gitmodule"
