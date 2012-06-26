@@ -4,6 +4,16 @@
 
 Dotify is a simple CLI tool to make managing dotfiles on your system easy. When developing on a Linux/Unix basic system, keeping track of all of those dotfiles in the home directory can be pain. Some developers do not even bother managing them and many have come up with their own static or even dynamic way of managing them. This is a need in the community, and this tool makes managing these crazy files a breeze.
 
+## Ruby Version Support
+
+As this is a gem for use on your local system, I understand there are still many Ruby developers still stuck with using Ruby 1.8. As such, Dotify supports the following Ruby versions definitively:
+
+* 1.8.7
+* 1.9.2
+* 1.9.3
+* JRuby
+* Rubinius
+
 ## Installation
 
 Add this line to your application's Gemfile:
