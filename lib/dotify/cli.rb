@@ -36,6 +36,7 @@ module Dotify
     end
 
     desc "add [FILENAME]", "Add a single dotfile to the Dotify directory"
+    method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Add file without confirmation"
     def add(file)
       file = Files.file_name(file)
       dotfile = Files.dotfile(file)
@@ -46,7 +47,7 @@ module Dotify
       when File.identical?(dotfile, dotify_file)
         say "'~/#{file}' is already identical to '~/.dotify/#{file}'", :blue
       else
-        if yes?("Do you want to add #{file} to Dotify? [Yn]", :yellow)
+        if options[:force] == true || yes?("Do you want to add #{file} to Dotify? [Yn]", :yellow)
           if File.directory?(dotfile)
             FileUtils.rm_rf dotify_file
             FileUtils.cp_r dotfile, dotify_file
@@ -59,8 +60,25 @@ module Dotify
     end
 
     desc "remove [FILENAME]", "Remove a single dotfile from Dotify"
+    long_desc <<-STRING
+      `dotify remove [FILENAME]` removes the dotfiles from the Dotify directory
+      and moves it back into the home directory. If you decide you want Dotify
+      to manage that file again, you can simply run `dotify add [FILENAME]` to
+      add it back again.
+    STRING
+    method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Remove file without confirmation"
+    method_option :quiet, :default => false, :type => :boolean, :aliases => '-q', :desc => "Don't output anything"
     def remove(file)
-      remove_file Files.dotfile(file)
+      if !File.exists?(Files.dotify(file))
+        say "Dotify is not currently managing ~/#{file}.", :blue unless options.quiet?
+        return
+      end
+      if options[:force] == true || yes?("Are you sure you want to remove #{file} from Dotify? [Yn]", :yellow)
+        remove_file Files.dotfile(file), :verbose => false
+        copy_file Files.dotify(file), Files.dotfile(file), :verbose => false
+        remove_file Files.dotify(file), :verbose => false
+        say_status :removed, Files.dotify(file) unless options.quiet?
+      end
     end
 
     desc :link, "Link up all of your dotfiles"
@@ -86,12 +104,17 @@ module Dotify
     end
 
     desc :unlink, "Unlink all of your dotfiles"
+    long_desc <<-STRING
+      `dotify unlink` removes the dotfiles from the home directory and preserves the
+      files in the Dotify directory. This allows you to simply run `dotify link` again
+      should you decide you want to relink anything to the Dotify files.
+    STRING
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => 'Remove all installed dotfiles without confirmation'
     def unlink
       count = 0
       Files.installed do |file, dot|
         if options[:all] || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :yellow)
-          remove(file)
+          remove_file Files.dotfile(file)
           count += 1
         end
       end
