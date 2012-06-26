@@ -7,9 +7,7 @@ describe Dotify::Files do
   let(:fixtures) { File.join(%x{pwd}.chomp, 'spec/fixtures') }
   before do
     Fake.tearup
-    #Dotify::Config.stub(:config_file) { File.join(fixtures, '.dotrc-default') }
     Dotify::Config.stub(:home) { Fake.root_path }
-    Dotify::Config.load_config!
   end
   after do
     Fake.teardown
@@ -48,21 +46,20 @@ describe Dotify::Files do
 
   describe Dotify::Files, "#dots" do
     before do
-      Dotify::Files.stub(:file_list) do
+      Dotify::Files.stub(:list_of_dotify_files) do
         ['/spec/test/.vimrc', '/spec/test/.bashrc', '/spec/test/.zshrc']
       end
     end
+    let!(:files) { Dotify::Files.dots }
     it "should return the list of dotfiles in the dotify path" do
-      files = Dotify::Files.dots.map { |f| Dotify::Files.file_name(f) }
+      files.map! { |f| Dotify::Files.file_name(f) }
       files.should include '.vimrc'
       files.should include '.bashrc'
       files.should include '.zshrc'
-      files.should_not include '.' # current and upper directories
-      files.should_not include '..'
     end
     it "shoud yield the files if a block is given" do
-      files = Dotify::Files.dots.map { |d| [d, Dotify::Files.file_name(d)] }
-      expect { |b| Dotify::Files.dots(&b) }.to yield_successive_args(*files)
+      yields = files.map { |f| [f, Dotify::Files.file_name(f)] }
+      expect { |b| Dotify::Files.dots(&b) }.to yield_successive_args(*yields)
     end
   end
 

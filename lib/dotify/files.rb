@@ -18,16 +18,16 @@ module Dotify
 
       def installed
         dots = self.dots.map { |f| file_name(f) }
-        installed = list_of_dotfiles.select do |i|
-          dots.include?(file_name(i))
+        installed = list_of_dotfiles.select do |d|
+          dots.include?(file_name(d))
         end
         return installed unless block_given?
         installed.each {|i| yield(i, file_name(i)) }
       end
 
       def unlinked
-        dots = self.dots.map { |f| file_name(f) }
-        installed = self.installed.map {|f| file_name(f)}
+        dots = self.dots.map { |d| file_name(d) }
+        installed = self.installed.map {|i| file_name(i)}
         unlinked = (dots - installed).map{|f| dotfile(f) }
         return unlinked unless block_given?
         unlinked.each {|u| yield(u, file_name(u)) }
