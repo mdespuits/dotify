@@ -41,21 +41,21 @@ module Dotify
     desc "add [FILENAME]", "Add a single dotfile to the Dotify directory"
     def add(file)
       file = Files.file_name(file)
-      dotfile = File.join(Config.home, file)
-      dotify_file = File.join(Config.path, file)
+      dotfile = Files.dotfile(file)
+      dotify_file = Files.dotify(file)
       case
       when !File.exist?(dotfile)
         say "'~/#{file}' does not exist", :blue
-      when File.identical?(Files.dotfile(file), dotify_file)
+      when File.identical?(dotfile, dotify_file)
         say "'~/#{file}' is already identical to '~/.dotify/#{file}'", :blue
       else
         if yes?("Do you want to add #{file} to Dotify? [Yn]", :yellow)
-          if File.directory?(Files.dotfile(file))
+          if File.directory?(dotfile)
             FileUtils.rm_rf dotify_file
-            FileUtils.cp_r Files.dotfile(file), dotify_file
+            FileUtils.cp_r dotfile, dotify_file
             say_status :create, dotify_file
           else
-            copy_file Files.dotfile(file), dotify_file
+            copy_file dotfile, dotify_file
           end
         end
       end
