@@ -7,32 +7,8 @@ module Dotify
 
     DOTIFY_DIRNAME = '.dotify'
     DOTIFY_BACKUP = '.backup'
-    #SHELLS = {
-    #  'zsh' => '/bin/zsh',
-    #  'bash' => '/bin/bash',
-    #  'sh' => '/bin/sh'
-    #}
 
     class << self
-
-      #def shell=(shell)
-      #  if !SHELLS.keys.include?(shell)
-      #    raise NonValidShell, "You must specify a valid shell: #{SHELLS.keys.map(&:inspect).join(", ")}"
-      #  end
-      #  @shell = shell
-      #end
-
-      #def shell
-      #  @shell
-      #end
-
-      #def profile=(name)
-      #  @profile = name
-      #end
-
-      #def profile
-      #  @profile
-      #end
 
       def dirname
         @dirname ||= DOTIFY_DIRNAME
@@ -51,16 +27,12 @@ module Dotify
       end
 
       def load_config!
-        #@config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
-        #symbolize_keys!(@config)
-        #@config.each do |key, value|
-        #  if !value.nil? && methods(false).map(&:to_s).include?("#{key}=")
-        #    self.__send__("#{key}=", value)
-        #  else
-        #    @config.delete(key)
-        #  end
-        #end
-        #@config
+        config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
+        symbolize_keys!(config)
+      end
+
+      def ignoring(what)
+        config.fetch(:ignore, {}).fetch(what, [])
       end
 
       def config
@@ -74,7 +46,7 @@ module Dotify
       private
 
         def config_file
-          #File.join(home, '.dotrc')
+          File.join(home, '.dotrc')
         end
 
         def symbolize_keys!(opts)

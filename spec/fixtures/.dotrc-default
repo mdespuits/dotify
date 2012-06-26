@@ -1,4 +1,5 @@
-dotfiles_to_ignore:
-- ".gemrc"
-dotify_files_to_ignore:
-- ".gitmodule"
+ignore:
+  dotfiles:
+  - '.gemrc'
+  dotify:
+  - '.gitmodule'
