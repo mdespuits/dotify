@@ -22,28 +22,69 @@ Or install it yourself as:
 
 As dotify is a CLI tool, everything is done in the command line. Here are the current available methods for managing dotfiles.
 
-### `dotify setup`
+### Setup Dotify
 
-`dotify setup` will first create a `~/.dotify` directory in your home directory (yes, one more, but this is a good thing). It will then ask which files you want to copy from your home directory into your `.dotify` directory. 
+To setup Dotify, you must first run `dotify setup` in your terminal.
 
-**Note:** This will *not* link up the dotfiles. This command simply copies the files over for you without having to go searching for them manually.
+    $ dotify setup
+        create /Users/computer-user/.dotify
+    Do you want to add .bachrc to Dotify? [Yn] n
+    Do you want to add .gitconfig to Dotify? [Yn] y
+    ...
 
-### `dotify link`
+This will first create a `.dotify` directory in your home directory (yes, only one more dot directory, but this time it is a good thing). It will then ask which files you want to copy from your home directory into your `.dotify` directory. 
+
+**This will *not* link up the dotfiles. This command simply copies the files over for you without having to go searching for them manually.**
+
+### Link up your files
 
 This is the heart of the Dotify tool. This command will link all of the files within the `.dotify` directory into your home directory.
 
-### `dotify unlink`
+    $ dotify link
+    Do you want to link ~/.bashrc? [Yn] Y
+       create     /Users/computer-user/.bashrc
+    Do you want to link ~/.gemrc? [Yn] Y
+       identical  /Users/computer-user/.gemrc
+    Do you want to link ~/.gitconfig? [Yn] Y
+       create     /Users/computer-user/.gitconfig
+    Do you want to link ~/.gitignore? [Yn] Y
+    ...
 
-Don't want and of the dotfiles anymore? Sure. You can wipe them out.
+### Unlink everything
 
-Since this is a non-destructive task, you can simply run `dotify link` again if you want to restore your previous settings.
+Don't want and of the dotfiles anymore? Well, I'm not one to question. Go ahead and wipe them out.
+
+    $ dotify unlink
+    Are you sure you want to remove ~/.bashrc? [Yn] Y
+          remove  /Users/computer-user/.bashrc
+    Are you sure you want to remove ~/.gemrc? [Yn] Y
+          remove  /Users/computer-user/.gemrc
+    Are you sure you want to remove ~/.gitconfig? [Yn] n
+    ...
+
+Should you run this horrid task accidentally, you can simply run `dotify link` again if you want to restore your previous settings.
+
+## Not sure what to do?
+
+This tool is powered by the amazing library, [Thor](http://whatisthor.com/). You can use the `help` task like so:
+
+    $ dotify help
+    Tasks:
+      dotify help [TASK]  # Describe available tasks or one specific task
+      dotify link         # Link up all of your dotfiles
+      dotify setup        # Setup your system for Dotify to manage your dotfiles
+      dotify unlink       # Unlink all of your dotfiles
+
+And if you want a little clarity on one of the command you can run `dotify help [TASK]` to find out what other options you have in the other tasks.
 
 ## Contributing
 
-This tool is developed with much influence from *37singals*' fantastic idea of **Do Less**. This is meant to be a *simple* tool. I am more than happy to add small features, but I do not want this turning into an RVM.
+This tool is developed with much influence from *37singals*' fantastic idea of **Do Less**. This is meant to be a *simple* tool. 
+
+Contributions are welcome and encouraged. The contrubution process is the typical Github one.
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+5. Create new [Pull Request](https://github.com/mattdbridges/dotify/pull/new/master)
