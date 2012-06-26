@@ -11,10 +11,10 @@ module Dotify
     include Thor::Actions
     default_task :help
 
-    map "-l" => "link"
-    map "-u" => "unlink"
-    map "-b" => "backup"
-    map "-r" => "restore"
+    map "-l" => :link
+    map "-u" => :unlink
+    map "-s" => :setup
+    map "-a" => :add
 
     def self.source_root
       Config.home
