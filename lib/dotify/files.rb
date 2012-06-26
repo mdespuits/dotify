@@ -11,7 +11,7 @@ module Dotify
       include Thor::Actions
 
       def dots
-        @dots ||= file_list(File.join(dotify_path, "/.*"))
+        @dots ||= file_list(File.join(Config.path, "/.*"))
         return @dots unless block_given?
         @dots.each {|d| yield(d, file_name(d)) }
       end
@@ -57,10 +57,6 @@ module Dotify
 
         def filter_dot_directories!(files)
           files.select { |f| !['.', '..'].include?(file_name(f)) }
-        end
-
-        def dotify_path
-          Config.path
         end
 
     end

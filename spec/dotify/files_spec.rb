@@ -94,7 +94,7 @@ describe Dotify::Files do
 
   describe Dotify::Files, "#link_dotfile" do
     it "should receive a file and link it into the root path" do
-      first = File.join(Dotify::Files.send(:dotify_path), ".vimrc")
+      first = File.join(Dotify::Config.path, ".vimrc")
       FileUtils.should_receive(:ln_s).with(Dotify::Files.file_name(first), Dotify::Config.home).once
       Dotify::Files.link_dotfile first
     end
