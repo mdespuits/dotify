@@ -57,7 +57,7 @@ module Dotify
         FileUtils.rm_rf File.join(Config.home, file_name(file))
       end
 
-      private
+      protected
 
         def file_list(dir_glob)
           filter_dot_directories!(Dir[dir_glob])
