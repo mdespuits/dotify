@@ -27,18 +27,33 @@ module Dotify
         filename = Files.file_name(file)
         dotify_file = File.join(Config.path, filename)
         unless ['.', '..', Config.dirname].include? filename
-          if yes?("Do you want to add #{filename} to Dotify? [Yn]", :yellow)
-            if File.directory?(Files.dotfile(file))
-              FileUtils.rm_rf dotify_file
-              FileUtils.cp_r Files.dotfile(file), dotify_file
-              say_status :create, dotify_file
-            else
-              copy_file Files.dotfile(file), dotify_file
-            end
-          end
+          add(filename)
         end
       end
       say "Dotify has been successfully setup.", :blue
+    end
+
+    desc "add [FILENAME]", "Add a single dotfile to the Dotify directory"
+    def add(file)
+      file = Files.file_name(file)
+      dotfile = File.join(Config.home, file)
+      dotify_file = File.join(Config.path, file)
+      case
+      when !File.exist?(dotfile)
+        say "'~/#{file}' does not exist", :blue
+      when File.identical?(Files.dotfile(file), dotify_file)
+        say "'~/#{file}' is already identical to '~/.dotify/#{file}'", :blue
+      else
+        if yes?("Do you want to add #{file} to Dotify? [Yn]", :yellow)
+          if File.directory?(Files.dotfile(file))
+            FileUtils.rm_rf dotify_file
+            FileUtils.cp_r Files.dotfile(file), dotify_file
+            say_status :create, dotify_file
+          else
+            copy_file Files.dotfile(file), dotify_file
+          end
+        end
+      end
     end
 
     desc :link, "Link up all of your dotfiles"
