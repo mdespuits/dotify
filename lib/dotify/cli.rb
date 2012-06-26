@@ -54,13 +54,13 @@ module Dotify
           end
           count += 1
         else
-          if yes?("Do you want to link ~/#{dot}? [Yn]", :green)
+          if yes?("Do you want to link ~/#{dot}? [Yn]", :yellow)
             create_link Files.dotfile(file), file
             count += 1
           end
         end
       end
-      say "No files were linked.", :yellow if count == 0
+      say "No files were linked.", :blue if count == 0
     end
 
     desc :unlink, "Unlink all of your dotfiles"
@@ -68,7 +68,7 @@ module Dotify
     def unlink
       count = 0
       Files.installed do |file, dot|
-        if options[:all] || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :blue)
+        if options[:all] || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :yellow)
           remove_file Files.dotfile(file)
           count += 1
         end
