@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/mattdbridges/dotify.png)](http://travis-ci.org/mattdbridges/dotify) [![Dependency Status](https://gemnasium.com/mattdbridges/dotify.png)](https://gemnasium.com/mattdbridges/dotify)
 
-Dotify is a simple CLI tool to make managing dotfiles on your system easy. When developing on a Linux/Unix basic system, keeping track of all of those dotfiles in the home directory can be pain. Some developers do not even bother managing them and many have come up with their own static or even dynamic way of managing them. This is a need in the community to make managing these crazy files a breeze.
+Dotify is a simple CLI tool to make managing dotfiles on your system easy. When developing on a Linux/Unix basic system, keeping track of all of those dotfiles in the home directory can be pain. Some developers do not even bother managing them and many have come up with their own static or even dynamic way of managing them. This is a need in the community, and this tool makes managing these crazy files a breeze.
 
 ## Installation
 
@@ -38,7 +38,7 @@ This will first create a `.dotify` directory in your home directory (yes, only o
 
 ### Link up your files
 
-This is the heart of the Dotify tool. This command will link all of the files within the `.dotify` directory into your home directory.
+This is the heart of the Dotify tool. This command will link the files within the `~/.dotify` directory into your home directory.
 
     $ dotify link
     Do you want to link ~/.bashrc? [Yn] Y
@@ -52,7 +52,7 @@ This is the heart of the Dotify tool. This command will link all of the files wi
 
 ### Unlink everything
 
-Don't want and of the dotfiles anymore? Well, I'm not one to question. Go ahead and wipe them out.
+Don't want any of the dotfiles anymore? Well, I'm not one to question. Go ahead and wipe them out.
 
     $ dotify unlink
     Are you sure you want to remove ~/.bashrc? [Yn] Y
