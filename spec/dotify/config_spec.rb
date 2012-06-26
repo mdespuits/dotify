@@ -24,7 +24,7 @@ describe Dotify::Config do
   describe "ignoring files" do
     before do
       Dotify::Config.stub(:config)  do
-        { ignore: { dotfiles: %w[.gemrc], dotify: %w[.gitmodule] } }
+        { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
       end
     end
     it "should retrieve the list of dotfiles to ignore in the home directory" do
