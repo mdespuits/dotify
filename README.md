@@ -82,6 +82,17 @@ Don't want any of the dotfiles anymore? Well, I'm not one to question. Go ahead 
 
 Should you run this horrid task accidentally, you can simply run `dotify link` again if you want to restore your previous settings.
 
+## Confused?
+
+Dotify can manages dotfiles from two different directions:
+
+1. `add` and `remove` both look in the user's home directory for dotfiles to manage
+2. `link` and `unlink` both look in the Dotify directory for dotfiles to manage.
+
+In other words, when the user has dotfiles in the home directory that he/she wants Dotify to manage, they would use `dotify add [FILENAME]` (or even `setup`) to instruct Dotify to manage those files.
+
+On the other hand, if he/she has files that they have instructed Dotify to manage but have removed them from the home directory, they would use `link` and `unlink` to re-link them into the home directory.
+
 ## Not sure what to do?
 
 This tool is powered by the amazing library, [Thor](http://whatisthor.com/). You can use the `help` task like so:
