@@ -37,6 +37,10 @@ module Dotify
         File.join(Config.home, file_name(file))
       end
 
+      def dotify(file)
+        File.join(Config.path, file_name(file))
+      end
+
       def link_dotfile(file)
         FileUtils.ln_s(file_name(file), Config.home) == 0 ? true : false
       end

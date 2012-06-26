@@ -30,6 +30,13 @@ describe Dotify::Files do
     end
   end
 
+  describe Dotify::Files, "#dotify" do
+    it "should return the path to the file when it is linked in the root" do
+      Dotify::Files.dotify(".vimrc").should == File.join(Dotify::Config.path, ".vimrc")
+      Dotify::Files.dotify("/spec/home/.bashrc").should == File.join(Dotify::Config.path, ".bashrc")
+    end
+  end
+
   describe Dotify::Files, "#dots" do
     before do
       Dotify::Files.stub(:file_list) do
