@@ -1,3 +1,6 @@
+require 'json'
+require 'net/http'
+
 module Dotify
   class Checker
     class << self

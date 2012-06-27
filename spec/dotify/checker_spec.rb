@@ -1,8 +1,6 @@
 require 'spec_helper'
 require 'dotify'
 require 'dotify/checker'
-require 'json'
-require 'net/http'
 
 describe Dotify::Checker do
   it Dotify::Checker, "#run_check!" do
