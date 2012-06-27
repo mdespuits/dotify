@@ -1,8 +1,17 @@
 require 'dotify'
+require 'dotify/config'
 
 module Dotify
   class FileList
     class << self
+
+      def home
+        list(File.join(Config.home, '.*'))
+      end
+
+      def dotify
+        list(File.join(Config.path, '.*'))
+      end
 
       def list(glob)
         filenames(paths(glob))

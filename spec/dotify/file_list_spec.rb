@@ -4,6 +4,21 @@ require 'dotify/file_list'
 
 describe Dotify::FileList do
 
+  describe Dotify::FileList, "#home" do
+    it "should call FileList#list with the correct path" do
+      Dotify::Config.stub(:home).and_return("/home/test")
+      Dotify::FileList.should_receive(:list).with("/home/test/.*").once
+      Dotify::FileList.home
+    end
+  end
+  describe Dotify::FileList, "#dotify" do
+    it "should call FileList#list with the correct path" do
+      Dotify::Config.stub(:path).and_return("/home/test/.dotify")
+      Dotify::FileList.should_receive(:list).with("/home/test/.dotify/.*").once
+      Dotify::FileList.dotify
+    end
+  end
+
   describe Dotify::FileList, "#list" do
     let(:glob) { '/spec/test/.*' }
     it "should pull the glob of dotfiles from a directory" do

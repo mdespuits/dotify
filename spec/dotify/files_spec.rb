@@ -46,14 +46,14 @@ describe Dotify::Files do
 
   describe Dotify::Files, "#dots" do
     before do
-      Dotify::Files.stub(:list_of_dotify_files) do
-        ['/spec/test/.vimrc', '/spec/test/.bashrc', '/spec/test/.zshrc']
+      Dotify::FileList.stub(:dotify) do
+        ['/spec/test/.bash_profile', '/spec/test/.bashrc', '/spec/test/.zshrc']
       end
     end
     let!(:files) { Dotify::Files.dots }
     it "should return the list of dotfiles in the dotify path" do
       files.map! { |f| Dotify::Files.file_name(f) }
-      files.should include '.vimrc'
+      files.should include '.bash_profile'
       files.should include '.bashrc'
       files.should include '.zshrc'
     end
@@ -85,8 +85,11 @@ describe Dotify::Files do
 
   describe Dotify::Files, "#installed" do
     before do
-      Dotify::Files.stub(:list_of_dotfiles) do
-        ['/root/test/.bashrc', '/root/test/.vimrc']
+      Dotify::Files.stub(:dots) do
+        %w[/spec/test/.zshrc /spec/test/.bashrc /spec/test/.vimrc /spec/test/.dotify]
+      end
+      Dotify::FileList.stub(:home) do
+        %w[/root/test/.bashrc /root/test/.vimrc]
       end
     end
     it "should return the list of installed dotfiles in the root path" do
