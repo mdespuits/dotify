@@ -6,7 +6,6 @@ module Dotify
   class Config
 
     DOTIFY_DIRNAME = '.dotify'
-    DOTIFY_BACKUP = '.backup'
 
     class << self
 
@@ -16,14 +15,6 @@ module Dotify
 
       def path
         File.join(home, dirname)
-      end
-
-      def backup
-        File.join(path, backup_dirname)
-      end
-
-      def backup_dirname
-        @backup ||= DOTIFY_BACKUP
       end
 
       def load_config!

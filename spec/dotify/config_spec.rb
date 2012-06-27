@@ -17,9 +17,6 @@ describe Dotify::Config do
     it "should be able to show the dotify path" do
       Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify')
     end
-    it "should be able to show the dotify backup path" do
-      Dotify::Config.backup.should == File.join(Dotify::Config.path, '.backup')
-    end
   end
   describe "ignoring files" do
     before do
