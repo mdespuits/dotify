@@ -1,9 +1,12 @@
 require 'thor'
+require 'fileutils'
+require 'json'
+require 'net/http'
+
 require 'dotify'
 require 'dotify/config'
 require 'dotify/files'
 require 'dotify/file_list'
-require 'fileutils'
 
 Dotify::Config.load_config!
 
@@ -20,6 +23,22 @@ module Dotify
 
     def self.source_root
       Config.home
+    end
+
+    desc :check, "Check to see if your version of Dotify is up to date"
+    def check
+      resp = Net::HTTP.get('rubygems.org', '/api/v1/versions/dotify.json')
+      json = JSON.parse(resp)
+      latest = json.map { |v| v['number'] }.max
+      if Dotify::VERSION < latest
+        say "Your version of Dotify is out of date.", :yellow
+        say "  Your Version:   #{Dotify::VERSION}", :blue
+        say "  Latest Version: #{latest}", :blue
+      else
+        say "Your version of Dotify is up to date. (v#{Dotify::VERSION})", :blue
+      end
+    rescue Exception
+      say "There was an error checking your Dotify version. Please try again.", :red
     end
 
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
