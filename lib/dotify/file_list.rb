@@ -5,16 +5,19 @@ module Dotify
     class << self
 
       def list(glob)
-        list = filenames(Dir[glob])
-        filter_dot_directories!(list)
+        filenames(paths(glob))
+      end
+
+      def paths(glob)
+        filter_dot_directories!(Dir[glob])
       end
 
       def filter_dot_directories!(files)
-        files.select { |f| !['.', '..'].include? f }
+        files.select { |f| !['.', '..'].include?(Files.file_name(f)) }
       end
 
       def filenames(files)
-        files.map { |f| Dotify::Files.file_name(f) }
+        files.map { |f| Files.file_name(f) }
       end
 
     end
