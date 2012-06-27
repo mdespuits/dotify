@@ -11,11 +11,11 @@ module Dotify
     include Thor::Actions
     default_task :help
 
-    map "-l" => :link
-    map "-u" => :unlink
     map "-s" => :setup
     map "-a" => :add
     map "-r" => :remove
+    map "-l" => :link
+    map "-u" => :unlink
 
     def self.source_root
       Config.home
@@ -24,7 +24,8 @@ module Dotify
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
     method_option :link, :default => false, :type => :boolean, :aliases => '-l', :desc => "Link dotfiles when setup is complete"
     def setup
-      empty_directory(Config.path) unless File.directory?(Config.path)
+      return say('Dotify has already been setup!', :blue) if Dotify.installed?
+      empty_directory(Config.path)
       Files.unlinked do |path, file|
         add(file) unless Config.dirname == file
       end
@@ -38,25 +39,8 @@ module Dotify
     desc "add [FILENAME]", "Add a single dotfile to the Dotify directory"
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Add file without confirmation"
     def add(file)
-      file = Files.filename(file)
-      dotfile = Files.dotfile(file)
-      dotify_file = Files.dotify(file)
-      case
-      when !File.exist?(dotfile)
-        say "'~/#{file}' does not exist", :blue
-      when File.identical?(dotfile, dotify_file)
-        say "'~/#{file}' is already identical to '~/.dotify/#{file}'", :blue
-      else
-        if options[:force] == true || yes?("Do you want to add #{file} to Dotify? [Yn]", :yellow)
-          if File.directory?(dotfile)
-            FileUtils.rm_rf dotify_file
-            FileUtils.cp_r dotfile, dotify_file
-            say_status :create, dotify_file
-          else
-            copy_file dotfile, dotify_file
-          end
-        end
-      end
+      return not_setup_warning unless Dotify.installed?
+      add_file(file, options)
     end
 
     desc "remove [FILENAME]", "Remove a single dotfile from Dotify"
@@ -69,6 +53,7 @@ module Dotify
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Remove file without confirmation"
     method_option :quiet, :default => false, :type => :boolean, :aliases => '-q', :desc => "Don't output anything"
     def remove(file)
+      return not_setup_warning unless Dotify.installed?
       if !File.exists?(Files.dotify(file))
         say "Dotify is not currently managing ~/#{file}.", :blue unless options.quiet?
         return
@@ -84,6 +69,7 @@ module Dotify
     desc :link, "Link up all of your dotfiles"
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => "Link dotfiles without confirmation"
     def link
+      return not_setup_warning unless Dotify.installed?
       count = 0
       Files.dots do |file, dot|
         if options[:all]
@@ -111,6 +97,7 @@ module Dotify
     STRING
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => 'Remove all installed dotfiles without confirmation'
     def unlink
+      return not_setup_warning unless Dotify.installed?
       count = 0
       Files.installed do |file, dot|
         if options[:all] || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :yellow)
