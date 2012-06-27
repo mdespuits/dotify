@@ -34,7 +34,7 @@ module Dotify
       end
 
       def filename(file)
-        file.split("/").last
+        %r{([^<>:"\/\\\|\?\*]*)\Z}.match(file).to_s
       end
 
       def template?(file)
