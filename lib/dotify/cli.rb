@@ -7,6 +7,7 @@ require 'dotify'
 require 'dotify/config'
 require 'dotify/files'
 require 'dotify/file_list'
+require 'dotify/checker'
 
 Dotify::Config.load_config!
 
@@ -27,13 +28,10 @@ module Dotify
 
     desc :check, "Check to see if your version of Dotify is up to date"
     def check
-      resp = Net::HTTP.get('rubygems.org', '/api/v1/versions/dotify.json')
-      json = JSON.parse(resp)
-      latest = json.map { |v| v['number'] }.max
-      if Dotify::VERSION < latest
+      if Checker.out_of_date?
         say "Your version of Dotify is out of date.", :yellow
         say "  Your Version:   #{Dotify::VERSION}", :blue
-        say "  Latest Version: #{latest}", :blue
+        say "  Latest Version: #{Checker.version}", :blue
       else
         say "Your version of Dotify is up to date. (v#{Dotify::VERSION})", :blue
       end
