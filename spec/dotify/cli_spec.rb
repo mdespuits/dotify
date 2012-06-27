@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'dotify/config'
 require 'dotify/cli'
 require 'thor'
 
