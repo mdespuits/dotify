@@ -22,11 +22,11 @@ module Dotify
       end
 
       def filter_dot_directories!(files)
-        files.select { |f| !['.', '..'].include?(Files.file_name(f)) }
+        files.select { |f| !['.', '..'].include?(Files.filename(f)) }
       end
 
       def filenames(files)
-        files.map { |f| Files.file_name(f) }
+        files.map { |f| Files.filename(f) }
       end
 
     end

@@ -38,7 +38,7 @@ module Dotify
     desc "add [FILENAME]", "Add a single dotfile to the Dotify directory"
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Add file without confirmation"
     def add(file)
-      file = Files.file_name(file)
+      file = Files.filename(file)
       dotfile = Files.dotfile(file)
       dotify_file = Files.dotify(file)
       case

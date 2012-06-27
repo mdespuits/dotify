@@ -68,8 +68,8 @@ describe Dotify::FileList do
 
   describe Dotify::FileList, "#filenames" do
     let(:files) { %w[/spec/test/.vimrc /spec/test/.bashrc /spec/test/.zshrc] }
-    it "should use Files#file_name to change the files" do
-      Dotify::Files.should_receive(:file_name).exactly(files.count).times
+    it "should use Files#filename to change the files" do
+      Dotify::Files.should_receive(:filename).exactly(files.count).times
       Dotify::FileList.filenames(files)
     end
     it "return only" do
