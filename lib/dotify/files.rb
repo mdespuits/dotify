@@ -57,16 +57,6 @@ module Dotify
         FileUtils.rm_rf File.join(Config.home, filename(file))
       end
 
-      protected
-
-        def list_of_dotify_files
-          FileList.dotify
-        end
-
-        def list_of_dotfiles
-          FileList.home
-        end
-
     end
   end
 end
