@@ -2,6 +2,7 @@ require 'thor'
 require 'dotify'
 require 'dotify/config'
 require 'dotify/files'
+require 'dotify/file_list'
 require 'fileutils'
 
 Dotify::Config.load_config!
