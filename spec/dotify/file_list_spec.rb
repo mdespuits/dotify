@@ -7,14 +7,18 @@ describe Dotify::FileList do
   describe Dotify::FileList, "#home" do
     it "should call FileList#list with the correct path" do
       Dotify::Config.stub(:home).and_return("/home/test")
-      Dotify::FileList.should_receive(:list).with("/home/test/.*").once
+      Dotify::FileList.should_receive(:paths) \
+        .with("/home/test/.*").once \
+        .and_return(['/root/test/.vimrc', '/root/test/.bashrc', '/root/test/.zshrc'])
       Dotify::FileList.home
     end
   end
   describe Dotify::FileList, "#dotify" do
     it "should call FileList#list with the correct path" do
       Dotify::Config.stub(:path).and_return("/home/test/.dotify")
-      Dotify::FileList.should_receive(:list).with("/home/test/.dotify/.*").once
+      Dotify::FileList.should_receive(:paths) \
+        .with("/home/test/.dotify/.*").once \
+        .and_return(['/spec/test/.vimrc', '/spec/test/.bashrc', '/spec/test/.zshrc'])
       Dotify::FileList.dotify
     end
   end

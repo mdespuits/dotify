@@ -6,11 +6,11 @@ module Dotify
     class << self
 
       def home
-        list(File.join(Config.home, '.*'))
+        paths(File.join(Config.home, '.*'))
       end
 
       def dotify
-        list(File.join(Config.path, '.*'))
+        paths(File.join(Config.path, '.*'))
       end
 
       def list(glob)

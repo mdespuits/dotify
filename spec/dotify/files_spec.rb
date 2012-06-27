@@ -52,6 +52,7 @@ describe Dotify::Files do
     end
     let!(:files) { Dotify::Files.dots }
     it "should return the list of dotfiles in the dotify path" do
+      files
       files.map! { |f| Dotify::Files.filename(f) }
       files.should include '.bash_profile'
       files.should include '.bashrc'
