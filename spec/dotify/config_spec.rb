@@ -13,11 +13,11 @@ describe Dotify::Config do
   describe Dotify::Config, "#installed?" do
     it "should return false if Dotify has not been setup" do
       File.should_receive(:directory?).with(File.join(Dotify::Config.home, Dotify::Config.dirname)).and_return(false)
-      Dotify::Config.installed?.should be_false
+      Dotify::Config.installed?.should == false
     end
     it "should return true if Dotify has been setup" do
       File.should_receive(:directory?).with(File.join(Dotify::Config.home, Dotify::Config.dirname)).and_return(true)
-      Dotify::Config.installed?.should be_true
+      Dotify::Config.installed?.should == true
     end
   end
   describe "options" do
