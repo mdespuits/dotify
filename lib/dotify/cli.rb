@@ -123,6 +123,32 @@ module Dotify
 
     no_tasks do
 
+      def not_setup_warning
+        say('Dotify has not been setup yet! You need to run \'dotify setup\' first.', :yellow)
+      end
+
+      def add_file(file, options)
+        file = Files.filename(file)
+        dotfile = Files.dotfile(file)
+        dotify_file = Files.dotify(file)
+        case
+        when !File.exist?(dotfile)
+          say "'~/#{file}' does not exist", :blue
+        when File.identical?(dotfile, dotify_file)
+          say "'~/#{file}' is already identical to '~/.dotify/#{file}'", :blue
+        else
+          if options[:force] == true || yes?("Do you want to add #{file} to Dotify? [Yn]", :yellow)
+            if File.directory?(dotfile)
+              FileUtils.rm_rf dotify_file
+              FileUtils.cp_r dotfile, dotify_file
+              say_status :create, dotify_file
+            else
+              copy_file dotfile, dotify_file
+            end
+          end
+        end
+      end
+
       def replace_link(dotfile, file)
         remove_file dotfile, :verbose => false
         create_link dotfile, file, :verbose => false
