@@ -60,11 +60,11 @@ module Dotify
       protected
 
         def list_of_dotify_files
-          file_list(File.join(Config.path, "/.*"))
+          file_list(File.join(Config.path, ".*"))
         end
 
         def list_of_dotfiles
-          file_list(File.join(Config.home, "/.*"))
+          file_list(File.join(Config.home, ".*"))
         end
 
         def file_list(dir_glob)
