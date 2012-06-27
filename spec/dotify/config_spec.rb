@@ -11,7 +11,7 @@ describe Dotify::Config do
     Fake.teardown
   end
   describe "options" do
-    it "should be able to show the dotify path" do
+    it "should be able to show the home path" do
       Dotify::Config.home.should == Thor::Util.user_home
     end
     it "should be able to show the dotify path" do
