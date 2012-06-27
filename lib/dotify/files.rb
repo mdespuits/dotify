@@ -38,7 +38,7 @@ module Dotify
       end
 
       def template?(file)
-        filename(file).match(/(tt|erb)$/) ? true : false
+        filename(file).match(/(tt|erb)\Z/) ? true : false
       end
 
       def dotfile(file)
