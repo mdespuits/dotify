@@ -13,6 +13,10 @@ module Dotify
         @dirname ||= DOTIFY_DIRNAME
       end
 
+      def installed?
+        File.directory?(File.join(home, dirname))
+      end
+
       def path
         File.join(home, dirname)
       end

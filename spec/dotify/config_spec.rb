@@ -10,6 +10,16 @@ describe Dotify::Config do
   after do
     Fake.teardown
   end
+  describe Dotify::Config, "#installed?" do
+    it "should return false if Dotify has not been setup" do
+      File.should_receive(:directory?).with(File.join(Dotify::Config.home, Dotify::Config.dirname)).and_return(false)
+      Dotify::Config.installed?.should be_false
+    end
+    it "should return true if Dotify has been setup" do
+      File.should_receive(:directory?).with(File.join(Dotify::Config.home, Dotify::Config.dirname)).and_return(true)
+      Dotify::Config.installed?.should be_true
+    end
+  end
   describe "options" do
     it "should be able to show the home path" do
       Dotify::Config.home.should == Thor::Util.user_home
