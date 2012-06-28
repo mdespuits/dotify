@@ -116,19 +116,31 @@ This is the heart of the Dotify tool. This command will link the files within th
     Do you want to link ~/.gitignore? [Yn] Y
     ...
 
+You can also link files one-by-one by passing the filename to the `link` task.
+
+    $ dotify link .bashrc
+    Do you want to link ~/.bashrc? [Yn] Y
+       create /Users/computer-user/.bashrc
+
 ### Unlink everything
 
 Don't want any of the dotfiles anymore? Well, I'm not one to question. Go ahead and wipe them out.
 
     $ dotify unlink
     Are you sure you want to remove ~/.bashrc? [Yn] Y
-          remove  /Users/computer-user/.bashrc
+       remove  /Users/computer-user/.bashrc
     Are you sure you want to remove ~/.gemrc? [Yn] Y
-          remove  /Users/computer-user/.gemrc
+       remove  /Users/computer-user/.gemrc
     Are you sure you want to remove ~/.gitconfig? [Yn] n
     ...
 
 Should you run this horrid task accidentally, you can simply run `dotify link` again if you want to restore your previous settings.
+
+By default, `unlink` loops through all of the Dotify files. You can also pass a filename to `unlink` to unlink a single file.
+
+    $ dotify unlink .bashrc
+    Are you sure you want to remove ~/.bashrc? [Yn] Y
+       remove /Users/mattbridges/.bashrc
 
 ## Confused?
 
