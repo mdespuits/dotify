@@ -43,9 +43,10 @@ module Dotify
 
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
     method_option :install, :default => false, :type => :boolean, :aliases => '-i', :desc => "Run Dotify install right away. This does not allow for customizing your .dotrc file before attempting install files into Dotify."
+    method_option :verbose, :default => true, :type => :boolean, :aliases => '-v', :desc => "Setup Dotify with verbose output."
     def setup
       return say('Dotify has already been setup!', :blue) if Dotify.installed?
-      empty_directory(Config.path)
+      empty_directory(Config.path, :verbose => options[:verbose])
       dotrc = File.join(Config.home, Config::DOTIFY_CONFIG)
       template Config::DOTIFY_CONFIG, dotrc, :verbose => options[:verbose]
       invoke :install if options[:install] == true
