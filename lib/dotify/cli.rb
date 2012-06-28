@@ -62,7 +62,7 @@ module Dotify
     def install
       invoke :setup unless Dotify.installed?
       Files.uninstalled do |path, file|
-        add_file(file, options) unless Config.dirname == file
+        add_file(file, options.merge(:quiet => true)) unless Config.dirname == file
       end
       say "Dotify has been successfully setup.", :blue
       if options[:link]
@@ -164,7 +164,7 @@ module Dotify
         dotfile = Files.dotfile(file)
         dotify_file = Files.dotify(file)
 
-        if File.exist?(dotfile) && !File.identical?(dotfile, dotify_file)
+        if !File.exist?(dotfile) || !File.identical?(dotfile, dotify_file)
           if options[:force] == true || yes?("Do you want to add #{file} to Dotify? [Yn]", :yellow)
             if File.directory?(dotfile)
               FileUtils.rm_rf dotify_file
@@ -174,6 +174,8 @@ module Dotify
               copy_file dotfile, dotify_file
             end
           end
+        else
+          say "'#{file}' does not exist or is already installed in Dotify.", :blue unless options[:quiet] == true
         end
       end
 
