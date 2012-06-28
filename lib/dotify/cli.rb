@@ -16,6 +16,7 @@ module Dotify
     include Thor::Actions
     default_task :help
 
+    map %w[-v --version] => :version
     map "-s" => :setup
     map "-a" => :add
     map "-r" => :remove
@@ -26,14 +27,15 @@ module Dotify
       Config.home
     end
 
-    desc :check, "Check to see if your version of Dotify is up to date"
-    def check
+    desc :version, "Check your Dotify version"
+    def version
       if VersionChecker.out_of_date?
         say "Your version of Dotify is out of date.", :yellow
-        say "  Your Version:   v#{Dotify::VERSION}", :blue
-        say "  Latest Version: v#{VersionChecker.version}", :blue
+        say "  Your Version:   #{Dotify::VERSION}", :blue
+        say "  Latest Version: #{VersionChecker.version}", :blue
+        say "I recommend that you uninstall Dotify completely before updating", :yellow
       else
-        say "Your version of Dotify is up to date. (v#{Dotify::VERSION})", :blue
+        say "Your version of Dotify is up to date: #{Dotify::VERSION}", :blue
       end
     rescue Exception
       say "There was an error checking your Dotify version. Please try again.", :red
