@@ -41,18 +41,33 @@ module Dotify
       say "There was an error checking your Dotify version. Please try again.", :red
     end
 
+    desc :dotrc, "Create a sample .dotrc file if you don't have one"
+    method_option :verbose, :type => :boolean, :default => true
+    def dotrc
+      dotrc = File.join(Config.home, Config::DOTIFY_CONFIG)
+      template Config::DOTIFY_CONFIG, dotrc, :verbose => options[:verbose]
+    end
+
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
-    method_option :link, :default => false, :type => :boolean, :aliases => '-l', :desc => "Link dotfiles when setup is complete"
+    method_option :install, :default => false, :type => :boolean, :aliases => '-i', :desc => "Run Dotify install right away. This does not allow for customizing your .dotrc file before attempting install files into Dotify."
     def setup
       return say('Dotify has already been setup!', :blue) if Dotify.installed?
       empty_directory(Config.path)
-      Files.unlinked do |path, file|
+      invoke :dotrc
+      invoke :install if options[:install] == true
+    end
+
+    desc :install, "Install files from your home directory into Dotify"
+    method_option :link, :default => false, :type => :boolean, :aliases => '-l', :desc => "Link dotfiles when setup is complete"
+    def install
+      invoke :setup unless Dotify.installed?
+      Files.uninstalled do |path, file|
         add_file(file, options) unless Config.dirname == file
       end
       say "Dotify has been successfully setup.", :blue
       if options[:link]
         say "Linking up the new dotfiles...", :blue
-        invoke :link, nil, { :all => true } if options[:link]
+        invoke :link, nil, { :all => true }
       end
     end
 
@@ -148,12 +163,8 @@ module Dotify
         file = Files.filename(file)
         dotfile = Files.dotfile(file)
         dotify_file = Files.dotify(file)
-        case
-        when !File.exist?(dotfile)
-          say "'~/#{file}' does not exist", :blue
-        when File.identical?(dotfile, dotify_file)
-          say "'~/#{file}' is already identical to '~/.dotify/#{file}'", :blue
-        else
+
+        if File.exist?(dotfile) && !File.identical?(dotfile, dotify_file)
           if options[:force] == true || yes?("Do you want to add #{file} to Dotify? [Yn]", :yellow)
             if File.directory?(dotfile)
               FileUtils.rm_rf dotify_file

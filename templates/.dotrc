@@ -1,0 +1,14 @@
+# Ignoring files in ~/.dotify when linking:
+#
+# ignore:
+#   dotify:
+#   - '.git'
+#   - '.gitignore'
+#   - '.gitmodules'
+#
+# Ignoring files in the home directory when linking:
+#
+# ignore:
+#   dotify:
+#   - '.rbenv'
+#   - '.rvm'
