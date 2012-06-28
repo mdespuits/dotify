@@ -3,13 +3,6 @@ require 'dotify/errors'
 require 'dotify/config'
 
 describe Dotify::Config do
-  before do
-    Fake.tearup
-    Dotify::Config.stub(:user_home) { Fake.root_path }
-  end
-  after do
-    Fake.teardown
-  end
   describe Dotify::Config, "#installed?" do
     it "should return false if Dotify has not been setup" do
       File.should_receive(:directory?).with(File.join(Dotify::Config.home, Dotify::Config.dirname)).and_return(false)

@@ -4,14 +4,6 @@ require 'dotify/files'
 require 'fileutils'
 
 describe Dotify::Files do
-  let(:fixtures) { File.join(%x{pwd}.chomp, 'spec/fixtures') }
-  before do
-    Fake.tearup
-    Dotify::Config.stub(:home) { Fake.root_path }
-  end
-  after do
-    Fake.teardown
-  end
 
   describe "methods" do
     it "should respond to dots" do
