@@ -6,6 +6,7 @@ module Dotify
   class Config
 
     DOTIFY_DIRNAME = '.dotify'
+    DOTIFY_CONFIG = '.dotrc'
 
     class << self
 
@@ -41,7 +42,7 @@ module Dotify
       private
 
         def config_file
-          File.join(home, '.dotrc')
+          File.join(home, DOTIFY_CONFIG)
         end
 
         def symbolize_keys!(opts)
