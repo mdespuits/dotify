@@ -16,15 +16,7 @@ As this is a gem for use on your local system, I understand there are still many
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'dotify'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+It is highly recommended that you just install this gem manually since it is only managing files on your local system:Add this line to your application's Gemfile:
 
     $ gem install dotify
 
