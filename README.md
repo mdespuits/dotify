@@ -32,19 +32,57 @@ Or install it yourself as:
 
 As dotify is a CLI tool, everything is done in the command line. Here are the current available methods for managing dotfiles.
 
-### Setup Dotify
+### Preparing your system for Dotify
 
 To setup Dotify, you must first run `dotify setup` in your terminal.
 
     $ dotify setup
         create /Users/computer-user/.dotify
-    Do you want to add .bachrc to Dotify? [Yn] n
-    Do you want to add .gitconfig to Dotify? [Yn] y
+        create /Users/computer-user/.dotrc
+
+This will first create a `.dotify` directory in your home directory as well as a `.dotrc` file for Dotify configuration (yes, it is more dotfiles, but this is a good thing!).
+
+In order to install files from the home directory into Dotify, you must run the `install` task.
+
+### The .dotrc file
+
+The `.dotrc` file in your home directory serves as the configuration file for Dotify.
+
+#### Ignoring files
+
+When you are linking files in your Dotify directory, some files you do not want ever want to link (`.git`, `.gitmodules`, `.gitignore`, .etc) because they are used specifically for that directory (such as git versioning). You can configure Dotify to ignore these files when calling `dotify link` in the `.dotrc` in this way:
+
+    $ cat ~/.dotrc
+    ignore:
+      dotify:
+      - '.git'
+      - '.gitmodules'
+      - '.gitignore'
+
+The same can be done for the home directory when running `dotify setup`. There are some directories that you should not move around (`.dropbox`, `.rbenv`, `.rvm`) and do not want to accidentally attempt to move. You can do that in your `.dotrc` file as well:
+
+    $ cat ~/.dotrc
+    ignore:
+      dotfiles:
+      - '.dropbox'
+      - '.rbenv'
+      - '.rvm'
+
+More configuration options will likely be added in future versions, so be sure to check up here for your options.
+
+### Install Dotify
+
+Now that you have configured Dotify to your liking, you should now run `dotify install`.
+
+    $ dotify install
+    Do you want to add .bash_history to Dotify? [Yn] n
+    Do you want to add .bashrc to Dotify? [Yn] y
+        create /Users/mattbridges/.dotify/.bashrc
+    Do you want to add .railsrc to Dotify? [Yn] n
+        create /Users/mattbridges/.dotify/.railsrc
+    Do you want to add .zshrc to Dotify? [Yn] n
+        create /Users/mattbridges/.dotify/.zshrc
     ...
-
-This will first create a `.dotify` directory in your home directory (yes, only one more dot directory, but this time it is a good thing). It will then ask which files you want to copy from your home directory into your `.dotify` directory.
-
-**This will *not* link up the dotfiles. This command simply copies the files over for you without having to go searching for them manually.**
 
 ### Add single files
 
