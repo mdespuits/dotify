@@ -101,7 +101,7 @@ module Dotify
       end
     end
 
-    desc :link, "Link up all of your dotfiles"
+    desc 'link {{FILENAME}}', "Link up one or all of your dotfiles (FILENAME is optional)"
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => "Link dotfiles without confirmation"
     def link(file=nil)
       return not_setup_warning unless Dotify.installed?
@@ -116,29 +116,38 @@ module Dotify
       end
     end
 
-    desc :unlink, "Unlink all of your dotfiles"
+    desc 'unlink {{FILENAME}}', "Unlink one or all of your dotfiles (FILENAME is optional)"
     long_desc <<-STRING
       `dotify unlink` removes the dotfiles from the home directory and preserves the
       files in the Dotify directory. This allows you to simply run `dotify link` again
       should you decide you want to relink anything to the Dotify files.
     STRING
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => 'Remove all installed dotfiles without confirmation'
-    def unlink
+    def unlink(file = nil)
       return not_setup_warning unless Dotify.installed?
-      count = 0
-      Files.installed do |file, dot|
-        if options[:all] || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :yellow)
-          remove_file Files.dotfile(file)
-          count += 1
+      if file.nil?
+        count = 0
+        Files.installed do |file, dot|
+          if options[:all] || yes?("Are you sure you want to remove ~/#{dot}? [Yn]", :yellow)
+            unlink_file(file)
+            count += 1
+          end
         end
+        say "No files were unlinked.", :blue if count == 0
+      else
+        unlink_file(file)
       end
-      say "No files were unlinked.", :blue if count == 0
     end
 
     no_tasks do
 
       def not_setup_warning
         say('Dotify has not been setup yet! You need to run \'dotify setup\' first.', :yellow)
+      end
+
+      def unlink_file(file)
+        remove_file Files.dotfile(file)
+        return true
       end
 
       def link_file(file, dot, options = {})
