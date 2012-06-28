@@ -28,17 +28,17 @@ describe Dotify::Config do
       Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify')
     end
   end
-  describe "ignoring files" do
+  describe "ignore files" do
     before do
       Dotify::Config.stub(:config)  do
         { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
       end
     end
     it "should retrieve the list of dotfiles to ignore in the home directory" do
-      Dotify::Config.ignoring(:dotfiles).should include '.gemrc'
+      Dotify::Config.ignore(:dotfiles).should include '.gemrc'
     end
     it "should retrieve the list of dotify files to ignore" do
-      Dotify::Config.ignoring(:dotify).should include '.gitmodule'
+      Dotify::Config.ignore(:dotify).should include '.gitmodule'
     end
   end
 end

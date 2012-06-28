@@ -26,7 +26,7 @@ module Dotify
         symbolize_keys!(config)
       end
 
-      def ignoring(what)
+      def ignore(what)
         config.fetch(:ignore, {}).fetch(what, [])
       end
 
