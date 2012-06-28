@@ -5,14 +5,28 @@ require 'dotify/file_list'
 describe Dotify::FileList do
 
   describe Dotify::FileList, "#home" do
-    it "should call FileList#list with the correct path" do
+    before do
       Dotify::Config.stub(:home).and_return("/home/test")
+    end
+    it "should call FileList#list with the correct path" do
       Dotify::FileList.should_receive(:paths) \
         .with("/home/test/.*").once \
         .and_return(['/root/test/.vimrc', '/root/test/.bashrc', '/root/test/.zshrc'])
       Dotify::FileList.home
     end
+    it "should drop files that have been specified to be ignored" do
+      Dotify::FileList.stub(:paths) do
+        ['/root/test/.gitconfig', '/root/test/.vimrc', '/root/test/.bashrc', '/root/test/.zshrc']
+      end
+      Dotify::Config.stub(:ignore).with(:dotfiles).and_return %w[.zshrc .vimrc]
+      result = Dotify::FileList.home
+      result.should include '/root/test/.bashrc'
+      result.should include '/root/test/.gitconfig'
+      result.should_not include '/root/test/.zshrc'
+      result.should_not include '/root/test/.vimrc'
+    end
   end
+
   describe Dotify::FileList, "#dotify" do
     it "should call FileList#list with the correct path" do
       Dotify::Config.stub(:path).and_return("/home/test/.dotify")
@@ -20,6 +34,17 @@ describe Dotify::FileList do
         .with("/home/test/.dotify/.*").once \
         .and_return(['/spec/test/.vimrc', '/spec/test/.bashrc', '/spec/test/.zshrc'])
       Dotify::FileList.dotify
+    end
+    it "should drop files that have been specified to be ignored" do
+      Dotify::FileList.stub(:paths) do
+        ['/dotify/test/.gitconfig', '/dotify/test/.vimrc', '/dotify/test/.bashrc', '/dotify/test/.zshrc']
+      end
+      Dotify::Config.stub(:ignore).with(:dotify).and_return %w[.gitconfig .bashrc]
+      result = Dotify::FileList.dotify
+      result.should include '/dotify/test/.vimrc'
+      result.should include '/dotify/test/.zshrc'
+      result.should_not include '/dotify/test/.bashrc'
+      result.should_not include '/dotify/test/.gitconfig'
     end
   end
 

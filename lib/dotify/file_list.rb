@@ -6,11 +6,13 @@ module Dotify
     class << self
 
       def home
-        paths(File.join(Config.home, '.*'))
+        result = paths(File.join(Config.home, '.*'))
+        filter_ignore_files!(result, :dotfiles)
       end
 
       def dotify
-        paths(File.join(Config.path, '.*'))
+        result = paths(File.join(Config.path, '.*'))
+        filter_ignore_files!(result, :dotify)
       end
 
       def list(glob)
@@ -23,6 +25,11 @@ module Dotify
 
       def filter_dot_directories!(files)
         files.select { |f| !['.', '..'].include?(Files.filename(f)) }
+      end
+
+      def filter_ignore_files!(files, ignore)
+        ignoring = Config.ignore(ignore)
+        files.select { |f| !ignoring.include?(Files.filename(f)) }
       end
 
       def filenames(files)
