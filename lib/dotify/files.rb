@@ -16,6 +16,14 @@ module Dotify
         @dots.each {|d| yield(d, filename(d)) }
       end
 
+      def unlinked
+        dots = self.dots.map { |d| filename(d) }
+        installed = self.installed.map {|i| filename(i)}
+        unlinked = (dots - installed).map{|f| dotfile(f) }
+        return unlinked unless block_given?
+        unlinked.each {|u| yield(u, filename(u)) }
+      end
+
       def installed
         dots = self.dots.map { |f| filename(f) }
         installed = FileList.home.select do |d|
@@ -25,12 +33,13 @@ module Dotify
         installed.each {|i| yield(i, filename(i)) }
       end
 
-      def unlinked
-        dots = self.dots.map { |d| filename(d) }
-        installed = self.installed.map {|i| filename(i)}
-        unlinked = (dots - installed).map{|f| dotfile(f) }
-        return unlinked unless block_given?
-        unlinked.each {|u| yield(u, filename(u)) }
+      def uninstalled
+        dots = self.dots.map { |f| filename(f) }
+        installed = FileList.home.select do |d|
+          !dots.include?(filename(d))
+        end
+        return installed unless block_given?
+        installed.each {|i| yield(i, filename(i)) }
       end
 
       def filename(file)

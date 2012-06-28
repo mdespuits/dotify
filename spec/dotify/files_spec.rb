@@ -98,6 +98,28 @@ describe Dotify::Files do
     end
   end
 
+  describe Dotify::Files, "#uninstalled" do
+    before do
+      Dotify::Files.stub(:dots) do
+        %w[/spec/test/.zshrc /spec/test/.bashrc /spec/test/.vimrc /spec/test/.dotify]
+      end
+      Dotify::FileList.stub(:home) do
+        %w[/root/test/.zshrc /root/test/.bashrc /root/test/.pryrc /root/test/.dropbox]
+      end
+    end
+    it "should return the list of uninstalled dotfiles in the root path" do
+      uninstalled = Dotify::Files.uninstalled.map { |i| Dotify::Files.filename(i) }
+      uninstalled.should_not include '.zshrc'
+      uninstalled.should_not include '.bashrc'
+      uninstalled.should include '.pryrc'
+      uninstalled.should include '.dropbox'
+    end
+    it "shoud yield the installed files if a block is given" do
+      uninstalled = Dotify::Files.uninstalled.map { |i| [i, Dotify::Files.filename(i)] }
+      expect { |b| Dotify::Files.uninstalled(&b) }.to yield_successive_args(*uninstalled)
+    end
+  end
+
   describe Dotify::Files, "#template?" do
     it "should return true if the string given is a .tt or .erb template" do
       Dotify::Files.template?("testing.erb").should == true
