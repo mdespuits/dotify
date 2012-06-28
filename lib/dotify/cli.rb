@@ -7,7 +7,7 @@ require 'dotify'
 require 'dotify/config'
 require 'dotify/files'
 require 'dotify/file_list'
-require 'dotify/checker'
+require 'dotify/version_checker'
 
 Dotify::Config.load_config!
 
@@ -28,10 +28,10 @@ module Dotify
 
     desc :check, "Check to see if your version of Dotify is up to date"
     def check
-      if Checker.out_of_date?
+      if VersionChecker.out_of_date?
         say "Your version of Dotify is out of date.", :yellow
         say "  Your Version:   #{Dotify::VERSION}", :blue
-        say "  Latest Version: #{Checker.version}", :blue
+        say "  Latest Version: #{VersionChecker.version}", :blue
       else
         say "Your version of Dotify is up to date. (v#{Dotify::VERSION})", :blue
       end

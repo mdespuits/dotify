@@ -2,7 +2,7 @@ require 'json'
 require 'net/http'
 
 module Dotify
-  class Checker
+  class VersionChecker
     class << self
       def run_check!
         if @version.nil?
