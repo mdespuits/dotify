@@ -41,19 +41,13 @@ module Dotify
       say "There was an error checking your Dotify version. Please try again.", :red
     end
 
-    desc :dotrc, "Create a sample .dotrc file if you don't have one"
-    method_option :verbose, :type => :boolean, :default => true
-    def dotrc
-      dotrc = File.join(Config.home, Config::DOTIFY_CONFIG)
-      template Config::DOTIFY_CONFIG, dotrc, :verbose => options[:verbose]
-    end
-
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
     method_option :install, :default => false, :type => :boolean, :aliases => '-i', :desc => "Run Dotify install right away. This does not allow for customizing your .dotrc file before attempting install files into Dotify."
     def setup
       return say('Dotify has already been setup!', :blue) if Dotify.installed?
       empty_directory(Config.path)
-      invoke :dotrc
+      dotrc = File.join(Config.home, Config::DOTIFY_CONFIG)
+      template Config::DOTIFY_CONFIG, dotrc, :verbose => options[:verbose]
       invoke :install if options[:install] == true
     end
 
