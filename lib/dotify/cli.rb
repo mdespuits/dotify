@@ -88,25 +88,17 @@ module Dotify
 
     desc :link, "Link up all of your dotfiles"
     method_option :all, :default => false, :type => :boolean, :aliases => '-a', :desc => "Link dotfiles without confirmation"
-    def link
+    def link(file=nil)
       return not_setup_warning unless Dotify.installed?
-      count = 0
-      Files.dots do |file, dot|
-        if options[:all]
-          if File.exists? Files.dotfile(file)
-            replace_link Files.dotfile(file), file
-          else
-            create_link Files.dotfile(file), file
-          end
-          count += 1
-        else
-          if yes?("Do you want to link ~/#{dot}? [Yn]", :yellow)
-            create_link Files.dotfile(file), file
-            count += 1
-          end
+      if file.nil?
+        count = 0
+        Files.dots do |file, dot|
+          link_file(file, dot, options)
         end
+        say "No files were linked.", :blue if count == 0
+      else
+        link_file(file, Files.filename(file), options)
       end
-      say "No files were linked.", :blue if count == 0
     end
 
     desc :unlink, "Unlink all of your dotfiles"
@@ -132,6 +124,22 @@ module Dotify
 
       def not_setup_warning
         say('Dotify has not been setup yet! You need to run \'dotify setup\' first.', :yellow)
+      end
+
+      def link_file(file, dot, options = {})
+        if options[:all]
+          if File.exists? Files.dotfile(file)
+            replace_link Files.dotfile(file), file
+          else
+            create_link Files.dotfile(file), file
+          end
+          count += 1
+        else
+          if yes?("Do you want to link ~/#{dot}? [Yn]", :yellow)
+            create_link Files.dotfile(file), file
+            count += 1
+          end
+        end
       end
 
       def add_file(file, options = {})
