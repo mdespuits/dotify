@@ -73,14 +73,14 @@ module Dotify
     def remove(file)
       return not_setup_warning unless Dotify.installed?
       if !File.exists?(Files.dotify(file))
-        say "Dotify is not currently managing ~/#{file}.", :blue unless options.quiet?
+        say "Dotify is not currently managing ~/#{file}.", :blue unless options[:quiet] == true
         return
       end
       if options[:force] == true || yes?("Are you sure you want to remove #{file} from Dotify? [Yn]", :yellow)
         remove_file Files.dotfile(file), :verbose => false
         copy_file Files.dotify(file), Files.dotfile(file), :verbose => false
         remove_file Files.dotify(file), :verbose => false
-        say_status :removed, Files.dotify(file) unless options.quiet?
+        say_status :removed, Files.dotify(file) unless options[:quiet] == true
       end
     end
 
