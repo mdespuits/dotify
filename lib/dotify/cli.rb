@@ -24,7 +24,7 @@ module Dotify
     map "-u" => :unlink
 
     def self.source_root
-      Config.home
+      File.expand_path("../../../templates", __FILE__)
     end
 
     desc :version, "Check your Dotify version"
