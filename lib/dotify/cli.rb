@@ -93,7 +93,7 @@ module Dotify
       if file.nil?
         count = 0
         Files.dots do |file, dot|
-          link_file(file, dot, options)
+          count += 1 if link_file(file, dot, options) == true
         end
         say "No files were linked.", :blue if count == 0
       else
@@ -133,13 +133,15 @@ module Dotify
           else
             create_link Files.dotfile(file), file
           end
-          count += 1
+          return true
         else
           if yes?("Do you want to link ~/#{dot}? [Yn]", :yellow)
             create_link Files.dotfile(file), file
-            count += 1
+            return true
           end
+          return false
         end
+        return false
       end
 
       def add_file(file, options = {})
