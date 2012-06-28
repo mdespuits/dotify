@@ -45,7 +45,7 @@ module Dotify
       return say('Dotify has already been setup!', :blue) if Dotify.installed?
       empty_directory(Config.path)
       Files.unlinked do |path, file|
-        add(file) unless Config.dirname == file
+        add_file(file, options) unless Config.dirname == file
       end
       say "Dotify has been successfully setup.", :blue
       if options[:link]
@@ -132,7 +132,7 @@ module Dotify
         say('Dotify has not been setup yet! You need to run \'dotify setup\' first.', :yellow)
       end
 
-      def add_file(file, options)
+      def add_file(file, options = {})
         file = Files.filename(file)
         dotfile = Files.dotfile(file)
         dotify_file = Files.dotify(file)
