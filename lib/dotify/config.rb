@@ -22,6 +22,10 @@ module Dotify
         File.join(home, dirname)
       end
 
+      def editor
+        config.fetch(:editor, 'vi')
+      end
+
       def load_config!
         config = File.exists?(config_file) ? (YAML.load_file(config_file) || {}) : {}
         symbolize_keys!(config)

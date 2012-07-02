@@ -14,11 +14,25 @@ describe Dotify::Config do
     end
   end
   describe "options" do
+    before do
+      Dotify::Config.stub(:config)  do
+        { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
+      end
+    end
     it "should be able to show the home path" do
       Dotify::Config.home.should == Thor::Util.user_home
     end
     it "should be able to show the dotify path" do
       Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify')
+    end
+    it "should set a default editor" do
+      Dotify::Config.editor.should == 'vi'
+    end
+    it "should allow a custom editor" do
+      Dotify::Config.stub(:config)  do
+        { :editor => 'subl' }
+      end
+      Dotify::Config.editor.should == 'subl'
     end
   end
   describe "ignore files" do
