@@ -27,6 +27,31 @@ module Dotify
       File.expand_path("../../../templates", __FILE__)
     end
 
+    desc :save, "Commit Dotify files and push to Github"
+    method_option :message, :aliases => '-m', :type => :string, :required => false, :desc => "Git commit message to send to Github"
+    def save
+      Dir.chdir(Config.path) do
+        system 'git fetch'
+        uncommitted = `git status`.chomp.to_i != 2
+        if uncommitted
+          message = !options[:message].nil? ? options[:message] : ask("Commit message:", :blue)
+          system 'git add .'
+          system "git commit -m '#{message.gsub(/[']/, '\\\\\'')}'"
+        end
+        if `git log origin/master.. --oneline | wc -l`.chomp.to_i != 0
+          say 'Pushing up to Github...', :blue
+          system 'git push origin master'
+        end
+      end
+    end
+
+    desc :edit, "Edit a dotify file"
+    method_option :save, :aliases => '-s', :default => false, :type => :boolean, :require => true, :desc => "Save Dotify files and push to Github"
+    def edit(filename)
+      system "#{Config.editor} #{Files.dotify(filename)}"
+      save if options[:save] == true
+    end
+
     desc :version, "Check your Dotify version"
     def version
       if VersionChecker.out_of_date?
