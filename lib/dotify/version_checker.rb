@@ -24,6 +24,10 @@ module Dotify
       def version
         @version || self.run_check!
       end
+
+      def handle_error(e)
+        "Version Check Error: #{e.message}\n#{e.backtrace.join("\n")}"
+      end
     end
   end
 end
