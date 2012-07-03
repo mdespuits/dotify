@@ -3,7 +3,8 @@ require 'git'
 require 'dotify/git'
 
 describe Dotify::Git do
-  let(:repo) { Dotify::Git.repo }
-  subject { repo }
-  it { should be_instance_of Git::Base }
+  it "should try to open the git repo" do
+    Git.stub(:open).with(Dotify::Config.path)
+    Dotify::Git.repo
+  end
 end
