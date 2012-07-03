@@ -65,7 +65,7 @@ module Dotify
     def version
       if VersionChecker.out_of_date?
         say "Your version of Dotify is out of date.", :yellow
-        say "  Your Version:   #{Dotify::VERSION}", :blue
+        say "  Your Version:   #{Dotify.version}", :blue
         say "  Latest Version: #{VersionChecker.version}", :blue
         say "I recommend that you uninstall Dotify completely before updating", :yellow
       else
