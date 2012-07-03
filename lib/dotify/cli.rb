@@ -61,6 +61,7 @@ module Dotify
     end
 
     desc :version, "Check your Dotify version"
+    method_option :verbose, :aliases => '-v', :default => false, :type => :boolean, :desc => "Output any errors that occur during the Version check."
     def version
       if VersionChecker.out_of_date?
         say "Your version of Dotify is out of date.", :yellow
@@ -72,7 +73,7 @@ module Dotify
       end
     rescue Exception => e
       say "There was an error checking your Dotify version. Please try again.", :red
-      say VersionChecker.handle_error(e)
+      say VersionChecker.handle_error(e) if options[:verbose] == true
     end
 
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
