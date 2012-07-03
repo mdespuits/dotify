@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'thor'
 require 'fileutils'
 require 'json'
@@ -69,8 +70,9 @@ module Dotify
       else
         say "Your version of Dotify is up to date: #{Dotify::VERSION}", :blue
       end
-    rescue Exception
+    rescue Exception => e
       say "There was an error checking your Dotify version. Please try again.", :red
+      say VersionChecker.handle_error(e)
     end
 
     desc :setup, "Setup your system for Dotify to manage your dotfiles"
