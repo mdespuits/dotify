@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "thor"
   gem.add_dependency "json"
-  gem.add_dependency "git"
+  gem.add_dependency "grit"
   gem.add_development_dependency "rspec"
   gem.add_development_dependency "webmock"
   gem.add_development_dependency "vcr"
