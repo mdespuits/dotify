@@ -1,4 +1,4 @@
-require 'json'
+require 'multi_json'
 require 'net/http'
 
 module Dotify
@@ -7,7 +7,7 @@ module Dotify
       def run_check!
         if @version.nil?
           resp = Net::HTTP.get('rubygems.org', '/api/v1/versions/dotify.json')
-          json = JSON.parse(resp)
+          json = MultiJson.load(resp)
           @version = json.map { |v| v['number'] }.max
         end
         @version

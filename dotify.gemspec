@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
   gem.version       = Dotify::VERSION
 
   gem.add_dependency "thor"
+  gem.add_dependency "multi_json"
   gem.add_dependency "json"
   gem.add_dependency "grit"
   gem.add_development_dependency "rspec"
