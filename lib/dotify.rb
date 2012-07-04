@@ -1,4 +1,3 @@
-require 'bundler/setup'
 require 'dotify/config'
 require 'dotify/version'
 require "fileutils"
