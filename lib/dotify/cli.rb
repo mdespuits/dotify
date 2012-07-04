@@ -31,21 +31,25 @@ module Dotify
     desc :save, "Commit Dotify files and push to Github"
     method_option :message, :aliases => '-m', :type => :string, :required => false, :desc => "Git commit message to send to Github"
     def save
-      Dir.chdir(Config.path) do
-        system 'git fetch'
-        uncommitted = `git status | wc -l`.chomp.to_i != 2
-        if uncommitted
-          puts `git status` # show the status output
-          message = !options[:message].nil? ? options[:message] : ask("Commit message:", :blue)
-          system 'git add .'
-          system "git commit -m '#{message.gsub(/[']/, '\\\\\'')}'"
-          if `git log origin/master.. --oneline | wc -l`.chomp.to_i != 0
-            say 'Pushing up to Github...', :blue
-            system 'git push origin master'
+      if File.exists? Files.dotify('.git') # if the Dotify directory has been made a git repo
+        Dir.chdir(Config.path) do
+          system 'git fetch'
+          uncommitted = `git status | wc -l`.chomp.to_i != 2
+          if uncommitted
+            puts `git status` # show the status output
+            message = !options[:message].nil? ? options[:message] : ask("Commit message:", :blue)
+            system 'git add .'
+            system "git commit -m '#{message.gsub(/[']/, '\\\\\'')}'"
+            if `git log origin/master.. --oneline | wc -l`.chomp.to_i != 0
+              say 'Pushing up to Github...', :blue
+              system 'git push origin master'
+            end
+          else
+            say 'Dotify has nothing to save.', :blue
           end
-        else
-          say 'Dotify has nothing to save.', :blue
         end
+      else
+        say 'Dotify has nothing to save.', :blue
       end
     end
 
