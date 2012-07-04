@@ -3,20 +3,20 @@ require 'dotify/config'
 module Dotify
   class Git
 
-    extend ::Git
+    # extend ::Git
 
-    class << self
+    # class << self
 
-      def repo
-        @repo ||= git.open(Config.path)
-      end
+    #   def repo
+    #     @repo ||= git.open(Config.path)
+    #   end
 
-      private
+    #   private
 
-        def git
-          ::Git
-        end
+    #     def git
+    #       ::Git
+    #     end
 
-    end
+    # end
   end
 end
