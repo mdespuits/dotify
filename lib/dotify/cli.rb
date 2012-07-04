@@ -2,7 +2,7 @@ require 'rubygems'
 require 'thor'
 require 'fileutils'
 require 'json'
-require 'grit'
+require 'git'
 require 'net/http'
 
 require 'dotify'
@@ -15,8 +15,8 @@ Dotify::Config.load_config!
 
 module Dotify
 
-  class Grit
-    include ::Grit
+  class Git
+    include ::Git
   end
   class CLI < Thor
     include Thor::Actions
@@ -38,9 +38,10 @@ module Dotify
     method_option :force,   :aliases => '-f', :type => :boolean, :desc => "Do not ask for confirmation when adding files to the staging area."
     method_option :debug,   :aliases => '-d', :type => :boolean, :desc => "Show error messages if there is a Git failure."
     method_option :verbose, :aliases => '-v', :type => :boolean, :default => true, :desc => "Show error messages if there is a Git failure."
+    method_option :push,    :aliases => '-p', :type => :boolean, :default => false, :desc => "Force the push to the remote repository."
     def save
       if File.exists? Files.dotify('.git') # if the Dotify directory has been made a git repo
-        repo = Grit::Repo.new(Config.path)
+        repo = ::Git.open(Config.path)
         changed = repo.status.changed
         if changed.size > 0
           changed.each_pair do |file, status|
@@ -50,17 +51,17 @@ module Dotify
               say_status :added, status.path, :verbose => options[:verbose]
             end
           end
+          message = !options[:message].nil? ? options[:message] : ask("Commit message:", :blue)
+          say message, :yellow, :verbose => options[:verbose]
+          repo.commit(message)
         else
           say "No files have been changed in Dotify.", :blue
-          return
+          @push = true
         end
-        message = !options[:message].nil? ? options[:message] : ask("Commit message:", :blue)
-        say message, :yellow, :verbose => options[:verbose]
-        repo.commit_index(message)
-        if yes? "Would you like to push these changed to Github (or wherever your remote repo is located)? [Yn]", :blue
+        if @push == true || options[:push] || yes?("Would you like to push these changed to Github (or wherever your remote repo is located)? [Yn]", :blue)
           say 'Pushing up to Github...', :blue
           begin
-            repo.git.push
+            repo.push
           rescue Exception => e
             say "There was a problem pushing to your remote repo.", :red
             say("Grit Error: #{e.message}", :red) if options[:debug]
