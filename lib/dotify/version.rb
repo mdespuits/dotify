@@ -1,3 +1,3 @@
 module Dotify
-  VERSION = "0.5.1.pre"
+  VERSION = "0.5.1"
 end
