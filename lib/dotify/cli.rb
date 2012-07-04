@@ -2,6 +2,7 @@ require 'rubygems'
 require 'thor'
 require 'fileutils'
 require 'json'
+require 'grit'
 require 'net/http'
 
 require 'dotify'
@@ -13,6 +14,10 @@ require 'dotify/version_checker'
 Dotify::Config.load_config!
 
 module Dotify
+
+  class Grit
+    include ::Grit
+  end
   class CLI < Thor
     include Thor::Actions
     default_task :help
@@ -28,25 +33,40 @@ module Dotify
       File.expand_path("../../../templates", __FILE__)
     end
 
-    desc :save, "Commit Dotify files and push to Github"
+    desc :save, "Save Dotify files and push to Github."
     method_option :message, :aliases => '-m', :type => :string, :required => false, :desc => "Git commit message to send to Github"
+    method_option :force,   :aliases => '-f', :type => :boolean, :desc => "Do not ask for confirmation when adding files to the staging area."
+    method_option :debug,   :aliases => '-d', :type => :boolean, :desc => "Show error messages if there is a Git failure."
+    method_option :verbose, :aliases => '-v', :type => :boolean, :default => true, :desc => "Show error messages if there is a Git failure."
     def save
       if File.exists? Files.dotify('.git') # if the Dotify directory has been made a git repo
-        Dir.chdir(Config.path) do
-          system 'git fetch'
-          uncommitted = `git status | wc -l`.chomp.to_i != 2
-          if uncommitted
-            puts `git status` # show the status output
-            message = !options[:message].nil? ? options[:message] : ask("Commit message:", :blue)
-            system 'git add .'
-            system "git commit -m '#{message.gsub(/[']/, '\\\\\'')}'"
-            if `git log origin/master.. --oneline | wc -l`.chomp.to_i != 0
-              say 'Pushing up to Github...', :blue
-              system 'git push origin master'
+        repo = Grit::Repo.new(Config.path)
+        changed = repo.status.changed
+        if changed.size > 0
+          changed.each_pair do |file, status|
+            say_status :changed, status.path, :verbose => options[:verbose]
+            if options[:force] || yes?("Do you want to add '#{status.path}' to the Git index? [Yn]", :blue)
+              repo.add status.path
+              say_status :added, status.path, :verbose => options[:verbose]
             end
-          else
-            say 'Dotify has nothing to save.', :blue
           end
+        else
+          say "No files have been changed in Dotify.", :blue
+          return
+        end
+        message = !options[:message].nil? ? options[:message] : ask("Commit message:", :blue)
+        say message, :yellow, :verbose => options[:verbose]
+        repo.commit_index(message)
+        if yes? "Would you like to push these changed to Github (or wherever your remote repo is located)? [Yn]", :blue
+          say 'Pushing up to Github...', :blue
+          begin
+            repo.git.push
+          rescue Exception => e
+            say "There was a problem pushing to your remote repo.", :red
+            say("Grit Error: #{e.message}", :red) if options[:debug]
+            return
+          end
+          say "Successfully pushed!", :blue
         end
       else
         say 'Dotify has nothing to save.', :blue
