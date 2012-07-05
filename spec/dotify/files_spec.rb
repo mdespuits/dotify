@@ -74,14 +74,15 @@ describe Dotify::Files do
         ['/root/test/.bashrc', '/root/test/.zshrc']
       end
     end
+    let(:unlinked) { Dotify::Files.unlinked }
     it "should return the list of unlinked dotfiles in the root path" do
-      unlinked = Dotify::Files.unlinked.map { |u| Dotify::Files.filename(u) }
-      unlinked.should include '.vimrc'
-      unlinked.should_not include '.bashrc'
+      un = unlinked.map { |u| Dotify::Files.filename(u) }
+      un.should include '.vimrc'
+      un.should_not include '.bashrc'
     end
     it "shoud yield the unlinked files if a block is given" do
-      unlinked = Dotify::Files.unlinked.map { |u| [u, Dotify::Files.filename(u)] }
-      expect { |b| Dotify::Files.unlinked(&b) }.to yield_successive_args(*unlinked)
+      un = unlinked.map { |u| [u, Dotify::Files.filename(u)] }
+      expect { |b| Dotify::Files.unlinked(&b) }.to yield_successive_args(*un)
     end
   end
 
@@ -94,16 +95,17 @@ describe Dotify::Files do
         %w[/root/test/.bashrc /root/test/.vimrc]
       end
     end
+    let!(:installed) { Dotify::Files.installed }
     it "should return the list of installed dotfiles in the root path" do
-      installed = Dotify::Files.installed.map { |i| Dotify::Files.filename(i) }
-      installed.should include '.vimrc'
-      installed.should include '.bashrc'
-      installed.should_not include '.zshrc'
-      installed.should_not include '.dotify'
+      i = installed.map { |i| Dotify::Files.filename(i) }
+      i.should include '.vimrc'
+      i.should include '.bashrc'
+      i.should_not include '.zshrc'
+      i.should_not include '.dotify'
     end
     it "shoud yield the installed files if a block is given" do
-      installed = Dotify::Files.installed.map { |i| [i, Dotify::Files.filename(i)] }
-      expect { |b| Dotify::Files.installed(&b) }.to yield_successive_args(*installed)
+      i = installed.map { |i| [i, Dotify::Files.filename(i)] }
+      expect { |b| Dotify::Files.installed(&b) }.to yield_successive_args(*i)
     end
   end
 
@@ -116,16 +118,17 @@ describe Dotify::Files do
         %w[/root/test/.zshrc /root/test/.bashrc /root/test/.pryrc /root/test/.dropbox]
       end
     end
+    let(:uninstalled) { Dotify::Files.uninstalled }
     it "should return the list of uninstalled dotfiles in the root path" do
-      uninstalled = Dotify::Files.uninstalled.map { |i| Dotify::Files.filename(i) }
-      uninstalled.should_not include '.zshrc'
-      uninstalled.should_not include '.bashrc'
-      uninstalled.should include '.pryrc'
-      uninstalled.should include '.dropbox'
+      u = uninstalled.map { |i| Dotify::Files.filename(i) }
+      u.should_not include '.zshrc'
+      u.should_not include '.bashrc'
+      u.should include '.pryrc'
+      u.should include '.dropbox'
     end
     it "shoud yield the installed files if a block is given" do
-      uninstalled = Dotify::Files.uninstalled.map { |i| [i, Dotify::Files.filename(i)] }
-      expect { |b| Dotify::Files.uninstalled(&b) }.to yield_successive_args(*uninstalled)
+      u = uninstalled.map { |i| [i, Dotify::Files.filename(i)] }
+      expect { |b| Dotify::Files.uninstalled(&b) }.to yield_successive_args(*u)
     end
   end
 
