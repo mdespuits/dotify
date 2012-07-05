@@ -1,5 +1,6 @@
 require 'dotify'
 require 'dotify/config'
+require 'dotify/files'
 
 module Dotify
   class List

@@ -41,14 +41,15 @@ describe Dotify::Cabinet do
   describe Dotify::Cabinet, "#linked?" do
     let(:cabinet) { Dotify::Cabinet.new(".bashrc") }
     subject { cabinet }
+    before do
+      cabinet.stub(:readlink).with(cabinet.dotfile).and_return cabinet.dotify # stub identical file check
+    end
     it "should return true if all checks work" do
       cabinet.stub(:file_in_dotify?).and_return true # stub dotify file exist check
-      cabinet.stub(:readlink).with(cabinet.dotfile).and_return cabinet.dotify # stub identical file check
       cabinet.should be_linked
     end
     it "should return false if one or more checks fail" do
       cabinet.stub(:file_in_dotify?).and_return false # stub dotify file exist check
-      cabinet.stub(:readlink).with(cabinet.dotfile).and_return cabinet.dotify # stub identical file check
       cabinet.should_not be_linked
     end
   end
@@ -56,13 +57,14 @@ describe Dotify::Cabinet do
   describe Dotify::Cabinet, "#added?" do
     let(:cabinet) { Dotify::Cabinet.new(".added") }
     subject { cabinet }
-    it "should return true if all checks work" do
+    before do
       cabinet.stub(:file_in_dotify?).and_return true # stub dotify file exist check
+    end
+    it "should return true if all checks work" do
       cabinet.stub(:readlink).with(cabinet.dotfile).and_return false # stub identical file check
       cabinet.should be_added
     end
     it "should return false if one or more checks fail" do
-      cabinet.stub(:file_in_dotify?).and_return false # stub dotify file exist check
       cabinet.stub(:readlink).with(cabinet.dotfile).and_return cabinet.dotify # stub identical file check
       cabinet.should_not be_added
     end

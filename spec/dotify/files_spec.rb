@@ -1,5 +1,5 @@
-require 'spec_helper'
 require 'dotify/config'
+require 'dotify/list'
 require 'dotify/files'
 require 'fileutils'
 

@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'dotify'
 require 'dotify/version_checker'
 
 describe Dotify::VersionChecker do
