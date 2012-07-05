@@ -19,12 +19,16 @@ module Dotify
         @dirname ||= DIRNAME
       end
 
-      def installed?
-        File.exists?(path) && File.directory?(path)
+      def home
+        Thor::Util.user_home
       end
 
       def path
         File.join(home, dirname)
+      end
+
+      def installed?
+        File.exists?(path) && File.directory?(path)
       end
 
       def editor
@@ -42,10 +46,6 @@ module Dotify
 
       def config
         @config || load_config!
-      end
-
-      def home
-        Thor::Util.user_home
       end
 
       def file
