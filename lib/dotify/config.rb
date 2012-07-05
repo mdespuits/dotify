@@ -20,7 +20,7 @@ module Dotify
       end
 
       def installed?
-        File.directory?(File.join(home, dirname))
+        File.exists?(path) && File.directory?(path)
       end
 
       def path

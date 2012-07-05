@@ -2,16 +2,27 @@ require 'dotify/errors'
 require 'dotify/config'
 
 describe Dotify::Config do
+  before { Thor::Util.stub(:user_home).and_return '/tmp/home' }
   describe Dotify::Config, "#installed?" do
-    it "should return false if Dotify has not been setup" do
-      File.should_receive(:directory?).with(File.join(Dotify::Config.home, Dotify::Config.dirname)).and_return(false)
-      Dotify::Config.installed?.should == false
-    end
     it "should return true if Dotify has been setup" do
-      File.should_receive(:directory?).with(File.join(Dotify::Config.home, Dotify::Config.dirname)).and_return(true)
+      File.should_receive(:exists?).with(Dotify::Config.path).and_return(true)
+      File.should_receive(:directory?).with(Dotify::Config.path).and_return(true)
       Dotify::Config.installed?.should == true
     end
+    it "should return false if Dotify has not been setup" do
+      File.should_receive(:exists?).with(Dotify::Config.path).and_return(true)
+      File.should_receive(:directory?).with(Dotify::Config.path).and_return(false)
+      Dotify::Config.installed?.should == false
+    end
   end
+
+  describe Dotify::Config, "#home" do
+    before { Thor::Util.stub(:user_home).and_return("/tmp/home") }
+    it "should return the home directory when called without a filename" do
+      Dotify::Config.home.should == Thor::Util.user_home
+    end
+  end
+
   describe "options" do
     before do
       Dotify::Config.stub(:config)  do
