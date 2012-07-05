@@ -46,10 +46,6 @@ module Dotify
         %r{([^<>:"\/\\\|\?\*]*)\Z}.match(file).to_s
       end
 
-      def template?(file)
-        filename(file).match(/(tt|erb)\Z/) ? true : false
-      end
-
       def dotfile(file = nil)
         file.nil? ? Config.home : File.join(Config.home, filename(file))
       end

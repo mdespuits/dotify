@@ -5,7 +5,6 @@ require 'fileutils'
 
 describe Dotify::Files do
 
-
   before do
     Dotify::Config.stub(:home).and_return '/home/tmp'
   end
@@ -76,7 +75,7 @@ describe Dotify::Files do
     end
     let(:unlinked) { Dotify::Files.unlinked }
     it "should return the list of unlinked dotfiles in the root path" do
-      un = unlinked.map { |u| Dotify::Files.filename(u) }
+      un = unlinkedst.map { |u| Dotify::Files.filename(u) }
       un.should include '.vimrc'
       un.should_not include '.bashrc'
     end
