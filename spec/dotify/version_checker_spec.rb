@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'dotify/version_checker'
 
 describe Dotify::VersionChecker do
-  it Dotify::VersionChecker, "#run_check!" do
+  it "#run_check! should return the right version number" do
     VCR.use_cassette "version_check" do
       Dotify::VersionChecker.version.should == '0.2.0'
     end
