@@ -2,7 +2,7 @@ require 'dotify'
 require 'dotify/config'
 
 module Dotify
-  class FileList
+  class List
     class << self
 
       def home

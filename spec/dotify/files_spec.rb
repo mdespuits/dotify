@@ -40,7 +40,7 @@ describe Dotify::Files do
 
   describe Dotify::Files, "#linked" do
     before do
-      Dotify::FileList.stub(:dotify) do
+      Dotify::List.stub(:dotify) do
         ['/spec/test/.bash_profile', '/spec/test/.bashrc', '/spec/test/.zshrc']
       end
     end
@@ -82,7 +82,7 @@ describe Dotify::Files do
       Dotify::Files.stub(:linked) do
         %w[/spec/test/.zshrc /spec/test/.bashrc /spec/test/.vimrc /spec/test/.dotify]
       end
-      Dotify::FileList.stub(:home) do
+      Dotify::List.stub(:home) do
         %w[/root/test/.bashrc /root/test/.vimrc]
       end
     end
@@ -104,7 +104,7 @@ describe Dotify::Files do
       Dotify::Files.stub(:linked) do
         %w[/spec/test/.zshrc /spec/test/.bashrc /spec/test/.vimrc /spec/test/.dotify]
       end
-      Dotify::FileList.stub(:home) do
+      Dotify::List.stub(:home) do
         %w[/root/test/.zshrc /root/test/.bashrc /root/test/.pryrc /root/test/.dropbox]
       end
     end

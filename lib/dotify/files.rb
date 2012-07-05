@@ -11,7 +11,7 @@ module Dotify
       include Thor::Actions
 
       def linked
-        @linked ||= FileList.dotify
+        @linked ||= List.dotify
         return @linked unless block_given?
         @linked.each {|d| yield(d, filename(d)) }
       end
@@ -26,7 +26,7 @@ module Dotify
 
       def installed
         linked = self.linked.map { |f| filename(f) }
-        installed = FileList.home.select do |d|
+        installed = List.home.select do |d|
           linked.include?(filename(d))
         end
         return installed unless block_given?
@@ -35,7 +35,7 @@ module Dotify
 
       def uninstalled
         linked = self.linked.map { |f| filename(f) }
-        installed = FileList.home.select do |d|
+        installed = List.home.select do |d|
           !linked.include?(filename(d))
         end
         return installed unless block_given?
