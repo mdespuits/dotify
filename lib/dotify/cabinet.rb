@@ -8,7 +8,7 @@ module Dotify
     attr_accessor :filename, :dotify, :dotfile
 
     # Attributes about the file's status in the filesystem
-    attr_accessor :linked, :added
+    attr_accessor :linked, :added, :in_dotify, :in_dotfiles
 
     def initialize(file)
       basic_file_info(file)
@@ -20,22 +20,24 @@ module Dotify
       @dotfile = Files.dotfile(@filename)
       added?
       linked?
+      in_dotify?
+      in_home?
     end
 
     def added?
-      @added ||= file_in_dotify? && !dotfile_linked_to_dotify?
+      @added ||= in_dotify? && !dotfile_linked_to_dotify?
     end
 
     def linked?
-      @linked ||= file_in_dotify? && dotfile_linked_to_dotify?
+      @linked ||= in_dotify? && dotfile_linked_to_dotify?
     end
 
-    def file_in_dotify?
-      File.exists?(@dotify)
+    def in_dotify?
+      @in_dotify ||= File.exists?(@dotify)
     end
 
-    def file_in_home?
-      File.exists?(@dotfile)
+    def in_home?
+      @in_dotfiles ||= File.exists?(@dotfile)
     end
 
     def to_s

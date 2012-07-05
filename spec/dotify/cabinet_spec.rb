@@ -25,6 +25,27 @@ describe Dotify::Cabinet do
     end
   end
 
+  describe "existence in directories" do
+    let(:cabinet) { Dotify::Cabinet.new(".bashrc") }
+    subject { cabinet }
+    it "should check for the existence in the home directory" do
+      File.stub(:exists?).with(cabinet.dotfile).and_return true
+      cabinet.should be_in_home
+    end
+    it "should return false if the file is not in the home directory" do
+      File.stub(:exists?).with(cabinet.dotfile).and_return false
+      cabinet.should_not be_in_home
+    end
+    it "should check for the existence of the file in Dotify" do
+      File.stub(:exists?).with(cabinet.dotify).and_return true
+      cabinet.should be_in_dotify
+    end
+    it "should return false if the file is not in Dotify" do
+      File.stub(:exists?).with(cabinet.dotify).and_return false
+      cabinet.should_not be_in_dotify
+    end
+  end
+
   describe Dotify::Cabinet, "#dotfile_linked_to_dotify?" do
     let(:cabinet) { Dotify::Cabinet.new(".bashrc") }
     subject { cabinet }
@@ -46,7 +67,7 @@ describe Dotify::Cabinet do
     let(:cabinet) { Dotify::Cabinet.new(".bashrc") }
     subject { cabinet }
     before do
-      cabinet.stub(:file_in_dotify?).and_return true # stub identical file check
+      cabinet.stub(:in_dotify?).and_return true # stub identical file check
     end
     it "should return true if all checks work" do
       cabinet.stub(:dotfile_linked_to_dotify?).and_return true # stub dotify file exist check
@@ -62,7 +83,7 @@ describe Dotify::Cabinet do
     let(:cabinet) { Dotify::Cabinet.new(".added") }
     subject { cabinet }
     before do
-      cabinet.stub(:file_in_dotify?).and_return true # stub dotify file exist check
+      cabinet.stub(:in_dotify?).and_return true # stub dotify file exist check
     end
     it "should return true if all checks work" do
       cabinet.stub(:dotfile_linked_to_dotify?).and_return false # stub identical file check
