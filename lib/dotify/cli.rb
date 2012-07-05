@@ -8,7 +8,7 @@ require 'net/http'
 require 'dotify'
 require 'dotify/config'
 require 'dotify/files'
-require 'dotify/file_list'
+require 'dotify/list'
 require 'dotify/version_checker'
 
 Dotify::Config.load_config!

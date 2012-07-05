@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'dotify/config'
-require 'dotify/file_list'
+require 'dotify/list'
 
 describe Dotify::List do
 
