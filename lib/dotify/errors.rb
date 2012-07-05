@@ -1,4 +1,4 @@
 module Dotify
   class NonValidShell < StandardError; end
-  class CabinetDoesNotExist < StandardError; end
+  class UnitDoesNotExist < StandardError; end
 end

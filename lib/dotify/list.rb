@@ -1,40 +1,34 @@
 require 'dotify'
-require 'dotify/config'
-require 'dotify/files'
 
 module Dotify
   class List
     class << self
 
       def home
-        result = paths(File.join(Config.home, '.*'))
+        result = units(Files.dotfile('.*'))
         filter_ignore_files!(result, :dotfiles)
       end
 
       def dotify
-        result = paths(File.join(Config.path, '.*'))
+        result = units(Files.dotify('.*'))
         filter_ignore_files!(result, :dotify)
       end
 
-      def list(glob)
-        filenames(paths(glob))
+      def units(glob)
+        filter_dot_directories! Dir[glob].map{ |file| Unit.new(file) }
       end
 
-      def paths(glob)
-        filter_dot_directories!(Dir[glob])
+      def filter_dot_directories!(units)
+        [*units].delete_if { |f| %w[. ..].include? f.filename }
       end
 
-      def filter_dot_directories!(files)
-        files.select { |f| !['.', '..'].include?(Files.filename(f)) }
-      end
-
-      def filter_ignore_files!(files, ignore)
+      def filter_ignore_files!(units, ignore)
         ignoring = Config.ignore(ignore)
-        files.select { |f| !ignoring.include?(Files.filename(f)) }
+        [*units].delete_if { |f| ignoring.include?(f.filename) }
       end
 
-      def filenames(files)
-        files.map { |f| Files.filename(f) }
+      def filenames(units)
+        units.map(&:filename)
       end
 
     end

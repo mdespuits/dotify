@@ -1,4 +1,3 @@
-require 'dotify'
 require 'thor/actions'
 require 'thor/shell'
 
@@ -7,43 +6,42 @@ Dotify::Config.load_config!
 module Dotify
   class Files
     class << self
-      include Thor::Shell
-      include Thor::Actions
+      # All
+      #
+      # Pulls an array of Units from the home
+      # directory.
+      def all
+        @all ||= List.home
+      end
 
+      # Linked files are those files which have a
+      # symbolic link pointing to the Dotify file.
       def linked
-        @linked ||= List.dotify
-        return @linked unless block_given?
-        @linked.each {|d| yield(d, filename(d)) }
+        links = self.all.select { |f| f.linked? }
+        return links unless block_given?
+        links.each {|u| yield u }
       end
 
+      # Unlinked files are, of course, the opposite
+      # of linked files. These are Dotify files which
+      # Have no home dir files that are linked to them.
       def unlinked
-        linked = self.linked.map { |d| filename(d) }
-        installed = self.installed.map {|i| filename(i)}
-        unlinked = (linked - installed).map{|f| dotfile(f) }
-        return unlinked unless block_given?
-        unlinked.each {|u| yield(u, filename(u)) }
+        unl = self.all.select { |f| !f.linked? }
+        return unl unless block_given?
+        unl.each {|u| yield u }
       end
 
-      def installed
-        linked = self.linked.map { |f| filename(f) }
-        installed = List.home.select do |d|
-          linked.include?(filename(d))
-        end
-        return installed unless block_given?
-        installed.each {|i| yield(i, filename(i)) }
-      end
-
+      # Uninstalled dotfiles are the dotfiles in the home
+      # directory that have not been loaded into Dotify or
+      # linked to the corresponding Dotify path.
       def uninstalled
-        linked = self.linked.map { |f| filename(f) }
-        installed = List.home.select do |d|
-          !linked.include?(filename(d))
-        end
-        return installed unless block_given?
-        installed.each {|i| yield(i, filename(i)) }
+        uni = self.all.select { |f| !f.added? && !f.linked? }
+        return uni unless block_given?
+        uni.each {|u| yield u }
       end
 
       def filename(file)
-        %r{([^<>:"\/\\\|\?\*]*)\Z}.match(file).to_s
+        File.basename(file)
       end
 
       def dotfile(file = nil)

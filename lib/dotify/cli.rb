@@ -1,14 +1,10 @@
 require 'rubygems'
 require 'thor'
 require 'fileutils'
-require 'json'
 require 'git'
 require 'net/http'
 
 require 'dotify'
-require 'dotify/config'
-require 'dotify/files'
-require 'dotify/list'
 require 'dotify/version_checker'
 
 Dotify::Config.load_config!
@@ -35,9 +31,9 @@ module Dotify
 
     desc :save, "Save Dotify files and push to Github."
     method_option :message, :aliases => '-m', :type => :string, :required => false, :desc => "Git commit message to send to Github"
-    method_option :force,   :aliases => '-f', :type => :boolean, :desc => "Do not ask for confirmation when adding files to the staging area."
-    method_option :debug,   :aliases => '-d', :type => :boolean, :desc => "Show error messages if there is a Git failure."
-    method_option :verbose, :aliases => '-v', :type => :boolean, :default => true, :desc => "Show error messages if there is a Git failure."
+    method_option :force,   :aliases => '-f', :type => :boolean, :default => false, :desc => "Do not ask for confirmation when adding files to the staging area."
+    method_option :debug,   :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
+    method_option :verbose, :aliases => '-v', :type => :boolean, :default => true,  :desc => "Display file creation and status updates."
     method_option :push,    :aliases => '-p', :type => :boolean, :default => false, :desc => "Force the push to the remote repository."
     def save
       if File.exists? Files.dotify('.git') # if the Dotify directory has been made a git repo
@@ -64,7 +60,7 @@ module Dotify
             repo.push
           rescue Exception => e
             say "There was a problem pushing to your remote repo.", :red
-            say("Grit Error: #{e.message}", :red) if options[:debug]
+            say("Git Error: #{e.message}", :red) if options[:debug]
             return
           end
           say "Successfully pushed!", :blue
@@ -76,12 +72,13 @@ module Dotify
 
     desc 'edit [FILE]', "Edit a dotify file"
     method_option :save, :aliases => '-s', :default => false, :type => :boolean, :require => true, :desc => "Save Dotify files and push to Github"
-    def edit(filename)
-      if Files.linked.include? Files.dotify(filename)
-        exec "#{Config.editor} #{Files.dotify(filename)}"
+    def edit(file)
+      file = Unit.new(file)
+      if file.linked?
+        exec "#{Config.editor} #{file.dotify}"
         save if options[:save] == true
       else
-        say "'#{Files.filename(filename)}' has not been linked by Dotify. Please run `dotify link #{Files.filename(filename)}` to edit this file.", :blue
+        say "'#{file}' has not been linked by Dotify. Please run `dotify link #{file}` to edit this file.", :blue
       end
     end
 
@@ -107,7 +104,7 @@ module Dotify
     method_options :verbose => true
     def setup
       # Warn if Dotify is already setup
-      if !Dotify.installed?
+      if Dotify.installed?
         say "Dotify is already setup", :blue
       end
 
@@ -122,7 +119,7 @@ module Dotify
       end
 
       say "Editing config file...", :blue
-      sleep 1 # Give a little time for reading the message
+      sleep 0.5 # Give a little time for reading the message
       invoke :edit, [Config.file]
       say "Config file updated.", :blue
 
@@ -133,145 +130,63 @@ module Dotify
     desc :install, "Install files from your home directory into Dotify"
     def install
       invoke :setup unless Dotify.installed?
-      invoke :add
+      invoke :link
     end
 
-    desc "add {{FILENAME}}", "Add a one or more dotfiles to Dotify. (FILENAME is optional)"
-    method_option :force, :type => :boolean, :default => false, :aliases => '-f', :desc => "Remove Dotify file(s) without confirmation"
-    def add(file=nil)
-      not_setup_warning unless Dotify.installed?
-      if file.nil?
-        Files.uninstalled { |path, file| add_dotify_file(file, options) }
-      else
-        add_dotify_file(file, options.merge(:single => true))
-      end
-    end
-
-    desc "remove {{FILENAME}}", "Remove a single dotfile from Dotify (FILENAME is optional)"
+    desc 'link [[FILENAME]]', "Link up one or all of your dotfiles (FILENAME is optional)"
     long_desc <<-DESC
-      This removes the dotfiles from the Dotify directory and move \
-      it back into the home directory. If you decide you want Dotify \
-      to manage that file again, you can simply run `dotify add [FILENAME]` \
-      to add it back again.
+      This task takes a file from the home directory, \
+      moves it into Dotify, and symlinks the file in the \
+      home directory to the corresponding file in Dotify.
     DESC
-    method_option :force, :type => :boolean, :default => false, :aliases => '-f', :desc => "Remove Dotify file(s) without confirmation"
-    def remove(file=nil)
-      not_setup_warning unless Dotify.installed?
-      if file.nil?
-        Files.linked { |path, file| remove_dotify_file(file, options) }
-      else
-        remove_dotify_file(file, options)
-      end
+    method_option :force,   :default => false, :type => :boolean, :aliases => '-f', :desc => "Link dotfiles without confirmation"
+    method_option :relink,  :default => false, :type => :boolean, :aliases => '-r', :desc => "Relink files already in the"
+    def link(file = nil)
+      return not_setup_warning unless Dotify.installed?
+      # Link a single file
+      return link_file Unit.new(file), options unless file.nil?
+      # Relink the files
+      return Files.linked { |file| link_file(file, options) } if options[:relink]
+      # Link the files
+      Files.unlinked { |file| link_file(file, options) }
     end
 
-    desc 'link {{FILENAME}}', "Link up one or all of your dotfiles (FILENAME is optional)"
-    method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => "Link dotfiles without confirmation"
-    def link(file=nil)
-      not_setup_warning unless Dotify.installed?
-      if file.nil?
-        Files.unlinked do |path, file|
-          link_file(file, options)
-        end
-      else
-        link_file(file, options)
-      end
-    end
-
-    desc 'unlink {{FILENAME}}', "Unlink one or all of your dotfiles (FILENAME is optional)"
+    desc 'unlink [[FILENAME]]', "Unlink one or all of your dotfiles (FILENAME is optional)"
     long_desc <<-DESC
-      This removes the dotfiles from the home directory and preserves the \
-      files in the Dotify directory. This allows you to simply run `dotify link` again \
-      should you decide you want to relink anything to the Dotify files.
+      This task unlinks the dotfile from Dotify and \
+      moves it back into the home directory. This will \
+      only be run if the file is symlinked to the corresponsing \
+      file in Dotify.
     DESC
     method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => 'Remove all installed dotfiles without confirmation'
     def unlink(file = nil)
-      not_setup_warning unless Dotify.installed?
-      if file.nil?
-        Files.linked do |path, file|
-          unlink_file(file, options)
-        end
-      else
-        unlink_file(file, options)
-      end
+      return not_setup_warning unless Dotify.installed?
+      # Unlink a single file
+      return unlink_file Unit.new(file), options unless file.nil?
+      # Unlink the files
+      Files.linked { |file| unlink_file(file, options) }
     end
 
     no_tasks do
 
       def not_setup_warning
-        say('Dotify has not been setup yet! You need to run \'dotify setup\' first.', :yellow)
+        say "Dotify has not been setup yet! You need to run 'dotify setup' first.", :yellow
       end
 
       def unlink_file(file, options = {})
-        file = Files.filename(file)
-        dot = Files.dotfile(file)
-        dotify = Files.dotify(file)
-        if File.exists?(dot) && File.exists?(dotify)
-          if options[:force] == true || yes?("Do you want to unlink #{file} from the home directory? [Yn]", :blue)
-            FileUtils.rm_rf dot
-            say_status :unlinked, dot
-          end
-        else
-          say "'#{file}' does not exist in Dotify.", :blue
+        say "'#{file}' does not exist in Dotify.", :blue unless file.linked?
+        if options[:force] == true || yes?("Do you want to unlink #{file} from the home directory? [Yn]", :blue)
+          file.unlink
+          say_status :unlinked, file.dotfile
         end
       end
 
       def link_file(file, options = {})
-        file = Files.filename(file)
-        home = Files.dotfile(file)
-        path = Files.dotify(file)
-        status = case
-                 when !File.exists?(home) then :linked
-                 when File.exists?(home) then :replaced; end
-        if File.exists?(path)
-          if options[:force] == true || yes?("Do you want to link #{file} to the home directory? [Yn]", :blue)
-            FileUtils.rm_rf(home, :verbose => false)
-            FileUtils.ln_s(path, home, :verbose => false)
-            say_status status, home
-          end
-        else
-          say "'#{file}' does not exist in the home directory.", :blue
-        end
-      end
-
-      def remove_dotify_file(file, options = {})
-        file = Files.filename(file)
-        home = Files.dotfile(file)
-        path = Files.dotify(file)
-        if File.exist?(home) && File.exist?(path)
-          if options[:force] == true || yes?("Do you want to remove #{file} from Dotify? [Yn]", :blue)
-            FileUtils.rm_rf(home, :verbose => false)
-            if File.directory? path
-              FileUtils.cp_r(path, home, :verbose => false)
-            else
-              FileUtils.cp(path, home, :verbose => false)
-            end
-            FileUtils.rm_rf(path, :verbose => false)
-            say_status :removed, path
-          end
-        elsif File.exist?(home) && !File.exist?(path)
-          say "The file '#{file}' is not managed by Dotify. Cannot remove.", :blue
-        else
-          say "The file '~/#{file}' does not exist", :blue
-        end
-      end
-
-      def add_dotify_file(file, options = {})
-        file = Files.filename(file)
-        home = Files.dotfile(file)
-        path = Files.dotify(file)
-        if File.exist?(home)
-          if options[:force] == true || yes?("Do you want to add #{file} to Dotify? [Yn]", :blue)
-            if File.directory? home
-              FileUtils.cp_r(home, path, :verbose => false)
-            else
-              FileUtils.cp(home, path, :verbose => false)
-              say_status :adding, path
-            end
-          end
-        else
-          if options[:single] == true
-            say "The file '#{file}' doesn't exist or Dotify already manages it.", :blue
-          end
+        return say_status :linked, file.dotfile if file.linked?
+        return say "'#{file}' does not exist in the home directory.", :blue unless file.in_home_dir?
+        if options[:force] == true || yes?("Do you want to link #{file} to the home directory? [Yn]", :blue)
+          file.link
+          say_status :linked, file.dotfile
         end
       end
 

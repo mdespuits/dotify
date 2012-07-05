@@ -1,150 +1,116 @@
-require 'dotify/config'
-require 'dotify/list'
-require 'dotify/files'
-require 'fileutils'
+require 'spec_helper'
 
-describe Dotify::Files do
+module Dotify
+  describe Files do
 
-  before do
-    Dotify::Config.stub(:home).and_return '/home/tmp'
-  end
-  describe "methods" do
-    it "should respond to linked" do
-      Dotify::Files.should respond_to :linked
-    end
-    it "should respond to installed" do
-      Dotify::Files.should respond_to :installed
-    end
-    it "should respond to unlinked" do
-      Dotify::Files.should respond_to :unlinked
-    end
-  end
-
-  it "should split a filename correct" do
-    Dotify::Files.filename("some/random/path/to/file.txt").should == 'file.txt'
-    Dotify::Files.filename("another/path/no_extension").should == 'no_extension'
-  end
-
-  describe Dotify::Files, "#home" do
-    it "should return the path to the file when it is linked in the root" do
-      Dotify::Files.home.should == '/home/tmp'
-    end
-    it "should return the path to the file when it is linked in the root" do
-      Dotify::Files.home(".vimrc").should == '/home/tmp/.vimrc'
-      Dotify::Files.home("/spec/home/.bashrc").should == '/home/tmp/.bashrc'
-    end
-  end
-
-  describe Dotify::Files, "#dotify" do
-    it "should return the path to the file when it is linked in the root" do
-      Dotify::Files.dotify.should == '/home/tmp/.dotify'
-    end
-    it "should return the path to the file when it is linked in the root" do
-      Dotify::Files.dotify(".vimrc").should == '/home/tmp/.dotify/.vimrc'
-      Dotify::Files.dotify("/spec/home/.bashrc").should == '/home/tmp/.dotify/.bashrc'
-    end
-  end
-
-  describe Dotify::Files, "#linked" do
-    before do
-      Dotify::List.stub(:dotify) do
-        ['/spec/test/.bash_profile', '/spec/test/.bashrc', '/spec/test/.zshrc']
+    let(:home_files) {
+      [
+        @bashrc = double('unit1', :filename => '.bashrc', :added? => true, :linked? => false),
+        @gitconfig = double('unit2', :filename => '.gitconfig', :added? => false, :linked? => false),
+        @vimrc = double('unit3', :filename => '.vimrc', :added? => true, :linked? => true),
+      ]
+    }
+    describe "methods" do
+      %w[all linked unlinked uninstalled].each do |name|
+        it "should respond to #{name}" do
+          Files.should respond_to name
+        end
       end
     end
-    let!(:files) { Dotify::Files.linked }
-    it "should return the list of dotfiles in the dotify path" do
-      files.map! { |f| Dotify::Files.filename(f) }
-      files.should include '.bash_profile'
-      files.should include '.bashrc'
-      files.should include '.zshrc'
-    end
-    it "shoud yield the files if a block is given" do
-      yields = files.map { |f| [f, Dotify::Files.filename(f)] }
-      expect { |b| Dotify::Files.linked(&b) }.to yield_successive_args(*yields)
-    end
-  end
 
-  describe Dotify::Files, "#unlinked" do
-    before do
-      Dotify::Files.stub(:linked) do
-        ['/spec/test/.vimrc', '/spec/test/.bashrc', '/spec/test/.zshrc']
-      end
-      Dotify::Files.stub(:installed) do
-        ['/root/test/.bashrc', '/root/test/.zshrc']
+    describe Files, "#all" do
+      it "should pull the right files from List.home" do
+        files = [stub, stub, stub]
+        List.stub(:home).and_return files
+        Files.all.should == files
       end
     end
-    let(:unlinked) { Dotify::Files.unlinked }
-    it "should return the list of unlinked dotfiles in the root path" do
-      un = unlinked.map { |u| Dotify::Files.filename(u) }
-      un.should include '.vimrc'
-      un.should_not include '.bashrc'
-    end
-    it "shoud yield the unlinked files if a block is given" do
-      un = unlinked.map { |u| [u, Dotify::Files.filename(u)] }
-      expect { |b| Dotify::Files.unlinked(&b) }.to yield_successive_args(*un)
-    end
-  end
 
-  describe Dotify::Files, "#installed" do
-    before do
-      Dotify::Files.stub(:linked) do
-        %w[/spec/test/.zshrc /spec/test/.bashrc /spec/test/.vimrc /spec/test/.dotify]
+    describe Files, "#linked" do
+      before do
+        Files.stub(:all).and_return home_files
       end
-      Dotify::List.stub(:home) do
-        %w[/root/test/.bashrc /root/test/.vimrc]
+      let(:filenames) { Files.linked }
+      it "should return the right Units" do
+        filenames.should include @vimrc
+        filenames.should_not include @gitconfig
+        filenames.should_not include @bashrc
+      end
+      it "should yield the correct Units" do
+        expect { |b| Files.linked(&b) }.to yield_successive_args(*filenames)
       end
     end
-    let!(:installed) { Dotify::Files.installed }
-    it "should return the list of installed dotfiles in the root path" do
-      i = installed.map { |i| Dotify::Files.filename(i) }
-      i.should include '.vimrc'
-      i.should include '.bashrc'
-      i.should_not include '.zshrc'
-      i.should_not include '.dotify'
-    end
-    it "shoud yield the installed files if a block is given" do
-      i = installed.map { |i| [i, Dotify::Files.filename(i)] }
-      expect { |b| Dotify::Files.installed(&b) }.to yield_successive_args(*i)
-    end
-  end
 
-  describe Dotify::Files, "#uninstalled" do
-    before do
-      Dotify::Files.stub(:linked) do
-        %w[/spec/test/.zshrc /spec/test/.bashrc /spec/test/.vimrc /spec/test/.dotify]
+    describe Files, "#unlinked" do
+      before do
+        Files.stub(:all).and_return home_files
       end
-      Dotify::List.stub(:home) do
-        %w[/root/test/.zshrc /root/test/.bashrc /root/test/.pryrc /root/test/.dropbox]
+      let(:filenames) { Files.unlinked }
+      it "should return the right Units" do
+        filenames.should include @gitconfig
+        filenames.should include @bashrc
+        filenames.should_not include @vimrc
+      end
+      it "should yield the correct Units" do
+        expect { |b| Files.unlinked(&b) }.to yield_successive_args(*filenames)
       end
     end
-    let(:uninstalled) { Dotify::Files.uninstalled }
-    it "should return the list of uninstalled dotfiles in the root path" do
-      u = uninstalled.map { |i| Dotify::Files.filename(i) }
-      u.should_not include '.zshrc'
-      u.should_not include '.bashrc'
-      u.should include '.pryrc'
-      u.should include '.dropbox'
-    end
-    it "shoud yield the installed files if a block is given" do
-      u = uninstalled.map { |i| [i, Dotify::Files.filename(i)] }
-      expect { |b| Dotify::Files.uninstalled(&b) }.to yield_successive_args(*u)
-    end
-  end
 
-  describe Dotify::Files, "#link_dotfile" do
-    it "should receive a file and link it into the root path" do
-      first = File.join(Dotify::Config.path, ".vimrc")
-      FileUtils.should_receive(:ln_s).with(Dotify::Files.filename(first), Dotify::Config.home).once
-      Dotify::Files.link_dotfile first
+    describe Files, "#uninstalled" do
+      before do
+        Files.stub(:all).and_return home_files
+      end
+      let(:filenames) { Files.uninstalled }
+      it "should return the right Units" do
+        filenames.should include @gitconfig
+        filenames.should_not include @bashrc
+        filenames.should_not include @vimrc
+      end
+      it "should yield the correct Units" do
+        expect { |b| Files.uninstalled(&b) }.to yield_successive_args(*filenames)
+      end
     end
-  end
 
-  describe Dotify::Files, "#unlink_dotfile" do
-    it "should receive a file and remove it from the root" do
-      first = "/spec/test/.file"
-      FileUtils.stub(:rm_rf).with(File.join(Dotify::Config.home, Dotify::Files.filename(first))).once
-      Dotify::Files.unlink_dotfile first
-      FileUtils.unstub(:rm_rf)
+    it "should split a filename correct" do
+      Files.filename("some/random/path/to/file.txt").should == 'file.txt'
+      Files.filename("another/path/no_extension").should == 'no_extension'
+    end
+
+    describe Files, "#home" do
+      it "should point to the home directory" do
+        Files.home.should == '/tmp/home'
+      end
+      it "should return a absolute path to the file in the home directory" do
+        Files.home(".vimrc").should == '/tmp/home/.vimrc'
+        Files.home("/spec/home/.bashrc").should == '/tmp/home/.bashrc'
+      end
+    end
+
+    describe Files, "#dotify" do
+      it "should point to the Dotify directory" do
+        Files.dotify.should == '/tmp/home/.dotify'
+      end
+      it "should return a absolute path to the file in Dotify" do
+        Files.dotify(".vimrc").should == '/tmp/home/.dotify/.vimrc'
+        Files.dotify("/spec/home/.bashrc").should == '/tmp/home/.dotify/.bashrc'
+      end
+    end
+
+    describe Files, "#link_dotfile" do
+      it "should receive a file and link it into the root path" do
+        first = File.join(Config.path, ".vimrc")
+        FileUtils.should_receive(:ln_s).with(Files.filename(first), Config.home).once
+        Files.link_dotfile first
+      end
+    end
+
+    describe Files, "#unlink_dotfile" do
+      it "should receive a file and remove it from the root" do
+        first = "/spec/test/.file"
+        FileUtils.stub(:rm_rf).with(File.join(Config.home, Files.filename(first))).once
+        Files.unlink_dotfile first
+        FileUtils.unstub(:rm_rf)
+      end
     end
   end
 end

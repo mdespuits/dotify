@@ -31,13 +31,15 @@ To install Dotify, you must first run `dotify install` in your terminal.
     $ dotify install
         create /Users/computer-user/.dotify
         create /Users/computer-user/.dotrc
-    Do you want to add .bash_history to Dotify? [Yn] n
-    Do you want to add .bashrc to Dotify? [Yn] y
-        create /Users/mattbridges/.dotify/.bashrc
+    Editing config file...
+    Do you want to link .bashrc to the home directory? [Yn] n
+        linked  /Users/computer-user/.bashrc
+    Do you want to link .dotrc to the home directory? [Yn] n
+        linked  /Users/computer-user/.dotrc
     Do you want to add .railsrc to Dotify? [Yn] n
-        create /Users/mattbridges/.dotify/.railsrc
+        linked  /Users/computer-user/.railsrc
     Do you want to add .zshrc to Dotify? [Yn] n
-        create /Users/mattbridges/.dotify/.zshrc
+        linked  /Users/computer-user/.zshrc
     ...
 
 This will first create a `.dotify` directory in your home directory as well as a `.dotrc` file for Dotify configuration (yes, it is more dotfiles, but this is a good thing!).
@@ -46,61 +48,32 @@ During the installation process, a Vim instance will open with a sample `.dotrc`
 
 Alternatively, you could run `dotify setup` to setup Dotify's configuration, followed by `dotify install` to add the initial files into Dotify.
 
-### Add single files
+### Link single files
 
-After you have setup Dotify, you can add files one by one if you did not add them during setup
+After you have setup Dotify, you can add files one by one if you did not add them during setup.
 
-    $ dotify add .vimrc
-          create  /Users/mattbridges/.vimrc
+    $ dotify link .vimrc
+        linked  /Users/computer-user/.vimrc
 
-### Remove single files
+### Unlink the chains...
 
-If you don't want a particular dotfile anymore? You can just remove it.
-
-***This actually removes the file from the home directory. Do this at your own risk***.
-
-    $ dotify remove .vimrc
-          remove  /Users/mattbridges/.vimrc
-
-If you do this and decide to change your mind, the file is still located in the `~/.dotify` directory. You can re-link it by running `dotify link` again.
-
-### Link up your files
-
-This is the heart of the Dotify tool. This command will link the files within the `~/.dotify` directory into your home directory.
-
-    $ dotify link
-    Do you want to link .bash_profile to the home directory? [Yn] Y
-          linked  /Users/mattbridges/.bash_profile
-    Do you want to link .dotrc to the home directory? [Yn] n
-    Do you want to link .gitconfig to the home directory? [Yn] Y
-          linked  /Users/mattbridges/.gitconfig
-    ...
-
-You can also link files one-by-one by passing the filename to the `link` task.
-
-    $ dotify link .bashrc
-    Do you want to link ~/.bashrc? [Yn] Y
-          linked  /Users/mattbridges/.bashrc
-
-### Unlink everything
-
-Don't want any of the dotfiles anymore? Well, I'm not one to question. Go ahead and wipe them out.
+Don't want any of the dotfiles anymore? Or want to drop one? Well, I'm not one to question. Go ahead and move them back into the home directory.
 
     $ dotify unlink
-    Do you want to unlink .bashrc from the home directory? [Yn] y
-          unlinked  /Users/computer-user/.bashrc
-    Do you want to unlink .dotrc from the home directory? [Yn] n
-    Do you want to unlink .gemrc from the home directory? [Yn] y
-          unlinked  /Users/computer-user/.gemrc
+    Do you want to unlink .bash_profile from the home directory? [Yn] Y
+        unlinked  /Users/computer-user/.bash_profile
+    Do you want to unlink .dotrc from the home directory? [Yn] Y
+        unlinked  /Users/computer-user/.dotrc
+    Do you want to unlink .gemrc from the home directory? [Yn]
     ...
 
-Should you run this horrid task accidentally, you can simply run `dotify link` again if you want to restore your previous settings.
+Should you run this task and decide to change your mind, you can simply run `dotify link` or `dotify link [FILE]` again if you want to restore your changes.
 
 By default, `unlink` loops through all of the Dotify files. You can also pass a filename to `unlink` to unlink a single file.
 
     $ dotify unlink .bashrc
     Are you sure you want to remove ~/.bashrc? [Yn] Y
-       remove /Users/mattbridges/.bashrc
+        unlinked  /Users/computer-user/.bashrc
 
 ## Versioning
 
@@ -149,35 +122,20 @@ The same can be done for the home directory when running `dotify setup`. There a
 
 More configuration options will likely be added in future versions, so be sure to check up here for your options.
 
-## Clarifying the add/remove/link/unlink tasks
-
-Here is a little clarification on the `add`/`remove`/`link`/`unlink` tasks.
-
-* `dotify add` adds one or more dotfiles in the users' home directory into Dotify.
-* `dotify remove` removes one or more linked dotfiles from Dotify and returns them to the home directory.
-* `dotify link` links one or more files added to Dotify into the home directory.
-* `dotify unlink` simply removes one or more home directory files that are linked into Dotify.
-
-For instructions on how to use these methods, use `dotify help [TASK]` for further explanation.
-
 ## Not sure what to do?
 
 This tool is powered by the amazing library, [Thor](http://whatisthor.com/). You can use the `help` task like so:
 
     $ dotify help
     Tasks:
-      dotify add {{FILENAME}}     # Add a one or more dotfiles to Dotify. (FILENAME is optional)
       dotify edit [FILE]          # Edit a dotify file
       dotify help [TASK]          # Describe available tasks or one specific task
       dotify install              # Install files from your home directory into Dotify
-      dotify link {{FILENAME}}    # Link up one or all of your dotfiles (FILENAME is optional)
-      dotify remove {{FILENAME}}  # Remove a single dotfile from Dotify (FILENAME is optional)
-      dotify save                 # Commit Dotify files and push to Github
+      dotify link [[FILENAME]]    # Link up one or all of your dotfiles (FILENAME is optional)
+      dotify save                 # Save Dotify files and push to Github.
       dotify setup                # Setup your system for Dotify to manage your dotfiles
-      dotify unlink {{FILENAME}}  # Unlink one or all of your dotfiles (FILENAME is optional)
+      dotify unlink [[FILENAME]]  # Unlink one or all of your dotfiles (FILENAME is optional)
       dotify version              # Check your Dotify version
-
-And if you want a little clarity on one of the command you can run `dotify help [TASK]` to find out what other options you have in the other tasks.
 
 ## Contributing
 

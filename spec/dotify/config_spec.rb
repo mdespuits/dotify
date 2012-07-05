@@ -1,77 +1,76 @@
-require 'dotify/errors'
-require 'dotify/config'
+require 'spec_helper'
 
-describe Dotify::Config do
-  before { Thor::Util.stub(:user_home).and_return '/tmp/home' }
-  describe Dotify::Config, "#installed?" do
-    it "should return true if Dotify has been setup" do
-      File.should_receive(:exists?).with(Dotify::Config.path).and_return(true)
-      File.should_receive(:directory?).with(Dotify::Config.path).and_return(true)
-      Dotify::Config.installed?.should == true
-    end
-    it "should return false if Dotify has not been setup" do
-      File.should_receive(:exists?).with(Dotify::Config.path).and_return(true)
-      File.should_receive(:directory?).with(Dotify::Config.path).and_return(false)
-      Dotify::Config.installed?.should == false
-    end
-  end
-
-  describe Dotify::Config, "#home" do
-    before { Thor::Util.stub(:user_home).and_return("/tmp/home") }
-    it "should return the home directory when called without a filename" do
-      Dotify::Config.home.should == Thor::Util.user_home
-    end
-  end
-
-  describe "options" do
-    before do
-      Dotify::Config.stub(:config)  do
-        { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
+module Dotify
+  describe Config do
+    before {
+      Config.unstub(:home)
+      Thor::Util.stub(:user_home).and_return '/home/tmp'
+    }
+    describe Config, "#installed?" do
+      it "should return true if Dotify has been setup" do
+        File.should_receive(:exists?).with(Config.path).and_return(true)
+        File.should_receive(:directory?).with(Config.path).and_return(true)
+        Config.installed?.should == true
+      end
+      it "should return false if Dotify has not been setup" do
+        File.should_receive(:exists?).with(Config.path).and_return(true)
+        File.should_receive(:directory?).with(Config.path).and_return(false)
+        Config.installed?.should == false
       end
     end
-    it "should be able to show the home path" do
-      Dotify::Config.home.should == Thor::Util.user_home
-    end
-    it "should be able to show the dotify path" do
-      Dotify::Config.path.should == File.join(Dotify::Config.home, '.dotify')
-    end
-    it "should set a default editor" do
-      Dotify::Config.editor.should == Dotify::Config::EDITOR
-    end
-    it "should allow a custom editor" do
-      Dotify::Config.stub(:config)  do
-        { :editor => 'subl' }
-      end
-      Dotify::Config.editor.should == 'subl'
-    end
-  end
 
-  describe Dotify::Config, "#file" do
-    it "should return the right page" do
-      Dotify::Config.stub(:home).and_return('/tmp')
-      Dotify::Config.file.should == '/tmp/.dotrc'
-    end
-  end
-
-  describe "ignore files" do
-    before do
-      Dotify::Config.stub(:config)  do
-        { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
+    describe Config, "#home" do
+      it "should return the home directory when called without a filename" do
+        Config.home.should == Thor::Util.user_home
       end
     end
-    it "should have a default set of dotfiles" do
-      Dotify::Config.stub(:config).and_return({})
-      Dotify::Config.ignore(:dotify).should include '.git'
-      Dotify::Config.ignore(:dotify).should include '.gitmodule'
-      Dotify::Config.ignore(:dotfiles).should include '.dropbox'
-      Dotify::Config.ignore(:dotfiles).should include '.Trash'
-      Dotify::Config.ignore(:dotfiles).should include '.dotify'
+
+    describe "options" do
+      before do
+        Config.stub(:config)  do
+          { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
+        end
+      end
+      it "should be able to show the dotify path" do
+        Config.path.should == File.join(Config.home, '.dotify')
+      end
+      it "should set a default editor" do
+        Config.editor.should == Config::EDITOR
+      end
+      it "should allow a custom editor" do
+        Config.stub(:config)  do
+          { :editor => 'subl' }
+        end
+        Config.editor.should == 'subl'
+      end
     end
-    it "should retrieve the list of dotfiles to ignore in the home directory" do
-      Dotify::Config.ignore(:dotfiles).should include '.gemrc'
+
+    describe Config, "#file" do
+      it "should return the right page" do
+        Config.file.should == '/home/tmp/.dotrc'
+      end
     end
-    it "should retrieve the list of dotify files to ignore" do
-      Dotify::Config.ignore(:dotify).should include '.gitmodule'
+
+    describe "ignore files" do
+      before do
+        Config.stub(:config)  do
+          { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
+        end
+      end
+      it "should have a default set of dotfiles" do
+        Config.stub(:config).and_return({})
+        Config.ignore(:dotify).should include '.git'
+        Config.ignore(:dotify).should include '.gitmodule'
+        Config.ignore(:dotfiles).should include '.dropbox'
+        Config.ignore(:dotfiles).should include '.Trash'
+        Config.ignore(:dotfiles).should include '.dotify'
+      end
+      it "should retrieve the list of dotfiles to ignore in the home directory" do
+        Config.ignore(:dotfiles).should include '.gemrc'
+      end
+      it "should retrieve the list of dotify files to ignore" do
+        Config.ignore(:dotify).should include '.gitmodule'
+      end
     end
   end
 end
