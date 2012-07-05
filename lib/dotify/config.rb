@@ -9,7 +9,7 @@ module Dotify
     CONFIG_FILE = '.dotrc'
     EDITOR = 'vim'
     DEFAULT_IGNORE = {
-      :dotify => %w[.git .gitmodule],
+      :dotify => %w[.DS_Store .git .gitmodule],
       :dotfiles => %w[.DS_Store .Trash .dropbox .dotify]
     }
 
