@@ -5,6 +5,10 @@ require 'fileutils'
 
 describe Dotify::Files do
 
+
+  before do
+    Dotify::Config.stub(:home).and_return '/home/tmp'
+  end
   describe "methods" do
     it "should respond to linked" do
       Dotify::Files.should respond_to :linked
@@ -22,19 +26,23 @@ describe Dotify::Files do
     Dotify::Files.filename("another/path/no_extension").should == 'no_extension'
   end
 
-  describe Dotify::Files, "#dotfile" do
+  describe Dotify::Files, "#home" do
     it "should return the path to the file when it is linked in the root" do
-      Dotify::Config.stub(:home).and_return '/home'
-      Dotify::Files.dotfile(".vimrc").should == '/home/.vimrc'
-      Dotify::Files.dotfile("/spec/home/.bashrc").should == '/home/.bashrc'
+      Dotify::Files.home.should == '/home/tmp'
+    end
+    it "should return the path to the file when it is linked in the root" do
+      Dotify::Files.home(".vimrc").should == '/home/tmp/.vimrc'
+      Dotify::Files.home("/spec/home/.bashrc").should == '/home/tmp/.bashrc'
     end
   end
 
   describe Dotify::Files, "#dotify" do
     it "should return the path to the file when it is linked in the root" do
-      Dotify::Config.stub(:path).and_return '/tmp'
-      Dotify::Files.dotify(".vimrc").should == '/tmp/.vimrc'
-      Dotify::Files.dotify("/spec/home/.bashrc").should == '/tmp/.bashrc'
+      Dotify::Files.dotify.should == '/home/tmp/.dotify'
+    end
+    it "should return the path to the file when it is linked in the root" do
+      Dotify::Files.dotify(".vimrc").should == '/home/tmp/.dotify/.vimrc'
+      Dotify::Files.dotify("/spec/home/.bashrc").should == '/home/tmp/.dotify/.bashrc'
     end
   end
 
@@ -118,22 +126,6 @@ describe Dotify::Files do
     it "shoud yield the installed files if a block is given" do
       uninstalled = Dotify::Files.uninstalled.map { |i| [i, Dotify::Files.filename(i)] }
       expect { |b| Dotify::Files.uninstalled(&b) }.to yield_successive_args(*uninstalled)
-    end
-  end
-
-  describe Dotify::Files, "#template?" do
-    it "should return true if the string given is a .tt or .erb template" do
-      Dotify::Files.template?("testing.erb").should == true
-      Dotify::Files.template?("testing.tt").should == true
-      Dotify::Files.template?("/Users/fake/path/to/testing.tt").should == true
-      Dotify::Files.template?("/Users/another/fake/path/to/testing.erb").should == true
-    end
-    it "should return false if the string given is not a .tt or .erb template" do
-      Dotify::Files.template?(".tt.testing").should == false
-      Dotify::Files.template?("erbit.txt").should == false
-      Dotify::Files.template?(".erb.erbit.txt").should == false
-      Dotify::Files.template?("/Users/fake/path/to/testing.txt").should == false
-      Dotify::Files.template?("/Users/another/fake/path/to/testing.rb").should == false
     end
   end
 

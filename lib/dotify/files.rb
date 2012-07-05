@@ -50,12 +50,13 @@ module Dotify
         filename(file).match(/(tt|erb)\Z/) ? true : false
       end
 
-      def dotfile(file)
-        File.join(Config.home, filename(file))
+      def dotfile(file = nil)
+        file.nil? ? Config.home : File.join(Config.home, filename(file))
       end
+      alias :home :dotfile
 
-      def dotify(file)
-        File.join(Config.path, filename(file))
+      def dotify(file = nil)
+        file.nil? ? Config.path : File.join(Config.path, filename(file))
       end
 
       def link_dotfile(file)
@@ -63,7 +64,7 @@ module Dotify
       end
 
       def unlink_dotfile(file)
-        FileUtils.rm_rf File.join(Config.home, filename(file))
+        FileUtils.rm_rf dotfile(file)
       end
 
     end
