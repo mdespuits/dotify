@@ -84,14 +84,16 @@ module Dotify
 
     desc :version, "Check your Dotify version"
     method_option :verbose, :aliases => '-v', :default => false, :type => :boolean, :desc => "Output any errors that occur during the Version check."
+    method_option :check, :aliases => '-c', :default => false, :type => :boolean, :desc => "Check Rubygems.org to see if your installed version of Dotify is out of date."
     def version
+      return say "Dotify Version: v#{Dotify.version}", :blue unless options[:check]
       if VersionChecker.out_of_date?
         say "Your version of Dotify is out of date.", :yellow
         say "  Your Version:   #{Dotify.version}", :blue
         say "  Latest Version: #{VersionChecker.version}", :blue
         say "I recommend that you uninstall Dotify completely before updating", :yellow
       else
-        say "Your version of Dotify is up to date: #{Dotify::VERSION}", :blue
+        say "Your version of Dotify is up to date: #{Dotify.version}", :blue
       end
     rescue Exception => e
       say "There was an error checking your Dotify version. Please try again.", :red
