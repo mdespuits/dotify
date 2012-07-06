@@ -44,11 +44,11 @@ module Dotify
     end
 
     def dotify
-      @dotify ||= File.join(Config.path, @filename)
+      @dotify ||= Config.path(@filename)
     end
 
     def dotfile
-      @dotfile ||= File.join(Config.home, @filename)
+      @dotfile ||= Config.home(@filename)
     end
     alias :home :dotfile
 
