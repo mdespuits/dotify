@@ -148,9 +148,9 @@ module Dotify
       # Link a single file
       return link_file Unit.new(file), options unless file.nil?
       # Relink the files
-      return Files.linked { |file| link_file(file, options) } if options[:relink]
+      return Collection.linked { |file| link_file(file, options) } if options[:relink]
       # Link the files
-      Files.unlinked { |file| link_file(file, options) }
+      Collection.unlinked { |file| link_file(file, options) }
     end
 
     desc 'unlink [[FILENAME]]', "Unlink one or all of your dotfiles (FILENAME is optional)"
@@ -166,7 +166,7 @@ module Dotify
       # Unlink a single file
       return unlink_file Unit.new(file), options unless file.nil?
       # Unlink the files
-      Files.linked { |file| unlink_file(file, options) }
+      Collection.linked { |file| unlink_file(file, options) }
     end
 
     no_tasks do

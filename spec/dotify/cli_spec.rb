@@ -30,12 +30,12 @@ module Dotify
 
     describe CLI, "#link" do
       it "should loop through all unlinked files" do
-        Files.should_receive(:unlinked)
+        Collection.should_receive(:unlinked)
         cli.link
       end
       it "should relink all of the files located in Dotify" do
-        Files.should_not_receive(:unlinked)
-        Files.should_receive(:linked)
+        Collection.should_not_receive(:unlinked)
+        Collection.should_receive(:linked)
         cli.stub(:options).and_return({ :relink => true })
         cli.link
       end
@@ -52,7 +52,7 @@ module Dotify
 
     describe CLI, "#unlink" do
       it "should loop through all unlinked files" do
-        Files.should_receive(:linked)
+        Collection.should_receive(:linked)
         cli.unlink
       end
       it "attempt to link one single file" do

@@ -1,7 +1,7 @@
 Dotify::Config.load_config!
 
 module Dotify
-  class Files
+  class Collection
     class << self
 
       # All

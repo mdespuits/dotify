@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Dotify
-  describe Files do
+  describe Collection do
 
     let(:home_files) {
       [
@@ -13,46 +13,46 @@ module Dotify
     describe "methods" do
       %w[all linked unlinked].each do |name|
         it "should respond to #{name}" do
-          Files.should respond_to name
+          Collection.should respond_to name
         end
       end
     end
 
-    describe Files, "#all" do
+    describe Collection, "#all" do
       it "should pull the right files from List.home" do
         files = [stub, stub, stub]
         List.stub(:home).and_return files
-        Files.all.should == files
+        Collection.all.should == files
       end
     end
 
-    describe Files, "#linked" do
+    describe Collection, "#linked" do
       before do
-        Files.stub(:all).and_return home_files
+        Collection.stub(:all).and_return home_files
       end
-      let(:filenames) { Files.linked }
+      let(:filenames) { Collection.linked }
       it "should return the right Units" do
         filenames.should include @vimrc
         filenames.should_not include @gitconfig
         filenames.should_not include @bashrc
       end
       it "should yield the correct Units" do
-        expect { |b| Files.linked(&b) }.to yield_successive_args(*filenames)
+        expect { |b| Collection.linked(&b) }.to yield_successive_args(*filenames)
       end
     end
 
-    describe Files, "#unlinked" do
+    describe Collection, "#unlinked" do
       before do
-        Files.stub(:all).and_return home_files
+        Collection.stub(:all).and_return home_files
       end
-      let(:filenames) { Files.unlinked }
+      let(:filenames) { Collection.unlinked }
       it "should return the right Units" do
         filenames.should include @gitconfig
         filenames.should include @bashrc
         filenames.should_not include @vimrc
       end
       it "should yield the correct Units" do
-        expect { |b| Files.unlinked(&b) }.to yield_successive_args(*filenames)
+        expect { |b| Collection.unlinked(&b) }.to yield_successive_args(*filenames)
       end
     end
 
