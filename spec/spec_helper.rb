@@ -14,6 +14,11 @@ RSpec.configure do |config|
   config.filter_run :focus
 
   config.before(:each) do
-    Dotify::Config.stub(:home) { '/tmp/home' }
+    class Thor
+      module Util
+      end
+    end
+    Thor::Util.stub(:user_home) { '/tmp/home' }
+    #Dotify::Config.stub(:home) { '/tmp/home' }
   end
 end

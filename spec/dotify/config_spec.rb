@@ -2,10 +2,6 @@ require 'spec_helper'
 
 module Dotify
   describe Config do
-    before {
-      Config.unstub(:home)
-      Thor::Util.stub(:user_home).and_return '/tmp/home'
-    }
     describe Config, "#installed?" do
       it "should return true if Dotify has been setup" do
         File.should_receive(:exists?).with(Config.path).and_return(true)
