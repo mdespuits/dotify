@@ -1,6 +1,3 @@
-require 'thor/actions'
-require 'thor/shell'
-
 Dotify::Config.load_config!
 
 module Dotify
@@ -31,17 +28,13 @@ module Dotify
         unl.each {|u| yield u }
       end
 
-      def filename(file)
-        File.basename(file)
-      end
-
       def dotfile(file = nil)
-        file.nil? ? Config.home : File.join(Config.home, filename(file))
+        file.nil? ? Config.home : File.join(Config.home, File.basename(file))
       end
       alias :home :dotfile
 
       def dotify(file = nil)
-        file.nil? ? Config.path : File.join(Config.path, filename(file))
+        file.nil? ? Config.path : File.join(Config.path, File.basename(file))
       end
 
     end

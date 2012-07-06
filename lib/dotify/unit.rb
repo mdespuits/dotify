@@ -44,11 +44,11 @@ module Dotify
     end
 
     def dotify
-      @dotify ||= Files.dotify(@filename)
+      @dotify ||= File.join(Config.path, @filename)
     end
 
     def dotfile
-      @dotfile ||= Files.dotfile(@filename)
+      @dotfile ||= File.join(Config.home, @filename)
     end
 
     def added?

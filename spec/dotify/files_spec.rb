@@ -56,11 +56,6 @@ module Dotify
       end
     end
 
-    it "should split a filename correct" do
-      Files.filename("some/random/path/to/file.txt").should == 'file.txt'
-      Files.filename("another/path/no_extension").should == 'no_extension'
-    end
-
     describe Files, "#home" do
       it "should point to the home directory" do
         Files.home.should == '/tmp/home'
