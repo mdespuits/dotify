@@ -2,11 +2,11 @@
 
 [![Build Status](https://secure.travis-ci.org/mattdbridges/dotify.png)](http://travis-ci.org/mattdbridges/dotify) [![Dependency Status](https://gemnasium.com/mattdbridges/dotify.png)](https://gemnasium.com/mattdbridges/dotify)
 
-Dotify is a simple CLI tool to make managing dotfiles on your system easy. When developing on a Linux/Unix basic system, keeping track of all of those dotfiles in the home directory can be pain. Some developers do not even bother managing them and many have come up with their own static or even dynamic way of managing them. This is a need in the community, and this tool makes managing these crazy files a breeze.
+Dotify is a simple CLI tool to make managing dotfiles on your system easy. When developing on a Linux/Unix-based system, keeping track of all of those dotfiles in the home directory can be pain. Some developers do not even bother managing them and many have come up with their own static or even dynamic way of managing them. This is a need in the community, and this tool makes managing these crazy files a breeze.
 
 ## Ruby Version Support
 
-As this is a gem for use on your local system, I understand there are still many Ruby developers still stuck with using Ruby 1.8. As such, Dotify supports the following Ruby versions definitively:
+As this is a gem for use on your local system, I know there are still many Ruby developers still stuck with using Ruby 1.8. As such, Dotify supports the following Ruby versions definitively:
 
 * 1.8.7
 * 1.9.2
@@ -16,15 +16,11 @@ As this is a gem for use on your local system, I understand there are still many
 
 ## Installation
 
-It is highly recommended that you just install this gem manually since it is only managing files on your local system:Add this line to your application's Gemfile:
+Run this command in the command line to install Dotify:
 
     $ gem install dotify
 
-## Usage
-
-As dotify is a CLI tool, everything is done in the command line. Here are the current available methods for managing dotfiles.
-
-### Setting up and installing Dotify
+## Installation
 
 To install Dotify, you must first run `dotify install` in your terminal.
 
@@ -48,14 +44,14 @@ During the installation process, a Vim instance will open with a sample `.dotrc`
 
 Alternatively, you could run `dotify setup` to setup Dotify's configuration, followed by `dotify install` to add the initial files into Dotify.
 
-### Link single files
+## Link single files
 
 After you have setup Dotify, you can add files one by one if you did not add them during setup.
 
     $ dotify link .vimrc
         linked  /Users/computer-user/.vimrc
 
-### Unlink the chains...
+## Unlink the chains...
 
 Don't want any of the dotfiles anymore? Or want to drop one? Well, I'm not one to question. Go ahead and move them back into the home directory.
 
@@ -91,7 +87,7 @@ The whole purpose of this gem was to manage the dotfiles on your system. What be
 
 The `.dotrc` file in your home directory serves as the configuration file for Dotify. It is a [YAML](http://www.yaml.org/) formatted file.
 
-#### Dotify Editor
+### Dotify Editor
 
 When you run `dotify edit [DOTFILE]`, by default the file opens in Vim for editing. You can change this by adding this following to your `.dotrc` file.
 
@@ -100,7 +96,7 @@ When you run `dotify edit [DOTFILE]`, by default the file opens in Vim for editi
 
 Vim and Emacs are the only two editors that have been successfully used with this configuration option, but if you find another, please [let me know](https://github.com/mattdbridges/dotify/issues/new) and I will update the documentation.
 
-#### Ignoring files
+### Ignoring files
 
 When you are linking files in your Dotify directory, some files you do not want ever want to link (`.git`, `.gitmodules`, `.gitignore`, .etc) because they are used specifically for that directory (such as git versioning). You can configure Dotify to ignore these files when calling `dotify link` in the `.dotrc` in this way:
 
