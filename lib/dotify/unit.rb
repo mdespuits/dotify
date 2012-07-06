@@ -50,6 +50,7 @@ module Dotify
     def dotfile
       @dotfile ||= File.join(Config.home, @filename)
     end
+    alias :home :dotfile
 
     def added?
       in_dotify? && !linked_to_dotify?

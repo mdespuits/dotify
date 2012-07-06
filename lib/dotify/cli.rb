@@ -179,7 +179,7 @@ module Dotify
         say "'#{file}' does not exist in Dotify.", :blue unless file.linked?
         if options[:force] == true || yes?("Do you want to unlink #{file} from the home directory? [Yn]", :blue)
           file.unlink
-          say_status :unlinked, file.dotfile
+          say_status :unlinked, file.home
         end
       end
 
@@ -188,7 +188,7 @@ module Dotify
         return say "'#{file}' does not exist in the home directory.", :blue unless file.in_home_dir?
         if options[:force] == true || yes?("Do you want to link #{file} to the home directory? [Yn]", :blue)
           file.link
-          say_status :linked, file.dotfile
+          say_status :linked, file.home
         end
       end
 

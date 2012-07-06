@@ -5,7 +5,7 @@ module Dotify
     class << self
 
       def home
-        result = units(Files.dotfile('.*'))
+        result = units(Files.home('.*'))
         filter_ignore_files!(result, :dotfiles)
       end
 
