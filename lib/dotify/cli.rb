@@ -36,7 +36,7 @@ module Dotify
     method_option :verbose, :aliases => '-v', :type => :boolean, :default => true,  :desc => "Display file creation and status updates."
     method_option :push,    :aliases => '-p', :type => :boolean, :default => false, :desc => "Force the push to the remote repository."
     def save
-      if File.exists? Files.dotify('.git') # if the Dotify directory has been made a git repo
+      if File.exists? Config.path('.git') # if the Dotify directory has been made a git repo
         repo = ::Git.open(Config.path)
         changed = repo.status.changed
         if changed.size > 0

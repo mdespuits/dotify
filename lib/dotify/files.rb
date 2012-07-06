@@ -3,6 +3,7 @@ Dotify::Config.load_config!
 module Dotify
   class Files
     class << self
+
       # All
       #
       # Pulls an array of Units from the home
@@ -26,15 +27,6 @@ module Dotify
         unl = self.all.select { |f| !f.linked? }
         return unl unless block_given?
         unl.each {|u| yield u }
-      end
-
-      def dotfile(file = nil)
-        file.nil? ? Config.home : File.join(Config.home, File.basename(file))
-      end
-      alias :home :dotfile
-
-      def dotify(file = nil)
-        file.nil? ? Config.path : File.join(Config.path, File.basename(file))
       end
 
     end

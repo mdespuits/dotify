@@ -56,25 +56,5 @@ module Dotify
       end
     end
 
-    describe Files, "#home" do
-      it "should point to the home directory" do
-        Files.home.should == '/tmp/home'
-      end
-      it "should return a absolute path to the file in the home directory" do
-        Files.home(".vimrc").should == '/tmp/home/.vimrc'
-        Files.home("/spec/home/.bashrc").should == '/tmp/home/.bashrc'
-      end
-    end
-
-    describe Files, "#dotify" do
-      it "should point to the Dotify directory" do
-        Files.dotify.should == '/tmp/home/.dotify'
-      end
-      it "should return a absolute path to the file in Dotify" do
-        Files.dotify(".vimrc").should == '/tmp/home/.dotify/.vimrc'
-        Files.dotify("/spec/home/.bashrc").should == '/tmp/home/.dotify/.bashrc'
-      end
-    end
-
   end
 end

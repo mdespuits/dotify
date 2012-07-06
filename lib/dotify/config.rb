@@ -19,8 +19,8 @@ module Dotify
         @dirname ||= DIRNAME
       end
 
-      def home(path = nil)
-        path.nil? ? user_home : File.join(user_home, path)
+      def home(file_or_path = nil)
+        file_or_path.nil? ? user_home : File.join(user_home, file_or_path)
       end
 
       def path(path = nil)
