@@ -19,12 +19,14 @@ module Dotify
         @dirname ||= DIRNAME
       end
 
-      def home
-        Thor::Util.user_home
+      def home(path = nil)
+        path.nil? ? user_home : File.join(user_home, path)
       end
 
-      def path
-        File.join(home, dirname)
+      def path(path = nil)
+        joins = [self.home, dirname]
+        joins << path unless path.nil?
+        File.join *joins
       end
 
       def installed?
@@ -53,6 +55,10 @@ module Dotify
       end
 
       private
+
+        def user_home
+          Thor::Util.user_home
+        end
 
         def symbolize_keys!(opts)
           sym_opts = {}

@@ -4,7 +4,7 @@ module Dotify
   describe Config do
     before {
       Config.unstub(:home)
-      Thor::Util.stub(:user_home).and_return '/home/tmp'
+      Thor::Util.stub(:user_home).and_return '/tmp/home'
     }
     describe Config, "#installed?" do
       it "should return true if Dotify has been setup" do
@@ -23,6 +23,17 @@ module Dotify
       it "should return the home directory when called without a filename" do
         Config.home.should == Thor::Util.user_home
       end
+      it "should return the home directory with appended path" do
+        Config.home(".vimrc").should == '/tmp/home/.vimrc'
+      end
+    end
+    describe Config, "#path" do
+      it "should be able to show the dotify path when not passed any arguments" do
+        Config.path.should == '/tmp/home/.dotify'
+      end
+      it "should be able to show the dotify path" do
+        Config.path('.vimrc').should == '/tmp/home/.dotify/.vimrc'
+      end
     end
 
     describe "options" do
@@ -30,9 +41,6 @@ module Dotify
         Config.stub(:config)  do
           { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
         end
-      end
-      it "should be able to show the dotify path" do
-        Config.path.should == File.join(Config.home, '.dotify')
       end
       it "should set a default editor" do
         Config.editor.should == Config::EDITOR
@@ -47,7 +55,7 @@ module Dotify
 
     describe Config, "#file" do
       it "should return the right page" do
-        Config.file.should == '/home/tmp/.dotrc'
+        Config.file.should == '/tmp/home/.dotrc'
       end
     end
 
