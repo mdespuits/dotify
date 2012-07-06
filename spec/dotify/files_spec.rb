@@ -5,9 +5,9 @@ module Dotify
 
     let(:home_files) {
       [
-        @bashrc = double('unit1', :filename => '.bashrc', :added? => true, :linked? => false),
-        @gitconfig = double('unit2', :filename => '.gitconfig', :added? => false, :linked? => false),
-        @vimrc = double('unit3', :filename => '.vimrc', :added? => true, :linked? => true),
+        @bashrc = double('unit1', :filename => '.bashrc', :linked? => false),
+        @gitconfig = double('unit2', :filename => '.gitconfig', :linked? => false),
+        @vimrc = double('unit3', :filename => '.vimrc', :linked? => true),
       ]
     }
     describe "methods" do

@@ -78,8 +78,6 @@ module Dotify
       it { should respond_to :home }
       it { should respond_to :linked? }
       it { should respond_to :linked }
-      it { should respond_to :added? }
-      it { should respond_to :added }
 
       it "should set the attributes properly" do
         unit.filename.should == '.vimrc'
@@ -139,21 +137,6 @@ module Dotify
       it "should return false if one or more checks fail" do
         unit.stub(:linked_to_dotify?).and_return false # stub dotify file exist check
         unit.linked?.should == false
-      end
-    end
-
-    describe Unit, "#added?" do
-      let(:unit) { Unit.new(".added") }
-      before do
-        unit.stub(:in_dotify?).and_return true # stub dotify file exist check
-      end
-      it "should return true if all checks work" do
-        unit.stub(:linked_to_dotify?).and_return false # stub identical file check
-        unit.should be_added
-      end
-      it "should return false if one or more checks fail" do
-        unit.stub(:linked_to_dotify?).and_return true # stub identical file check
-        unit.should_not be_added
       end
     end
 

@@ -32,11 +32,7 @@ module Dotify
 
     include Actions
 
-    # Attributes on the file itself
-    attr_accessor :filename, :dotify, :dotfile
-
-    # Attributes about the file's status in the filesystem
-    attr_accessor :linked, :added
+    attr_accessor :filename, :dotify, :dotfile, :linked
 
     def initialize(file)
       @filename = File.basename(file)
@@ -51,10 +47,6 @@ module Dotify
       @dotfile ||= Config.home(@filename)
     end
     alias :home :dotfile
-
-    def added?
-      in_dotify? && !linked_to_dotify?
-    end
 
     def linked?
       in_dotify? && linked_to_dotify?
@@ -73,7 +65,7 @@ module Dotify
     end
 
     def inspect
-      "#<Dotify::Unit @filename='#{@filename}' @added=#{added?} @linked=#{linked?}>"
+      "#<Dotify::Unit @filename='#{@filename}' @linked=#{linked?}>"
     end
 
     def linked_to_dotify?

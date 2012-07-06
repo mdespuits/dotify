@@ -23,9 +23,9 @@ module Dotify
         file_or_path.nil? ? user_home : File.join(user_home, file_or_path)
       end
 
-      def path(path = nil)
+      def path(file_or_path = nil)
         joins = [self.home, dirname]
-        joins << path unless path.nil?
+        joins << file_or_path unless file_or_path.nil?
         File.join *joins
       end
 
