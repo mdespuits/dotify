@@ -11,7 +11,7 @@ module Dotify
       ]
     }
     describe "methods" do
-      %w[all linked unlinked uninstalled].each do |name|
+      %w[all linked unlinked].each do |name|
         it "should respond to #{name}" do
           Files.should respond_to name
         end
@@ -56,21 +56,6 @@ module Dotify
       end
     end
 
-    describe Files, "#uninstalled" do
-      before do
-        Files.stub(:all).and_return home_files
-      end
-      let(:filenames) { Files.uninstalled }
-      it "should return the right Units" do
-        filenames.should include @gitconfig
-        filenames.should_not include @bashrc
-        filenames.should_not include @vimrc
-      end
-      it "should yield the correct Units" do
-        expect { |b| Files.uninstalled(&b) }.to yield_successive_args(*filenames)
-      end
-    end
-
     it "should split a filename correct" do
       Files.filename("some/random/path/to/file.txt").should == 'file.txt'
       Files.filename("another/path/no_extension").should == 'no_extension'
@@ -96,21 +81,5 @@ module Dotify
       end
     end
 
-    describe Files, "#link_dotfile" do
-      it "should receive a file and link it into the root path" do
-        first = File.join(Config.path, ".vimrc")
-        FileUtils.should_receive(:ln_s).with(Files.filename(first), Config.home).once
-        Files.link_dotfile first
-      end
-    end
-
-    describe Files, "#unlink_dotfile" do
-      it "should receive a file and remove it from the root" do
-        first = "/spec/test/.file"
-        FileUtils.stub(:rm_rf).with(File.join(Config.home, Files.filename(first))).once
-        Files.unlink_dotfile first
-        FileUtils.unstub(:rm_rf)
-      end
-    end
   end
 end

@@ -31,15 +31,6 @@ module Dotify
         unl.each {|u| yield u }
       end
 
-      # Uninstalled dotfiles are the dotfiles in the home
-      # directory that have not been loaded into Dotify or
-      # linked to the corresponding Dotify path.
-      def uninstalled
-        uni = self.all.select { |f| !f.added? && !f.linked? }
-        return uni unless block_given?
-        uni.each {|u| yield u }
-      end
-
       def filename(file)
         File.basename(file)
       end
@@ -51,14 +42,6 @@ module Dotify
 
       def dotify(file = nil)
         file.nil? ? Config.path : File.join(Config.path, filename(file))
-      end
-
-      def link_dotfile(file)
-        FileUtils.ln_s(filename(file), Config.home) == 0 ? true : false
-      end
-
-      def unlink_dotfile(file)
-        FileUtils.rm_rf dotfile(file)
       end
 
     end
