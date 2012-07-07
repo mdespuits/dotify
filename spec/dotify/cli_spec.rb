@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'dotify'
 require 'thor'
 
 module Dotify
@@ -7,6 +8,7 @@ module Dotify
     before do
       Dotify.stub(:installed?).and_return true
       cli.stub(:exec)
+      cli.stub(:collection) { Collection.new }
     end
 
     describe CLI, "#edit" do
@@ -29,13 +31,23 @@ module Dotify
     end
 
     describe CLI, "#link" do
+      before do
+        cli.stub(:collection).and_return(
+          double('collection', {
+            :unlinked => [double('.zshrc', :in_home_dir? => true, :linked? => false), double('.gitconfig', :in_home_dir? => true, :linked? => false)],
+            :linked => [double('.vimrc', :in_home_dir? => true, :linked? => true)]
+          })
+        )
+        cli.stub(:link_file)
+      end
       it "should loop through all unlinked files" do
-        Collection.should_receive(:unlinked)
+        cli.collection.should_receive(:unlinked)
+        cli.should_receive(:link_file).exactly(cli.collection.unlinked.size).times
         cli.link
       end
       it "should relink all of the files located in Dotify" do
-        Collection.should_not_receive(:unlinked)
-        Collection.should_receive(:linked)
+        cli.collection.should_not_receive(:unlinked)
+        cli.collection.should_receive(:linked)
         cli.stub(:options).and_return({ :relink => true })
         cli.link
       end
@@ -51,8 +63,18 @@ module Dotify
     end
 
     describe CLI, "#unlink" do
+      before do
+        cli.stub(:collection).and_return double(:linked => [double('.vimrc', :linked? => true), double('.bashrc', :linked? => true)])
+        cli.stub(:unlink_file)
+      end
       it "should loop through all unlinked files" do
-        Collection.should_receive(:linked)
+        cli.collection.should_receive(:linked)
+        cli.unlink
+      end
+      it "should call CLI#unlink_file the right number of times" do
+        cli.collection.should_receive(:linked)
+        cli.stub(:unlink_file)
+        cli.should_receive(:unlink_file).exactly(cli.collection.linked.size).times
         cli.unlink
       end
       it "attempt to link one single file" do
