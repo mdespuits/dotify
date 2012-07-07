@@ -7,8 +7,6 @@ module Dotify
 
     attr_accessor :units
 
-    # All
-    #
     # Pulls an array of Units from the home
     # directory.
     def initialize
@@ -23,14 +21,14 @@ module Dotify
     # Linked files are those files which have a
     # symbolic link pointing to the Dotify file.
     def linked
-      select { |f| f.linked? }
+      select(&:linked?)
     end
 
     # Unlinked files are, of course, the opposite
     # of linked files. These are Dotify files which
     # Have no home dir files that are linked to them.
     def unlinked
-      reject { |f| f.linked? }
+      reject(&:linked?)
     end
 
     def to_s
