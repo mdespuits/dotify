@@ -45,7 +45,7 @@ module Dotify
         cli.stub(:link_file)
       end
       it "should loop through all unlinked files" do
-        Dotify.collection.should_receive(:unlinked).and_return Dotify.collection.units.reject(&:linked?)
+        Dotify.collection.should_receive(:unlinked).and_return Dotify.collection.reject(&:linked?)
         cli.link
       end
       it "should call link_file on the right files" do
@@ -74,7 +74,7 @@ module Dotify
         cli.stub(:unlink_file)
       end
       it "should loop through all unlinked files" do
-        Dotify.collection.should_receive(:linked).and_return Dotify.collection.units.select(&:linked?)
+        Dotify.collection.should_receive(:linked).and_return Dotify.collection.select(&:linked?)
         cli.unlink
       end
       it "should call CLI#unlink_file the right number of times" do
