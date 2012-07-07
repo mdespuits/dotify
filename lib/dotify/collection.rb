@@ -15,7 +15,7 @@ module Dotify
 
     # Defined each method for Enumerable
     def each(&block)
-      @units.each(&block)
+      self.units.each(&block)
     end
 
     # Linked files are those files which have a

@@ -18,4 +18,8 @@ module Dotify
   def self.version
     VERSION
   end
+
+  def self.collection
+    @collection ||= Collection.new
+  end
 end

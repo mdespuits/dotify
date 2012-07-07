@@ -7,13 +7,23 @@ module Dotify
     let!(:cli) { CLI.new }
     before do
       Dotify.stub(:installed?).and_return true
-      cli.stub(:exec)
-      cli.stub(:collection) { Collection.new }
+      vimrc = Unit.new('.zshrc')
+      vimrc.stub(:linked?).and_return(true)
+      bash_profile = Unit.new('.bash_profile')
+      bash_profile.stub(:linked?).and_return(true)
+      gitconfig = Unit.new('.gitconfig')
+      gitconfig.stub(:linked?).and_return(false)
+      zshrc = Unit.new('.zshrc')
+      zshrc.stub(:linked?).and_return(false)
+      List.stub(:home).and_return([vimrc, bash_profile, gitconfig, zshrc])
     end
 
     describe CLI, "#edit" do
       let(:unit) { double('unit', :linked? => true, :dotify => '/tmp/dotify/.vimrc') }
-      before { Unit.stub(:new).and_return(unit) }
+      before do
+        Unit.stub(:new).and_return(unit)
+        cli.stub(:exec)
+      end
       it "should open the editor with the passed file" do
         cli.should_receive(:exec).with([Config.editor, unit.dotify].join(" "))
         cli.edit('.vimrc')
@@ -32,22 +42,19 @@ module Dotify
 
     describe CLI, "#link" do
       before do
-        cli.stub(:collection).and_return(
-          double('collection', {
-            :unlinked => [double('.zshrc', :in_home_dir? => true, :linked? => false), double('.gitconfig', :in_home_dir? => true, :linked? => false)],
-            :linked => [double('.vimrc', :in_home_dir? => true, :linked? => true)]
-          })
-        )
         cli.stub(:link_file)
       end
       it "should loop through all unlinked files" do
-        cli.collection.should_receive(:unlinked)
-        cli.should_receive(:link_file).exactly(cli.collection.unlinked.size).times
+        Dotify.collection.should_receive(:unlinked).and_return Dotify.collection.units.reject(&:linked?)
+        cli.link
+      end
+      it "should call link_file on the right files" do
+        cli.should_receive(:link_file).exactly(Dotify.collection.unlinked.size).times
         cli.link
       end
       it "should relink all of the files located in Dotify" do
-        cli.collection.should_not_receive(:unlinked)
-        cli.collection.should_receive(:linked)
+        Dotify.collection.should_not_receive(:unlinked)
+        Dotify.collection.should_receive(:linked).and_return []
         cli.stub(:options).and_return({ :relink => true })
         cli.link
       end
@@ -64,17 +71,14 @@ module Dotify
 
     describe CLI, "#unlink" do
       before do
-        cli.stub(:collection).and_return double(:linked => [double('.vimrc', :linked? => true), double('.bashrc', :linked? => true)])
         cli.stub(:unlink_file)
       end
       it "should loop through all unlinked files" do
-        cli.collection.should_receive(:linked)
+        Dotify.collection.should_receive(:linked).and_return Dotify.collection.units.select(&:linked?)
         cli.unlink
       end
       it "should call CLI#unlink_file the right number of times" do
-        cli.collection.should_receive(:linked)
-        cli.stub(:unlink_file)
-        cli.should_receive(:unlink_file).exactly(cli.collection.linked.size).times
+        cli.should_receive(:unlink_file).exactly(Dotify.collection.linked.size).times
         cli.unlink
       end
       it "attempt to link one single file" do

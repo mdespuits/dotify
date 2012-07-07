@@ -148,9 +148,9 @@ module Dotify
       # Link a single file
       return link_file Unit.new(file), options unless file.nil?
       # Relink the files
-      return collection.linked.each { |file| link_file(file, options) } if options[:relink]
+      return Dotify.collection.linked.each { |file| link_file(file, options) } if options[:relink]
       # Link the files
-      collection.unlinked.each { |file| link_file(file, options) }
+      Dotify.collection.unlinked.each { |file| link_file(file, options) }
     end
 
     desc 'unlink [[FILENAME]]', "Unlink one or all of your dotfiles (FILENAME is optional)"
@@ -166,14 +166,10 @@ module Dotify
       # Unlink a single file
       return unlink_file Unit.new(file), options unless file.nil?
       # Unlink the files
-      collection.linked.each { |file| unlink_file(file, options) }
+      Dotify.collection.linked.each { |file| unlink_file(file, options) }
     end
 
     no_tasks do
-
-      def collection
-        @collection ||= Collection.new
-      end
 
       def not_setup_warning
         say "Dotify has not been setup yet! You need to run 'dotify setup' first.", :yellow
