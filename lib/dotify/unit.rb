@@ -73,11 +73,9 @@ module Dotify
     end
 
     def symlink
-      begin
-        File.readlink dotfile
-      rescue
-        NoSymlink
-      end
+      File.readlink dotfile
+    rescue
+      NoSymlink
     end
 
   end
