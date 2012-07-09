@@ -5,8 +5,6 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 $:.unshift File.expand_path("../../lib", __FILE__)
-require 'dotify'
-Dir["./spec/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
@@ -19,6 +17,8 @@ RSpec.configure do |config|
       end
     end
     Thor::Util.stub(:user_home) { '/tmp/home' }
-    #Dotify::Config.stub(:home) { '/tmp/home' }
   end
 end
+
+require 'dotify'
+Dir["./spec/support/**/*.rb"].each { |f| require f }
