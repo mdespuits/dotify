@@ -10,7 +10,7 @@ module Dotify
     # Pulls an array of Units from the home
     # directory.
     def initialize
-      @units ||= List.home
+      @units ||= Filter.home
     end
 
     # Defined each method for Enumerable

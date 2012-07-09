@@ -19,15 +19,15 @@ module Dotify
       end
     end
 
-    it "should pull the right files from List.home" do
+    it "should pull the right files from Filter.home" do
       files = [stub, stub, stub]
-      List.stub(:home).and_return files
+      Filter.stub(:home).and_return files
       collection.units.should == files
     end
 
     describe Collection, "#linked" do
       before do
-        List.stub(:home).and_return home_files
+        Filter.stub(:home).and_return home_files
       end
       let(:linked) { collection.linked }
       it "should return the right Units" do
@@ -42,7 +42,7 @@ module Dotify
 
     describe Collection, "#unlinked" do
       before do
-        List.stub(:home).and_return home_files
+        Filter.stub(:home).and_return home_files
       end
       let(:unlinked) { collection.unlinked }
       it "should return the right Units" do

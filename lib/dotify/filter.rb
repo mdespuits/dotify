@@ -1,7 +1,7 @@
 require 'dotify'
 
 module Dotify
-  class List
+  class Filter
     class << self
 
       def home

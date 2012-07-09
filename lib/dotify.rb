@@ -7,7 +7,7 @@ module Dotify
 
   autoload :Config,     'dotify/config'
   autoload :Collection, 'dotify/collection'
-  autoload :List,       'dotify/list'
+  autoload :Filter,     'dotify/filter'
   autoload :Unit,       'dotify/unit'
   autoload :CLI,        'dotify/cli'
 

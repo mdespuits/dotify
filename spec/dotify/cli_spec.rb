@@ -15,7 +15,7 @@ module Dotify
       gitconfig.stub(:linked?).and_return(false)
       zshrc = Unit.new('.zshrc')
       zshrc.stub(:linked?).and_return(false)
-      List.stub(:home).and_return([vimrc, bash_profile, gitconfig, zshrc])
+      Filter.stub(:home).and_return([vimrc, bash_profile, gitconfig, zshrc])
     end
 
     describe CLI, "#edit" do
