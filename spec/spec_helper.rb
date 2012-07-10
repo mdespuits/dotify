@@ -5,6 +5,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 $:.unshift File.expand_path("../../lib", __FILE__)
+require 'thor/util'
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
@@ -12,10 +13,6 @@ RSpec.configure do |config|
   config.filter_run :focus
 
   config.before(:each) do
-    class Thor
-      module Util
-      end
-    end
     Thor::Util.stub(:user_home) { '/tmp/home' }
   end
 end
