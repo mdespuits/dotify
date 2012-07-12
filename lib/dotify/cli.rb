@@ -7,8 +7,6 @@ require 'net/http'
 require 'dotify'
 require 'dotify/version_checker'
 
-Dotify::Config.load_config!
-
 module Dotify
 
   class Git
