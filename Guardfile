@@ -8,7 +8,7 @@ guard 'rspec', :all_on_start => false, :all_after_pass => false, :notification =
 end
 
 
-guard 'cucumber', :notification => false, :all_on_pass => false, :all_on_start => false do
+guard 'cucumber', :cli => '--no-profile --color', :notification => false, :all_on_pass => false, :all_on_start => false do
   watch(%r{^features/.+\.feature$})
   watch(%r{^features/support/.+$})          { 'features' }
   watch(%r{^features/step_definitions/(.+)_steps\.rb$}) { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'features' }
