@@ -32,11 +32,11 @@ module Dotify
     end
 
     def to_s
-      @units
+      units.to_s
     end
 
     def inspect
-      @units.map(&:inspect)
+      units.map(&:inspect)
     end
 
   end

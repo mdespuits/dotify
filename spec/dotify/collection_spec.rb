@@ -55,5 +55,15 @@ module Dotify
       end
     end
 
+    it "should call #to_s on the units" do
+      collection.units.should_receive(:to_s)
+      collection.to_s
+    end
+
+    it "should call #inspect on the units" do
+      collection.units.each { |u| u.should_receive(:inspect) }
+      collection.inspect
+    end
+
   end
 end
