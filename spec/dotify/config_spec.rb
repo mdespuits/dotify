@@ -2,6 +2,33 @@ require 'spec_helper'
 
 module Dotify
   describe Config do
+
+    describe Config, "#load_config!" do
+      it "should not raise a TypeError if the .dotrc file is empty (this is a problem with Psych not liking loading empty files)" do
+        system "mkdir -p #{Config.home}"
+        system "touch #{Config.home(".fake-dotrc")}"
+        Config.stub(:file).and_return Config.home(".fake-dotrc")
+        expect { Config.load_config! }.not_to raise_error TypeError
+      end
+      context "unit tests" do
+        before do
+          File.stub(:exists?).with(Config.file).and_return true
+        end
+        it "should return an empty hash" do
+          YAML.stub(:load_file).with(Config.file).and_return({})
+          Config.load_config!.should == {}
+        end
+        it "should return an the hash returned by YAML#load_file" do
+          YAML.stub(:load_file).and_return({ :test => 'example' })
+          Config.load_config!.should == { :test => 'example' }
+        end
+        it "should symbolize the keys returned" do
+          YAML.stub(:load_file).and_return({ 'test' => 'example' })
+          Config.load_config!.should == { :test => 'example' }
+        end
+      end
+    end
+
     describe Config, "#installed?" do
       it "should return true if Dotify has been setup" do
         File.should_receive(:exists?).with(Config.path).and_return(true)

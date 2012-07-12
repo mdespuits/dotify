@@ -38,8 +38,10 @@ module Dotify
       end
 
       def load_config!
-        config = File.exists?(file) ? (YAML.load_file(file) || {}) : {}
+        config = File.exists?(file) ? YAML.load_file(file) : {}
         symbolize_keys!(config)
+      rescue TypeError
+        {}
       end
 
       def ignore(what)
