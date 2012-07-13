@@ -2,10 +2,9 @@ require 'spec_helper'
 require 'dotify/unit'
 
 class DummyUnit
-  def home
+  def dotfile
     '.dummy'
   end
-  alias :dotfile :home
   def dotify
     '.dotify/.dummy'
   end
@@ -38,13 +37,13 @@ module Dotify
         subject.link.should == false
       end
       it "should copy the file from the home directory if it is not in Dotify" do
-        FileUtils.should_receive(:rm_rf).with(subject.home, :verbose => false)
-        FileUtils.should_receive(:ln_sf).with(subject.dotify, subject.home, :verbose => false)
+        FileUtils.should_receive(:rm_rf).with(subject.dotfile, :verbose => false)
+        FileUtils.should_receive(:ln_sf).with(subject.dotify, subject.dotfile, :verbose => false)
         subject.link
       end
       it "should simply remove the file from the home and relink it" do
         subject.stub(:in_dotify?) { false }
-        FileUtils.should_receive(:cp_r).with(subject.home, subject.dotify, :verbose => false)
+        FileUtils.should_receive(:cp_r).with(subject.dotfile, subject.dotify, :verbose => false)
         FileUtils.stub(:rm_rf)
         FileUtils.stub(:ln_sf)
         subject.link
@@ -60,8 +59,8 @@ module Dotify
       end
       it "should call the right FileUtils methods" do
         subject.stub(:linked?) { true }
-        FileUtils.should_receive(:rm_rf).with(subject.home, :verbose => false)
-        FileUtils.should_receive(:cp_r).with(subject.dotify, subject.home, :verbose => false)
+        FileUtils.should_receive(:rm_rf).with(subject.dotfile, :verbose => false)
+        FileUtils.should_receive(:cp_r).with(subject.dotify, subject.dotfile, :verbose => false)
         FileUtils.should_receive(:rm_rf).with(subject.dotify, :verbose => false)
         subject.unlink
       end
@@ -75,14 +74,14 @@ module Dotify
       it { should respond_to :filename }
       it { should respond_to :dotify }
       it { should respond_to :dotfile }
-      it { should respond_to :home }
+      it { should respond_to :dotfile }
       it { should respond_to :linked? }
       it { should respond_to :linked }
 
       it "should set the attributes properly" do
         unit.filename.should == '.vimrc'
         unit.dotify.should == '/tmp/home/.dotify/.vimrc'
-        unit.home.should == '/tmp/home/.vimrc'
+        unit.dotfile.should == '/tmp/home/.vimrc'
       end
       it "should puts the filename" do
         unit.to_s.should == unit.filename
@@ -92,11 +91,11 @@ module Dotify
     describe "existence in directories" do
       let(:unit) { Unit.new(".bashrc") }
       it "should check for the existence in the home directory" do
-        File.stub(:exists?).with(unit.home).and_return true
+        File.stub(:exists?).with(unit.dotfile).and_return true
         unit.in_home_dir?.should == true
       end
       it "should return false if the file is not in the home directory" do
-        File.stub(:exists?).with(unit.home).and_return false
+        File.stub(:exists?).with(unit.dotfile).and_return false
         unit.in_home_dir?.should_not == true
       end
       it "should check for the existence of the file in Dotify" do
@@ -120,7 +119,7 @@ module Dotify
         unit.linked_to_dotify?.should be_true
       end
       it "should return false if the dotfile is not linked to the Dotify file" do
-        File.stub(:readlink).with(unit.home).and_return '/tmp/home/.another_file'
+        File.stub(:readlink).with(unit.dotfile).and_return '/tmp/home/.another_file'
         unit.linked_to_dotify?.should be_false
       end
     end
@@ -143,11 +142,11 @@ module Dotify
     describe Unit, "#symlink" do
       let!(:unit) { Unit.new(".symlinked") }
       it "should return the symlink for the file" do
-        File.should_receive(:readlink).with(unit.home).once
+        File.should_receive(:readlink).with(unit.dotfile).once
         unit.symlink
       end
       it "should return NoSymlink if error or no symlink" do
-        File.stub(:readlink).with(unit.home).and_raise(StandardError)
+        File.stub(:readlink).with(unit.dotfile).and_raise(StandardError)
         expect { unit.symlink }.not_to raise_error
         unit.symlink.should == NoSymlink
       end

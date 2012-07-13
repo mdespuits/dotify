@@ -46,7 +46,6 @@ module Dotify
     def dotfile
       @dotfile ||= Config.home(@filename)
     end
-    alias :home :dotfile
 
     def linked?
       in_dotify? && linked_to_dotify?
