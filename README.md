@@ -53,6 +53,20 @@ After you have setup Dotify, you can add files one by one if you did not add the
     $ dotify link .vimrc
         linked  /Users/computer-user/.vimrc
 
+## What files are you managing?
+
+No one likes to go and look for the symlinks of their dotfiles manually. Just check to see which files are being managed by Dotify by running `dotify list`.
+
+    $ dotify list
+    Dotify is managing 13 files:
+
+       * .bash_profile
+       * .dotrc
+       * .gemrc
+       * .gitconfig
+       * .gitignore_global
+    ...
+
 ## Unlink the chains...
 
 Don't want any of the dotfiles anymore? Or want to drop one? Well, I'm not one to question. Go ahead and move them back into the home directory.
@@ -130,6 +144,7 @@ This tool is powered by the amazing library, [Thor](http://whatisthor.com/). You
       dotify help [TASK]          # Describe available tasks or one specific task
       dotify install              # Install files from your home directory into Dotify
       dotify link [[FILENAME]]    # Link up one or all of your dotfiles (FILENAME is optional)
+      dotify list                 # List the installed dotfiles
       dotify save                 # Save Dotify files and push to Github.
       dotify setup                # Setup your system for Dotify to manage your dotfiles
       dotify unlink [[FILENAME]]  # Unlink one or all of your dotfiles (FILENAME is optional)
