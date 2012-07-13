@@ -5,12 +5,11 @@ module Dotify
   class VersionChecker
     class << self
       def run_check!
-        if @version.nil?
-          resp = Net::HTTP.get('rubygems.org', '/api/v1/versions/dotify.json')
-          json = MultiJson.load(resp)
-          @version = json.map { |v| v['number'] }.max
-        end
-        @version
+        return if !@version.nil?
+
+        resp = Net::HTTP.get('rubygems.org', '/api/v1/versions/dotify.json')
+        json = MultiJson.load(resp)
+        @version = json.map { |v| v['number'] }.max
       end
 
       def current?
