@@ -1,5 +1,3 @@
-Dotify::Config.load_config!
-
 module Dotify
   class Collection
 

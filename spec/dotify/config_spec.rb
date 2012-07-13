@@ -8,7 +8,7 @@ module Dotify
         system "mkdir -p #{Config.home}"
         system "touch #{Config.home(".fake-dotrc")}"
         Config.stub(:file).and_return Config.home(".fake-dotrc")
-        expect { Config.load_config! }.not_to raise_error TypeError
+        expect { Config.retrieve }.not_to raise_error TypeError
       end
       context "unit tests" do
         before do
@@ -16,15 +16,15 @@ module Dotify
         end
         it "should return an empty hash" do
           YAML.stub(:load_file).with(Config.file).and_return({})
-          Config.load_config!.should == {}
+          Config.retrieve.should == {}
         end
         it "should return an the hash returned by YAML#load_file" do
           YAML.stub(:load_file).and_return({ :test => 'example' })
-          Config.load_config!.should == { :test => 'example' }
+          Config.retrieve.should == { :test => 'example' }
         end
         it "should symbolize the keys returned" do
           YAML.stub(:load_file).and_return({ 'test' => 'example' })
-          Config.load_config!.should == { :test => 'example' }
+          Config.retrieve.should == { :test => 'example' }
         end
       end
     end
@@ -61,7 +61,7 @@ module Dotify
 
     describe "options" do
       before do
-        Config.stub(:config)  do
+        Config.stub(:retrieve)  do
           { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
         end
       end
@@ -69,7 +69,7 @@ module Dotify
         Config.editor.should == Config::DEFAULTS[:editor]
       end
       it "should allow a custom editor" do
-        Config.stub(:config)  do
+        Config.stub(:retrieve)  do
           { :editor => 'subl' }
         end
         Config.editor.should == 'subl'
@@ -84,12 +84,12 @@ module Dotify
 
     describe "ignore files" do
       before do
-        Config.stub(:config)  do
+        Config.stub(:retrieve)  do
           { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
         end
       end
       it "should have a default set of dotfiles" do
-        Config.stub(:config).and_return({})
+        Config.stub(:retrieve).and_return({})
         Config.ignore(:dotify).should include '.git'
         Config.ignore(:dotify).should include '.gitmodule'
         Config.ignore(:dotfiles).should include '.dropbox'

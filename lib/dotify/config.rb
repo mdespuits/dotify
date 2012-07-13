@@ -15,7 +15,7 @@ module Dotify
         :dotify => %w[.DS_Store .git .gitmodule],
         :dotfiles => %w[.DS_Store .Trash .dropbox .dotify]
       }
-    }
+    }.freeze
 
     def dirname
       @dirname ||= DEFAULTS[:dirname]
@@ -36,22 +36,18 @@ module Dotify
     end
 
     def editor
-      config.fetch(:editor, DEFAULTS[:editor])
-    end
-
-    def load_config!
-      config = File.exists?(file) ? YAML.load_file(file) : {}
-      symbolize_keys!(config)
-    rescue TypeError
-      {}
+      retrieve.fetch(:editor, DEFAULTS[:editor])
     end
 
     def ignore(what)
-      (config.fetch(:ignore, {}).fetch(what, []) + DEFAULTS[:ignore].fetch(what, [])).uniq
+      (retrieve.fetch(:ignore, {}).fetch(what, []) + DEFAULTS[:ignore].fetch(what, [])).uniq
     end
 
-    def config
-      @config || load_config!
+    def retrieve
+      config_hash = File.exists?(file) ? YAML.load_file(file) : {}
+      symbolize_keys! config_hash
+    rescue TypeError
+      {}
     end
 
     def file
