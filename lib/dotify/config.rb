@@ -44,8 +44,8 @@ module Dotify
     end
 
     def retrieve
-      config_hash = File.exists?(file) ? YAML.load_file(file) : {}
-      symbolize_keys! config_hash
+      @hash ||= File.exists?(file) ? YAML.load_file(file) : {}
+      symbolize_keys! @hash
     rescue TypeError
       {}
     end

@@ -12,6 +12,7 @@ module Dotify
       end
       context "unit tests" do
         before do
+          Config.instance_variable_set("@hash", nil)
           File.stub(:exists?).with(Config.file).and_return true
         end
         it "should return an empty hash" do
@@ -25,6 +26,10 @@ module Dotify
         it "should symbolize the keys returned" do
           YAML.stub(:load_file).and_return({ 'test' => 'example' })
           Config.retrieve.should == { :test => 'example' }
+        end
+        it "should only try to set config from the config file once" do
+          YAML.should_receive(:load_file).with(Config.file).once.and_return({ 'test' => 'example' })
+          5.times { Config.retrieve }
         end
       end
     end
