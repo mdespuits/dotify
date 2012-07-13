@@ -5,7 +5,7 @@ gem 'multi_json'
 gem 'git'
 
 group :test, :development do
-  gem 'rspec'
+  gem 'rspec', '~> 2.11.0'
   gem 'cucumber'
   gem 'webmock'
   gem 'vcr'
