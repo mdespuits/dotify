@@ -6,6 +6,7 @@ gem 'git'
 
 group :test, :development do
   gem 'rspec', '~> 2.11.0'
+  gem 'simplecov'
   gem 'cucumber'
   gem 'webmock'
   gem 'vcr'
