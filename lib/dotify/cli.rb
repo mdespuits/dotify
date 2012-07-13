@@ -68,6 +68,15 @@ module Dotify
       end
     end
 
+    desc :linked, "Linked"
+    def linked
+      say "Dotify is managing #{Dotify.collection.linked.count} files:\n", :blue
+      Dotify.collection.linked.each do |unit|
+        say "   * #{unit.filename}", :yellow
+      end
+      $stdout.write "\n"
+    end
+
     desc 'edit [FILE]', "Edit a dotify file"
     method_option :save, :aliases => '-s', :default => false, :type => :boolean, :require => true, :desc => "Save Dotify files and push to Github"
     def edit(file)
