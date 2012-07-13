@@ -153,11 +153,11 @@ module Dotify
     def link(file = nil)
       return not_setup_warning unless Dotify.installed?
       # Link a single file
-      return link_file Unit.new(file), options unless file.nil?
+      return action :link, Unit.new(file), options unless file.nil?
       # Relink the files
-      return Dotify.collection.linked.each { |file| link_file(file, options) } if options[:relink]
+      return Dotify.collection.linked.each { |file| action(:link, file, options) } if options[:relink]
       # Link the files
-      Dotify.collection.unlinked.each { |file| link_file(file, options) }
+      Dotify.collection.unlinked.each { |file| action(:link, file, options) }
     end
 
     desc 'unlink [[FILENAME]]', "Unlink one or all of your dotfiles (FILENAME is optional)"
@@ -171,9 +171,9 @@ module Dotify
     def unlink(file = nil)
       return not_setup_warning unless Dotify.installed?
       # Unlink a single file
-      return unlink_file Unit.new(file), options unless file.nil?
+      return action :unlink, Unit.new(file), options unless file.nil?
       # Unlink the files
-      Dotify.collection.linked.each { |file| unlink_file(file, options) }
+      Dotify.collection.linked.each { |file| action(:unlink, file, options) }
     end
 
     no_tasks do
@@ -182,20 +182,20 @@ module Dotify
         say "Dotify has not been setup yet! You need to run 'dotify setup' first.", :yellow
       end
 
-      def unlink_file(file, options = {})
-        say "'#{file}' does not exist in Dotify.", :blue unless file.linked?
-        if options[:force] == true || yes?("Do you want to unlink #{file} from the home directory? [Yn]", :blue)
-          file.unlink
-          say_status :unlinked, file.home
+      def action(action, file, options = {})
+        case action.to_sym
+        when :link
+          return say "'#{file.dotfile}' does not exist.", :blue unless file.in_home_dir?
+          return say_status :linked, file.dotfile if file.linked?
+        when :unlink
+          return say "'#{file}' does not exist in Dotify.", :blue unless file.linked?
+        else
+          say "You can't run the action :#{action} on a file."
         end
-      end
 
-      def link_file(file, options = {})
-        return say_status :linked, file.dotfile if file.linked?
-        return say "'#{file}' does not exist in the home directory.", :blue unless file.in_home_dir?
-        if options[:force] == true || yes?("Do you want to link #{file} to the home directory? [Yn]", :blue)
-          file.link
-          say_status :linked, file.home
+        if options[:force] == true || yes?("Do you want to #{action} #{file} #{action.to_sym == :link ? :to : :from} Dotify? [Yn]", :blue)
+          file.send(action) if file.respond_to? action
+          say_status "#{action}ed", file.dotfile
         end
       end
 
