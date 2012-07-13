@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Dotify by mattdbridges</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Dotify</h1>
+          <h2>A CLI Tool for managing your dotfiles.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/mattdbridges/dotify/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/mattdbridges/dotify/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/mattdbridges/dotify" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <p>Dotify is a simple CLI tool to make managing dotfiles on your system easy. When developing on a Linux/Unix-based system, keeping track of all of those dotfiles in the home directory can be pain. Some developers do not even bother managing them and many have come up with their own static or even dynamic way of managing them. This is a need in the community, and this tool makes managing these crazy files a breeze.</p>
+
+<h2>Ruby Version Support</h2>
+
+<p>As this is a gem for use on your local system, I know there are still many Ruby developers still stuck with using Ruby 1.8. As such, Dotify supports the following Ruby versions definitively:</p>
+
+<ul>
+<li>1.8.7</li>
+<li>1.9.2</li>
+<li>1.9.3</li>
+<li>JRuby</li>
+<li>Rubinius</li>
+</ul><h2>Installation</h2>
+
+<p>Run this command in the command line to install Dotify:</p>
+
+<pre><code>$ gem install dotify
+</code></pre>
+
+<h2>Installation</h2>
+
+<p>To install Dotify, you must first run <code>dotify install</code> in your terminal.</p>
+
+<pre><code>$ dotify install
+    create /Users/computer-user/.dotify
+    create /Users/computer-user/.dotrc
+Editing config file...
+Do you want to link .bashrc to the home directory? [Yn] n
+    linked  /Users/computer-user/.bashrc
+Do you want to link .dotrc to the home directory? [Yn] n
+    linked  /Users/computer-user/.dotrc
+Do you want to add .railsrc to Dotify? [Yn] n
+    linked  /Users/computer-user/.railsrc
+Do you want to add .zshrc to Dotify? [Yn] n
+    linked  /Users/computer-user/.zshrc
+...
+</code></pre>
+
+<p>This will first create a <code>.dotify</code> directory in your home directory as well as a <code>.dotrc</code> file for Dotify configuration (yes, it is more dotfiles, but this is a good thing!).</p>
+
+<p>During the installation process, a Vim instance will open with a sample <code>.dotrc</code> file for you to edit and configure if you desire. This will allow your configuration to be used prior to Dotify's full installation. See more about the <code>.dotrc</code> file in the <a href="https://github.com/mattdbridges/dotify/tree/cli-rewrite#configuration">Configuration</a> section.</p>
+
+<p>Alternatively, you could run <code>dotify setup</code> to setup Dotify's configuration, followed by <code>dotify install</code> to add the initial files into Dotify.</p>
+
+<h2>Link single files</h2>
+
+<p>After you have setup Dotify, you can add files one by one if you did not add them during setup.</p>
+
+<pre><code>$ dotify link .vimrc
+    linked  /Users/computer-user/.vimrc
+</code></pre>
+
+<h2>What files are you managing?</h2>
+
+<p>No one likes to go and look for the symlinks of their dotfiles manually. Just check to see which files are being managed by Dotify by running <code>dotify list</code>.</p>
+
+<pre><code>$ dotify list
+Dotify is managing 13 files:
+
+   * .bash_profile
+   * .dotrc
+   * .gemrc
+   * .gitconfig
+   * .gitignore_global
+...
+</code></pre>
+
+<h2>Unlink the chains...</h2>
+
+<p>Don't want any of the dotfiles anymore? Or want to drop one? Well, I'm not one to question. Go ahead and move them back into the home directory.</p>
+
+<pre><code>$ dotify unlink
+Do you want to unlink .bash_profile from the home directory? [Yn] Y
+    unlinked  /Users/computer-user/.bash_profile
+Do you want to unlink .dotrc from the home directory? [Yn] Y
+    unlinked  /Users/computer-user/.dotrc
+Do you want to unlink .gemrc from the home directory? [Yn]
+...
+</code></pre>
+
+<p>Should you run this task and decide to change your mind, you can simply run <code>dotify link</code> or <code>dotify link [FILE]</code> again if you want to restore your changes.</p>
+
+<p>By default, <code>unlink</code> loops through all of the Dotify files. You can also pass a filename to <code>unlink</code> to unlink a single file.</p>
+
+<pre><code>$ dotify unlink .bashrc
+Are you sure you want to remove ~/.bashrc? [Yn] Y
+    unlinked  /Users/computer-user/.bashrc
+</code></pre>
+
+<h2>Versioning</h2>
+
+<p>The whole purpose of this gem was to manage the dotfiles on your system. What better way to do this than under version control using <a href="http://git-scm.com/">Git</a> and <a href="https://github.com">Github</a>?</p>
+
+<ul>
+<li>To version your Dotify installation, simple make <code>.dotify</code> a Git repository. If you don't know how to do that, I recommend you start reading <a href="http://git-scm.com/book/en/Getting-Started">here</a>.</li>
+<li>Add your remote repository via <code>git remote add [NAME] [REPO]</code>.</li>
+</ul><p><em>From this point, you can manage your dotfiles entirely from Dotify.</em></p>
+
+<ul>
+<li>To edit a dotfile managed by Dotify, simple run <code>dotify edit [DOTFILE]</code> and replace <strong>[DOTFILE]</strong> with the name of the file you want to edit. This will open a Vim instance containing that file for editing.</li>
+<li>Once you have saved your edits, simple run <code>dotify save</code> and Dotify will walk you through the steps of committing your changes and pushing them up to Github.</li>
+</ul><h2>Configuration</h2>
+
+<p>The <code>.dotrc</code> file in your home directory serves as the configuration file for Dotify. It is a <a href="http://www.yaml.org/">YAML</a> formatted file.</p>
+
+<h3>Dotify Editor</h3>
+
+<p>When you run <code>dotify edit [DOTFILE]</code>, by default the file opens in Vim for editing. You can change this by adding this following to your <code>.dotrc</code> file.</p>
+
+<pre><code>editor: 'vi'
+# or 'vim' or 'emacs' etc...
+</code></pre>
+
+<p>Vim and Emacs are the only two editors that have been successfully used with this configuration option, but if you find another, please <a href="https://github.com/mattdbridges/dotify/issues/new">let me know</a> and I will update the documentation.</p>
+
+<h3>Ignoring files</h3>
+
+<p>When you are linking files in your Dotify directory, some files you do not want ever want to link (<code>.git</code>, <code>.gitmodules</code>, <code>.gitignore</code>, .etc) because they are used specifically for that directory (such as git versioning). You can configure Dotify to ignore these files when calling <code>dotify link</code> in the <code>.dotrc</code> in this way:</p>
+
+<pre><code>$ cat ~/.dotrc
+ignore:
+  dotify:
+  - '.git'
+  - '.gitmodules'
+  - '.gitignore'
+</code></pre>
+
+<p>The same can be done for the home directory when running <code>dotify setup</code>. There are some directories that you should not move around (<code>.dropbox</code>, <code>.rbenv</code>, <code>.rvm</code>) and do not want to accidentally attempt to move. You can do that in your <code>.dotrc</code> file as well:</p>
+
+<pre><code>$ cat ~/.dotrc
+ignore:
+  dotfiles:
+  - '.dropbox'
+  - '.rbenv'
+  - '.rvm'
+</code></pre>
+
+<p>More configuration options will likely be added in future versions, so be sure to check up here for your options.</p>
+
+<h2>Not sure what to do?</h2>
+
+<p>This tool is powered by the amazing library, <a href="http://whatisthor.com/">Thor</a>. You can use the <code>help</code> task like so:</p>
+
+<pre><code>$ dotify help
+Tasks:
+  dotify edit [FILE]          # Edit a dotify file
+  dotify help [TASK]          # Describe available tasks or one specific task
+  dotify install              # Install files from your home directory into Dotify
+  dotify link [[FILENAME]]    # Link up one or all of your dotfiles (FILENAME is optional)
+  dotify list                 # List the installed dotfiles
+  dotify save                 # Save Dotify files and push to Github.
+  dotify setup                # Setup your system for Dotify to manage your dotfiles
+  dotify unlink [[FILENAME]]  # Unlink one or all of your dotfiles (FILENAME is optional)
+  dotify version              # Check your Dotify version
+</code></pre>
+
+<h2>Contributing</h2>
+
+<p>This tool is developed with much influence from <em>37singals</em>' fantastic idea of <strong>Do Less</strong>. This is meant to be a <em>simple</em> tool.</p>
+
+<p>Contributions are welcome and encouraged. The contrubution process is the typical Github one.</p>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new <a href="https://github.com/mattdbridges/dotify/pull/new/master">Pull Request</a>
+</li>
+</ol>
+        </section>
+
+        <footer>
+          Dotify is maintained by <a href="https://github.com/mattdbridges">mattdbridges</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+                  <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33127678-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+      </div>
+    </div>
+  </body>
+</html>
