@@ -18,16 +18,14 @@ module Dotify
     end
     describe VersionChecker, "#current?" do
       it "should be false if version is not current" do
-        with_constants "Dotify::VERSION" => '0.2.0' do
+        stub_const "Dotify::VERSION", '0.2.0'
           VersionChecker.stub(:version).and_return('0.1.9')
-          VersionChecker.current?.should == false
-        end
-      end
+        VersionChecker.current?.should == false
+    end
       it "should be true if version is current" do
-        with_constants "Dotify::VERSION" => '0.2.0' do
-          VersionChecker.stub(:version).and_return('0.2.0')
-          VersionChecker.current?.should == true
-        end
+        stub_const "Dotify::VERSION", '0.2.0'
+        VersionChecker.stub(:version).and_return('0.2.0')
+        VersionChecker.current?.should == true
       end
     end
   end
