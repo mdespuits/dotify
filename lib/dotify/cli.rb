@@ -9,9 +9,6 @@ require 'dotify/version_checker'
 
 module Dotify
 
-  class Git
-    include ::Git
-  end
   class CLI < Thor
     include Thor::Actions
     default_task :help
@@ -50,9 +47,8 @@ module Dotify
           repo.commit(message)
         else
           say "No files have been changed in Dotify.", :blue
-          @push = true
         end
-        if @push == true || options[:push] || yes?("Would you like to push these changed to Github (or wherever your remote repo is located)? [Yn]", :blue)
+        if options[:push] || yes?("Would you like to push these changed to Github? [Yn]", :blue)
           say 'Pushing up to Github...', :blue
           begin
             repo.push
