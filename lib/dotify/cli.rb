@@ -153,11 +153,11 @@ module Dotify
     def link(file = nil)
       return not_setup_warning unless Dotify.installed?
       # Link a single file
-      return action :link, Unit.new(file), options unless file.nil?
+      return file_action :link, Unit.new(file), options unless file.nil?
       # Relink the files
-      return Dotify.collection.linked.each { |file| action(:link, file, options) } if options[:relink]
+      return Dotify.collection.linked.each { |file| file_action(:link, file, options) } if options[:relink]
       # Link the files
-      Dotify.collection.unlinked.each { |file| action(:link, file, options) }
+      Dotify.collection.unlinked.each { |file| file_action(:link, file, options) }
     end
 
     desc 'unlink [[FILENAME]]', "Unlink one or all of your dotfiles (FILENAME is optional)"
@@ -171,9 +171,9 @@ module Dotify
     def unlink(file = nil)
       return not_setup_warning unless Dotify.installed?
       # Unlink a single file
-      return action :unlink, Unit.new(file), options unless file.nil?
+      return file_action :unlink, Unit.new(file), options unless file.nil?
       # Unlink the files
-      Dotify.collection.linked.each { |file| action(:unlink, file, options) }
+      Dotify.collection.linked.each { |file| file_action(:unlink, file, options) }
     end
 
     no_tasks do
@@ -182,7 +182,7 @@ module Dotify
         say "Dotify has not been setup yet! You need to run 'dotify setup' first.", :yellow
       end
 
-      def action(action, file, options = {})
+      def file_action(action, file, options = {})
         case action.to_sym
         when :link
           return say "'#{file.dotfile}' does not exist.", :blue unless file.in_home_dir?
