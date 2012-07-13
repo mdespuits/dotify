@@ -66,7 +66,7 @@ module Dotify
         end
       end
       it "should set a default editor" do
-        Config.editor.should == Config::EDITOR
+        Config.editor.should == Config::DEFAULTS[:editor]
       end
       it "should allow a custom editor" do
         Config.stub(:config)  do
