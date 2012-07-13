@@ -68,8 +68,8 @@ module Dotify
       end
     end
 
-    desc :linked, "Linked"
-    def linked
+    desc :list, "List the installed dotfiles"
+    def list
       say "Dotify is managing #{Dotify.collection.linked.count} files:\n", :blue
       Dotify.collection.linked.each do |unit|
         say "   * #{unit.filename}", :yellow
