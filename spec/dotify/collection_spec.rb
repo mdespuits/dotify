@@ -27,7 +27,7 @@ module Dotify
 
     describe Collection, "#linked" do
       before do
-        Filter.stub(:home).and_return home_files
+        collection.stub(:units).and_return home_files
       end
       let(:linked) { collection.linked }
       it "should return the right Units" do
@@ -42,7 +42,7 @@ module Dotify
 
     describe Collection, "#unlinked" do
       before do
-        Filter.stub(:home).and_return home_files
+        collection.stub(:units).and_return home_files
       end
       let(:unlinked) { collection.unlinked }
       it "should return the right Units" do
