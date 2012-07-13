@@ -42,14 +42,14 @@ module Dotify
 
     describe CLI, "#link" do
       before do
-        cli.stub(:link_file)
+        cli.stub(:action)
       end
       it "should loop through all unlinked files" do
         Dotify.collection.should_receive(:unlinked).and_return Dotify.collection.reject(&:linked?)
         cli.link
       end
       it "should call link_file on the right files" do
-        cli.should_receive(:link_file).exactly(Dotify.collection.unlinked.size).times
+        cli.should_receive(:action).exactly(Dotify.collection.unlinked.size).times
         cli.link
       end
       it "should relink all of the files located in Dotify" do
@@ -59,7 +59,7 @@ module Dotify
         cli.link
       end
       it "attempt to link one single file" do
-        cli.should_receive(:link_file).with(an_instance_of(Unit), {})
+        cli.should_receive(:action).with(:link, an_instance_of(Unit), {})
         cli.link('.vimrc')
       end
       it "should output a warning if Dotify is not installed" do
@@ -71,18 +71,18 @@ module Dotify
 
     describe CLI, "#unlink" do
       before do
-        cli.stub(:unlink_file)
+        cli.stub(:action)
       end
       it "should loop through all unlinked files" do
         Dotify.collection.should_receive(:linked).and_return Dotify.collection.select(&:linked?)
         cli.unlink
       end
       it "should call CLI#unlink_file the right number of times" do
-        cli.should_receive(:unlink_file).exactly(Dotify.collection.linked.size).times
+        cli.should_receive(:action).exactly(Dotify.collection.linked.size).times
         cli.unlink
       end
       it "attempt to link one single file" do
-        cli.should_receive(:unlink_file).with(an_instance_of(Unit), {})
+        cli.should_receive(:action).with(:unlink, an_instance_of(Unit), {})
         cli.unlink('.vimrc')
       end
       it "should output a warning if Dotify is not installed" do
