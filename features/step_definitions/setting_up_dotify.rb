@@ -8,5 +8,7 @@ Given /^I have setup Dotify$/i do
 end
 
 When /^I try to setup Dotify$/ do
-  Dotify::CLI.new.setup
+  @cli.stub(:say)
+  @cli.stub(:invoke).with(:edit, [Dotify::Config.file]).once
+  @cli.setup
 end
