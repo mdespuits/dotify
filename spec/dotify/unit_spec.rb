@@ -153,5 +153,15 @@ module Dotify
       end
     end
 
+    describe "inspecting unit" do
+      it "should display properly" do
+        Unit.new(".zshrc").inspect.should == "#<Dotify::Unit filename: '.zshrc' linked: false>"
+        bash = Unit.new(".bashrc")
+        bash.stub(:linked?).and_return true
+        bash.inspect.should == "#<Dotify::Unit filename: '.bashrc' linked: true>"
+
+      end
+    end
+
   end
 end

@@ -65,7 +65,7 @@ module Dotify
     end
 
     def inspect
-      "#<Dotify::Unit @filename='#{@filename}' @linked=#{linked?}>"
+      "#<Dotify::Unit filename: '#{@filename}' linked: #{linked?}>"
     end
 
     def linked_to_dotify?
