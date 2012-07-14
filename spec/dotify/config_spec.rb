@@ -27,6 +27,10 @@ module Dotify
           YAML.stub(:load_file).and_return({ 'test' => 'example' })
           Config.retrieve.should == { :test => 'example' }
         end
+        it "should return an empty hash if YAML#load_file returns false (commented out config in .dotrc)" do
+          YAML.stub(:load_file).with(Config.file).and_return false
+          Config.retrieve.should == {}
+        end
         it "should only try to set config from the config file once" do
           YAML.should_receive(:load_file).with(Config.file).once.and_return({ 'test' => 'example' })
           5.times { Config.retrieve }
