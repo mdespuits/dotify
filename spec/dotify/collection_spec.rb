@@ -12,7 +12,7 @@ module Dotify
       ]
     }
     describe "methods" do
-      %w[linked unlinked].each do |name|
+      %w[each linked unlinked].each do |name|
         it "should respond to #{name}" do
           collection.should respond_to name
         end
