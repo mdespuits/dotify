@@ -64,6 +64,15 @@ module Dotify
       end
     end
 
+    desc :github, "Pull the dotfiles from a specified github repo into your Dotify directory."
+    def github(repo)
+      git_repo_name = "git@github.com:#{repo}.git"
+      say "Pulling #{repo} from Github into #{Config.path}...", :blue
+      Git.clone(git_repo_name, Config.path)
+    rescue Git::GitExecuteError => e
+      say "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it.", :red
+    end
+
     desc :list, "List the installed dotfiles"
     def list
       say "Dotify is managing #{Dotify.collection.linked.count} files:\n", :blue
