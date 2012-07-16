@@ -28,7 +28,7 @@ module Dotify
 
   end
 
-  class Unit
+  class Dot
 
     include Actions
 
@@ -64,7 +64,7 @@ module Dotify
     end
 
     def inspect
-      "#<Dotify::Unit filename: '#{@filename}' linked: #{linked?}>"
+      "#<Dotify::Dot filename: '#{@filename}' linked: #{linked?}>"
     end
 
     def linked_to_dotify?

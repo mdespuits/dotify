@@ -10,7 +10,7 @@ module Dotify
         Config.stub(:file).and_return Config.home(".fake-dotrc")
         expect { Config.retrieve }.not_to raise_error TypeError
       end
-      context "unit tests" do
+      context "dot tests" do
         before do
           Config.instance_variable_set("@hash", nil)
           File.stub(:exists?).with(Config.file).and_return true

@@ -3,17 +3,17 @@ module Dotify
 
     include Enumerable
 
-    attr_accessor :units
+    attr_accessor :dots
 
-    # Pulls an array of Units from the home
+    # Pulls an array of Dots from the home
     # directory.
     def initialize
-      @units ||= Filter.home
+      @dots ||= Filter.home
     end
 
     # Defined each method for Enumerable
     def each(&block)
-      units.each(&block)
+      dots.each(&block)
     end
 
     # Linked files are those files which have a
@@ -30,11 +30,11 @@ module Dotify
     end
 
     def to_s
-      units.to_s
+      dots.to_s
     end
 
     def inspect
-      units.map(&:inspect)
+      dots.map(&:inspect)
     end
 
   end

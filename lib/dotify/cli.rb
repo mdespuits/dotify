@@ -76,8 +76,8 @@ module Dotify
     desc :list, "List the installed dotfiles"
     def list
       say "Dotify is managing #{Dotify.collection.linked.count} files:\n", :blue
-      Dotify.collection.linked.each do |unit|
-        say "   * #{unit.filename}", :yellow
+      Dotify.collection.linked.each do |dot|
+        say "   * #{dot.filename}", :yellow
       end
       $stdout.write "\n"
     end
@@ -85,7 +85,7 @@ module Dotify
     desc 'edit [FILE]', "Edit a dotify file"
     method_option :save, :aliases => '-s', :default => false, :type => :boolean, :require => true, :desc => "Save Dotify files and push to Github"
     def edit(file)
-      file = Unit.new(file)
+      file = Dot.new(file)
       if file.linked?
         exec "#{Config.editor} #{file.dotify}"
         save if options[:save] == true
@@ -158,7 +158,7 @@ module Dotify
     def link(file = nil)
       return not_setup_warning unless Dotify.installed?
       # Link a single file
-      return file_action :link, Unit.new(file), options unless file.nil?
+      return file_action :link, Dot.new(file), options unless file.nil?
       # Relink the files
       return Dotify.collection.linked.each { |file| file_action(:link, file, options) } if options[:relink]
       # Link the files
@@ -176,7 +176,7 @@ module Dotify
     def unlink(file = nil)
       return not_setup_warning unless Dotify.installed?
       # Unlink a single file
-      return file_action :unlink, Unit.new(file), options unless file.nil?
+      return file_action :unlink, Dot.new(file), options unless file.nil?
       # Unlink the files
       Dotify.collection.linked.each { |file| file_action(:unlink, file, options) }
     end
