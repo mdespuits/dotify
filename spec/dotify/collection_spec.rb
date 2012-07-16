@@ -19,6 +19,17 @@ module Dotify
       end
     end
 
+    describe "pulling Filter#home or Filter#dotify files" do
+      it "should pull from Filter#home when default or dotfiles" do
+        Filter.should_receive(:home).twice
+        Collection.new(:dotfiles)
+        Collection.new
+      end
+      it "should pull from Filter#dotify when default or dotfiles" do
+        Filter.should_receive(:dotify).once
+        Collection.new(:dotify)
+      end
+    end
     it "should pull the right files from Filter.home" do
       files = [stub, stub, stub]
       Filter.stub(:home).and_return files
