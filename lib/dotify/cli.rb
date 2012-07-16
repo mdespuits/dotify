@@ -65,15 +65,17 @@ module Dotify
     end
 
     desc :github, "Pull the dotfiles from a specified github repo into your Dotify directory."
-    method_option :debug,   :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
+    method_option :debug, :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
     def github(repo)
       return say "Dotify has already been setup.", :blue if Dotify.installed?
       git_repo_name = "git@github.com:#{repo}.git"
       say "Pulling #{repo} from Github into #{Config.path}...", :blue
       Git.clone(git_repo_name, Config.path)
       say "Backing up dotfile and installing Dotify files...", :blue
-      Collection.new(:dotify).each do |file|
-        file.backup_and_link
+      Collection.new(:dotify).each { |file| file.backup_and_link }
+      if File.exists? File.join(Config.path, ".gitmodules")
+        say "Initializing and updating submodules in Dotify now...", :blue
+        system "cd #{Config.path} && git submodule init &> /dev/null && git submodule update &> /dev/null"
       end
       say "Successfully installed #{repo} from Dotify!", :blue
     rescue Git::GitExecuteError => e
