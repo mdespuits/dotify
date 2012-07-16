@@ -65,12 +65,20 @@ module Dotify
     end
 
     desc :github, "Pull the dotfiles from a specified github repo into your Dotify directory."
+    method_option :debug,   :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
     def github(repo)
+      return say "Dotify has already been setup.", :blue if Dotify.installed?
       git_repo_name = "git@github.com:#{repo}.git"
       say "Pulling #{repo} from Github into #{Config.path}...", :blue
       Git.clone(git_repo_name, Config.path)
+      say "Backing up dotfile and installing Dotify files...", :blue
+      Collection.new(:dotify).each do |file|
+        file.backup_and_link
+      end
+      say "Successfully installed #{repo} from Dotify!", :blue
     rescue Git::GitExecuteError => e
       say "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it.", :red
+      say "Git Error: #{e.message}", :red if options[:debug]
     end
 
     desc :list, "List the installed dotfiles"

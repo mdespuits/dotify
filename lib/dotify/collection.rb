@@ -7,8 +7,8 @@ module Dotify
 
     # Pulls an array of Dots from the home
     # directory.
-    def initialize
-      @dots ||= Filter.home
+    def initialize(location = :dotfiles)
+      @dots ||= location == :dotfiles ? Filter.home : Filter.dotify
     end
 
     # Defined each method for Enumerable

@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'dotify/errors'
 
 module Dotify
@@ -15,6 +16,12 @@ module Dotify
       FileUtils.rm_rf(self.dotfile, :verbose => false)
       FileUtils.ln_sf(self.dotify, self.dotfile, :verbose => false)
       return true
+    end
+
+    def backup_and_link
+      FileUtils.rm_rf("#{self.dotfile}.bak", :verbose => false)
+      FileUtils.mv(self.dotfile, "#{self.dotfile}.bak", :verbose => false)
+      FileUtils.ln_sf(self.dotify, self.dotfile, :verbose => false)
     end
 
     # Unlink the file from Dotify and replace it into the home directory.
