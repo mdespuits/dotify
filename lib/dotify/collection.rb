@@ -8,7 +8,12 @@ module Dotify
     # Pulls an array of Dots from the home
     # directory.
     def initialize(location = :dotfiles)
-      @dots ||= location == :dotfiles ? Filter.home : Filter.dotify
+      @dots ||= case location
+                when :dotfiles then Filter.home
+                when :dotify then Filter.dotify
+                else
+                  raise ArgumentError, "You must specify :dotfiles or :dotify when initializing Collection"
+                end
     end
 
     # Defined each method for Enumerable

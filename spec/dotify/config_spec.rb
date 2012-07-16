@@ -19,6 +19,10 @@ module Dotify
           YAML.stub(:load_file).with(Config.file).and_return({})
           Config.retrieve.should == {}
         end
+        it "should catch the TypeError and return an empty hash" do
+          YAML.stub(:load_file).with(Config.file).and_raise(TypeError)
+          Config.retrieve.should == {}
+        end
         it "should return an the hash returned by YAML#load_file" do
           YAML.stub(:load_file).and_return({ :test => 'example' })
           Config.retrieve.should == { :test => 'example' }

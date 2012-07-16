@@ -20,6 +20,9 @@ module Dotify
     end
 
     describe "pulling Filter#home or Filter#dotify files" do
+      it "should raise an error when not specifying :dotfiles or :dotify" do
+        expect { Collection.new(:fake) }.to raise_error ArgumentError
+      end
       it "should pull from Filter#home when default or dotfiles" do
         Filter.should_receive(:home).twice
         Collection.new(:dotfiles)
