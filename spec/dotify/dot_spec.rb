@@ -49,6 +49,14 @@ module Dotify
         subject.link
       end
     end
+    describe Actions, "#backup_and_link" do
+      it "should call the right FileUtils methods" do
+        FileUtils.should_receive(:rm_rf).with("#{subject.dotfile}.bak", :verbose => false)
+        FileUtils.should_receive(:mv).with(subject.dotfile, "#{subject.dotfile}.bak", :verbose => false)
+        FileUtils.should_receive(:ln_sf).with(subject.dotify, subject.dotfile, :verbose => false)
+        subject.backup_and_link
+      end
+    end
     describe Actions, "#unlink" do
       it "should not do anything if the file is not linked" do
         subject.stub(:linked?) { false }
