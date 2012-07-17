@@ -64,7 +64,7 @@ module Dotify
       end
     end
 
-    desc :github, "Pull the dotfiles from a specified github repo into your Dotify directory."
+    desc 'github [USERNAME]/[REPO]', "Install the dotfiles from a Github repo into Dotify. (Backs up any files that would be overwritten)"
     method_option :debug, :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
     def github(repo)
       return say "Dotify has already been setup.", :blue if Dotify.installed?
