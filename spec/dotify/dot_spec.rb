@@ -50,9 +50,17 @@ module Dotify
       end
     end
     describe Actions, "#backup_and_link" do
-      it "should call the right FileUtils methods" do
+      it "should call the right FileUtils methods when the dotfile exists" do
+        File.stub(:exists?).with(subject.dotfile).and_return true
         FileUtils.should_receive(:rm_rf).with("#{subject.dotfile}.bak", :verbose => false)
         FileUtils.should_receive(:mv).with(subject.dotfile, "#{subject.dotfile}.bak", :verbose => false)
+        FileUtils.should_receive(:ln_sf).with(subject.dotify, subject.dotfile, :verbose => false)
+        subject.backup_and_link
+      end
+      it "should call the right FileUtils methods when the dotfile does not existexists" do
+        File.stub(:exists?).with(subject.dotfile).and_return false
+        FileUtils.should_not_receive(:rm_rf)
+        FileUtils.should_not_receive(:mv)
         FileUtils.should_receive(:ln_sf).with(subject.dotify, subject.dotfile, :verbose => false)
         subject.backup_and_link
       end

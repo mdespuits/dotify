@@ -19,8 +19,10 @@ module Dotify
     end
 
     def backup_and_link
-      FileUtils.rm_rf("#{self.dotfile}.bak", :verbose => false)
-      FileUtils.mv(self.dotfile, "#{self.dotfile}.bak", :verbose => false)
+      if File.exists? self.dotfile
+        FileUtils.rm_rf("#{self.dotfile}.bak", :verbose => false)
+        FileUtils.mv(self.dotfile, "#{self.dotfile}.bak", :verbose => false)
+      end
       FileUtils.ln_sf(self.dotify, self.dotfile, :verbose => false)
     end
 
