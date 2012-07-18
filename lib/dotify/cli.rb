@@ -46,10 +46,10 @@ module Dotify
           say message, :yellow, :verbose => options[:verbose]
           repo.commit(message)
         else
-          say "No files have been changed in Dotify.", :blue
+          inform "No files have been changed in Dotify."
         end
         if options[:push] || yes?("Would you like to push these changed to Github? [Yn]", :blue)
-          say 'Pushing up to Github...', :blue
+          inform 'Pushing up to Github...'
           begin
             repo.push
           rescue Exception => e
@@ -57,27 +57,27 @@ module Dotify
             say("Git Error: #{e.message}", :red) if options[:debug]
             return
           end
-          say "Successfully pushed!", :blue
+          inform "Successfully pushed!"
         end
       else
-        say 'Dotify has nothing to save.', :blue
+        inform 'Dotify has nothing to save.'
       end
     end
 
     desc 'github [USERNAME]/[REPO]', "Install the dotfiles from a Github repo into Dotify. (Backs up any files that would be overwritten)"
     method_option :debug, :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
     def github(repo)
-      return say "Dotify has already been setup.", :blue if Dotify.installed?
+      return inform "Dotify has already been setup." if Dotify.installed?
       git_repo_name = "git@github.com:#{repo}.git"
-      say "Pulling #{repo} from Github into #{Config.path}...", :blue
+      inform "Pulling #{repo} from Github into #{Config.path}..."
       Git.clone(git_repo_name, Config.path)
-      say "Backing up dotfile and installing Dotify files...", :blue
+      inform "Backing up dotfile and installing Dotify files..."
       Collection.new(:dotify).each { |file| file.backup_and_link }
       if File.exists? File.join(Config.path, ".gitmodules")
-        say "Initializing and updating submodules in Dotify now...", :blue
+        inform "Initializing and updating submodules in Dotify now..."
         system "cd #{Config.path} && git submodule init &> /dev/null && git submodule update &> /dev/null"
       end
-      say "Successfully installed #{repo} from Dotify!", :blue
+      inform "Successfully installed #{repo} from Dotify!"
     rescue Git::GitExecuteError => e
       say "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it.", :red
       say "Git Error: #{e.message}", :red if options[:debug]
@@ -85,7 +85,7 @@ module Dotify
 
     desc :list, "List the installed dotfiles"
     def list
-      say "Dotify is managing #{Dotify.collection.linked.count} files:\n", :blue
+      inform "Dotify is managing #{Dotify.collection.linked.count} files:\n"
       Dotify.collection.linked.each do |dot|
         say "   * #{dot.filename}", :yellow
       end
@@ -100,7 +100,7 @@ module Dotify
         exec "#{Config.editor} #{file.dotify}"
         save if options[:save] == true
       else
-        say "'#{file}' has not been linked by Dotify. Please run `dotify link #{file}` to edit this file.", :blue
+        inform "'#{file}' has not been linked by Dotify. Please run `dotify link #{file}` to edit this file."
       end
     end
 
@@ -111,11 +111,11 @@ module Dotify
       return say "Dotify Version: v#{Dotify.version}", :blue unless options[:check]
       if VersionChecker.out_of_date?
         say "Your version of Dotify is out of date.", :yellow
-        say "  Your Version:   #{Dotify.version}", :blue
-        say "  Latest Version: #{VersionChecker.version}", :blue
+        inform "  Your Version:   #{Dotify.version}"
+        inform "  Latest Version: #{VersionChecker.version}"
         say "I recommend that you uninstall Dotify completely before updating", :yellow
       else
-        say "Your version of Dotify is up to date: #{Dotify.version}", :blue
+        inform "Your version of Dotify is up to date: #{Dotify.version}"
       end
     rescue Exception => e
       say "There was an error checking your Dotify version. Please try again.", :red
@@ -128,9 +128,7 @@ module Dotify
     method_options :verbose => true
     def setup
       # Warn if Dotify is already setup
-      if Dotify.installed?
-        say "Dotify is already setup", :blue
-      end
+      inform "Dotify is already setup" if Dotify.installed?
 
       # Create the Dotify directory unless it already exists
       unless File.exists?(Config.path)
@@ -142,10 +140,10 @@ module Dotify
         template '.dotrc', Config.file, :verbose => options[:verbose]
       end
 
-      say "Editing config file...", :blue
+      inform "Editing config file..."
       sleep 0.5 # Give a little time for reading the message
       invoke :edit, [Config.file]
-      say "Config file updated.", :blue
+      inform "Config file updated."
 
       # Run install task if specified
       invoke :install if options[:install] == true
@@ -191,7 +189,11 @@ module Dotify
       Dotify.collection.linked.each { |file| file_action(:unlink, file, options) }
     end
 
-    no_tasks do
+    private
+
+      def inform(message)
+        say message, :blue
+      end
 
       def not_setup_warning
         say "Dotify has not been setup yet! You need to run 'dotify setup' first.", :yellow
@@ -200,10 +202,10 @@ module Dotify
       def file_action(action, file, options = {})
         case action.to_sym
         when :link
-          return say "'#{file.dotfile}' does not exist.", :blue unless file.in_home_dir?
+          return inform "'#{file.dotfile}' does not exist." unless file.in_home_dir?
           return say_status :linked, file.dotfile if file.linked?
         when :unlink
-          return say "'#{file}' does not exist in Dotify.", :blue unless file.linked?
+          return inform "'#{file}' does not exist in Dotify."unless file.linked?
         else
           say "You can't run the action :#{action} on a file."
         end
@@ -213,8 +215,6 @@ module Dotify
           say_status "#{action}ed", file.dotfile
         end
       end
-
-    end
 
   end
 end
