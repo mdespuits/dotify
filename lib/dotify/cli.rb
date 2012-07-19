@@ -9,8 +9,19 @@ require 'dotify/version_checker'
 
 module Dotify
 
+  module Utilities
+    extend Thor::Actions
+
+    def inform(message)
+      say message, :blue
+    end
+  end
+
   class CLI < Thor
+
+    include Utilities
     include Thor::Actions
+
     default_task :help
 
     map %w[-v --version] => :version
@@ -190,10 +201,6 @@ module Dotify
     end
 
     private
-
-      def inform(message)
-        say message, :blue
-      end
 
       def not_setup_warning
         say "Dotify has not been setup yet! You need to run 'dotify setup' first.", :yellow
