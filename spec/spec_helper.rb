@@ -7,8 +7,10 @@
 $:.unshift File.expand_path("../../lib", __FILE__)
 require 'thor/util'
 require 'simplecov'
+
 SimpleCov.start do
   add_filter '/spec/support'
+  add_filter '/spec'
 end
 
 RSpec.configure do |config|
@@ -21,5 +23,4 @@ RSpec.configure do |config|
   end
 end
 
-require 'dotify'
 Dir["./spec/support/**/*.rb"].each { |f| require f }

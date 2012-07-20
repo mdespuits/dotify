@@ -11,6 +11,11 @@ module Dotify
   autoload :Dot,        'dotify/dot'
   autoload :CLI,        'dotify/cli'
 
+  module CLI
+    autoload :Base,        'dotify/cli'
+    autoload :Utilities,   'dotify/cli/utilities'
+  end
+
   def self.installed?
     Config.installed?
   end

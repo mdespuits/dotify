@@ -10,10 +10,9 @@ require 'dotify/cli/utilities'
 
 module Dotify
   module CLI
-
     class Base < Thor
 
-      include Utilities
+      include CLI::Utilities
       include Thor::Actions
 
       default_task :help

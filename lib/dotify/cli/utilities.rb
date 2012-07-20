@@ -1,4 +1,3 @@
-require 'dotify/cli'
 require 'thor/actions'
 
 module Dotify
