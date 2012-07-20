@@ -7,6 +7,7 @@
 $:.unshift File.expand_path("../../lib", __FILE__)
 require 'thor/util'
 require 'simplecov'
+require 'dotify'
 
 SimpleCov.start do
   add_filter '/spec/support'
