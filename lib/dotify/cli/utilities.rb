@@ -3,7 +3,7 @@ require 'thor/actions'
 module Dotify
   module CLI
     module Utilities
-      extend Thor::Actions
+      include Thor::Shell
 
       def inform(message)
         say message, :blue

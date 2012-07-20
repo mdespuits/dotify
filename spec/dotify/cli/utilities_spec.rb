@@ -7,6 +7,7 @@ module Dotify
   module CLI
     class FakeCli
       include CLI::Utilities
+      def initialize; end
     end
 
     describe Utilities do
