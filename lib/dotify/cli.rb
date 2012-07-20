@@ -138,13 +138,14 @@ module Dotify
       method_option :force,   :default => false, :type => :boolean, :aliases => '-f', :desc => "Link dotfiles without confirmation"
       method_option :relink,  :default => false, :type => :boolean, :aliases => '-r', :desc => "Relink files already in the"
       def link(file = nil)
-        return not_setup_warning unless Dotify.installed?
-        # Link a single file
-        return file_action :link, Dot.new(file), options unless file.nil?
-        # Relink the files
-        return Dotify.collection.linked.each { |file| file_action(:link, file, options) } if options[:relink]
-        # Link the files
-        Dotify.collection.unlinked.each { |file| file_action(:link, file, options) }
+        run_if_installed do
+          # Link a single file
+          return file_action :link, Dot.new(file), options unless file.nil?
+          # Relink the files
+          return Dotify.collection.linked.each { |file| file_action(:link, file, options) } if options[:relink]
+          # Link the files
+          Dotify.collection.unlinked.each { |file| file_action(:link, file, options) }
+        end
       end
 
       desc 'unlink [[FILENAME]]', "Unlink one or all of your dotfiles (FILENAME is optional)"
@@ -156,18 +157,15 @@ module Dotify
       DESC
       method_option :force, :default => false, :type => :boolean, :aliases => '-f', :desc => 'Remove all installed dotfiles without confirmation'
       def unlink(file = nil)
-        return not_setup_warning unless Dotify.installed?
-        # Unlink a single file
-        return file_action :unlink, Dot.new(file), options unless file.nil?
-        # Unlink the files
-        Dotify.collection.linked.each { |file| file_action(:unlink, file, options) }
+        run_if_installed do
+          # Unlink a single file
+          return file_action :unlink, Dot.new(file), options unless file.nil?
+          # Unlink the files
+          Dotify.collection.linked.each { |file| file_action(:unlink, file, options) }
+        end
       end
 
       private
-
-        def not_setup_warning
-          say "Dotify has not been setup yet! You need to run 'dotify setup' first.", :yellow
-        end
 
         def file_action(action, file, options = {})
           case action.to_sym

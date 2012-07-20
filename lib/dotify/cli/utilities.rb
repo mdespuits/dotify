@@ -11,7 +11,7 @@ module Dotify
 
       def run_if_installed
         return yield if Config.installed?
-        inform "You need to install Dotify before running this task"
+        inform "You need to run 'dotify setup' before you can run this task."
       end
     end
   end
