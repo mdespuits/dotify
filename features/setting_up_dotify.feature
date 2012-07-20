@@ -5,6 +5,6 @@ Feature: Setting up Dotify
 
   Scenario: Setting up dotify
     Given Dotify is not setup
-    When I try to setup Dotify
+    When I setup Dotify
     Then .dotify should exist in home
     Then .dotrc should exist in home
