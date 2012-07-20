@@ -8,8 +8,10 @@ $:.unshift File.expand_path("../../lib", __FILE__)
 require 'thor/util'
 require 'simplecov'
 
-SimpleCov.start do
-  load_adapter 'test_frameworks'
+unless ENV["SKIP_SIMPLECOV"] == 'true'
+  SimpleCov.start do
+    load_adapter 'test_frameworks'
+  end
 end
 
 RSpec.configure do |config|
