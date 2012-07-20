@@ -1,14 +1,16 @@
 require 'dotify/cli/utilities'
 require 'thor/actions'
+require 'git'
 
 module Dotify
   module CLI
     class Github
 
       include Utilities
+      extend Utilities
 
       def initialize(options = {})
-        if File.exists? Config.path('.git') # if the Dotify directory has been made a git repo
+        self.class.run_if_git_repo do
           repo = ::Git.open(Config.path)
           changed = repo.status.changed
           if changed.size > 0
@@ -36,9 +38,14 @@ module Dotify
             end
             inform "Successfully pushed!"
           end
-        else
-          inform 'Dotify has nothing to save.'
         end
+      end
+
+      def self.run_if_git_repo
+        if File.exists? Config.path('.git')
+          return yield
+        end
+        inform "You need to make ~/.dotify a Git repo to run this task."
       end
 
     end

@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'thor'
 require 'fileutils'
-require 'git'
 require 'net/http'
 
 require 'dotify'

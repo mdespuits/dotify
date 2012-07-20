@@ -1,4 +1,4 @@
-require 'thor/actions'
+require 'thor/shell'
 
 module Dotify
   module CLI

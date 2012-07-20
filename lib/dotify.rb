@@ -2,6 +2,8 @@ require 'dotify/version'
 require 'dotify/errors'
 
 require 'fileutils'
+require 'dotify/cli/utilities'
+require 'dotify/cli/github'
 
 module Dotify
 
@@ -20,7 +22,6 @@ module Dotify
 
   module CLI
     autoload :Base,        'dotify/cli'
-    autoload :Utilities,   'dotify/cli/utilities'
   end
 
   def self.installed?

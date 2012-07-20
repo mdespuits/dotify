@@ -7,11 +7,13 @@
 $:.unshift File.expand_path("../../lib", __FILE__)
 require 'thor/util'
 require 'simplecov'
+
 require 'dotify'
+require 'dotify/cli/utilities'
+require 'dotify/cli/github'
 
 SimpleCov.start do
   add_filter '/spec/support'
-  add_filter '/spec'
 end
 
 RSpec.configure do |config|
