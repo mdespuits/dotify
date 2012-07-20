@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'dotify/cli/utilities'
+require 'rspec/matchers/built_in/yield'
 require 'thor/actions'
 
 
