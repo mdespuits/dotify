@@ -4,7 +4,7 @@ require 'thor'
 
 module Dotify
   describe CLI do
-    let!(:cli) { CLI.new }
+    let!(:cli) { CLI::Base.new }
     before do
       Dotify.stub(:installed?).and_return true
       vimrc = Dot.new('.zshrc')

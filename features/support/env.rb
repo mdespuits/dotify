@@ -10,7 +10,7 @@ Before do
   @__orig_home = ENV["HOME"]
 
   # Stub CLI say method
-  @cli = Dotify::CLI.new
+  @cli = Dotify::CLI::Base.new
   @cli.stub(:say)
 
   ENV["HOME"] = "/tmp"
