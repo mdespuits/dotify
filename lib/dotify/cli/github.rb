@@ -48,7 +48,8 @@ module Dotify
 
       def pull(repo)
         return inform "Dotify has already been setup." if Dotify.installed?
-        git_repo_name = "git@github.com:#{repo}.git"
+        repo_location = ENV['PUBLIC_GITHUB_REPOS'] == 'true' ? 'git://github.com/' : 'git@github.com:'
+        git_repo_name = "#{repo_location}#{repo}.git"
         inform "Pulling #{repo} from Github into #{Config.path}..."
         Git.clone(git_repo_name, Config.path)
         inform "Backing up dotfile and installing Dotify files..."

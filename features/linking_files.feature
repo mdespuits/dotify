@@ -15,6 +15,9 @@ Feature: linking files to Dotify
       | .zshrc        |
       And ".bash_profile" should be linked to Dotify
       And ".vimrc" should be linked to Dotify
+      And ".gemrc" should be linked to Dotify
+      And ".railsrc" should be linked to Dotify
+      And ".zshrc" should be linked to Dotify
 
   Scenario: Linking files
     Given a directory named ".dotify"
