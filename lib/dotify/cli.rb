@@ -51,7 +51,7 @@ module Dotify
           inform "Initializing and updating submodules in Dotify now..."
           system "cd #{Config.path} && git submodule init &> /dev/null && git submodule update &> /dev/null"
         end
-        inform "Successfully installed #{repo} from Dotify!"
+        inform "Dotify successfully installed #{repo} from Github!"
       rescue Git::GitExecuteError => e
         say "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it.", :red
         say "Git Error: #{e.message}", :red if options[:debug]
