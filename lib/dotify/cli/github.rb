@@ -16,7 +16,7 @@ module Dotify
 
       def save
         self.class.run_if_git_repo do
-          repo = ::Git.open(Config.path)
+          repo = ::Git.open(Dotify::Config.path)
           changed = repo.status.changed
           if changed.size > 0
             changed.each_pair do |file, status|
@@ -48,8 +48,7 @@ module Dotify
 
       def pull(repo)
         return inform "Dotify has already been setup." if Dotify.installed?
-        repo_location = ENV['PUBLIC_GITHUB_REPOS'] == 'true' ? 'git://github.com/' : 'git@github.com:'
-        git_repo_name = "#{repo_location}#{repo}.git"
+        git_repo_name = repo_path(repo)
         inform "Pulling #{repo} from Github into #{Config.path}..."
         Git.clone(git_repo_name, Config.path)
         inform "Backing up dotfile and installing Dotify files..."
@@ -62,6 +61,11 @@ module Dotify
       rescue Git::GitExecuteError => e
         say "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it.", :red
         say "Git Error: #{e.message}", :red if options[:debug]
+      end
+
+      def repo_path(name)
+        repo_location = ENV['PUBLIC_GITHUB_REPOS'] == 'true' ? 'git://github.com/' : 'git@github.com:'
+        git_repo_name = "#{repo_location}#{name}.git"
       end
 
       def self.run_if_git_repo

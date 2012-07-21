@@ -5,6 +5,7 @@ require 'fileutils'
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'dotify'
 require 'cucumber/rspec/doubles'
+require 'dotify/cli/github'
 require 'aruba/cucumber'
 
 Before('@slow_process') do
