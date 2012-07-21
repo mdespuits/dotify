@@ -8,10 +8,6 @@ Given /^(.*) does not exist in (home|dotify)$/i do |file, location|
   puts `rm -rf #{Dotify::Config.send(location, file)}`
 end
 
-When /^they get linked by Dotify$/ do
-  Dotify::Collection.new(:dotfiles).each { |file| file.link }
-end
-
 Then /^"(.*?)" should be linked to Dotify$/ do |file|
   File.exists?(Dotify::Config.path(file)).should == true
   File.readlink(Dotify::Config.home(file)).should == Dotify::Config.path(file)
@@ -19,9 +15,4 @@ end
 
 Then /^"(.*?)" should not be linked to Dotify$/ do |file|
   File.exists?(Dotify::Config.path(file)).should == false
-end
-
-Then /^\.(\S*) should exist in (home|dotify)$/ do |file, location|
-  where = location == "home" ? :home : :path
-  File.exists?(Dotify::Config.send(where, "." + file)).should == true
 end

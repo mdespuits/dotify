@@ -11,7 +11,7 @@ Feature: linking files to Dotify
       And an empty file named ".gemrc"
       And an empty file named ".vimrc"
       And an empty file named ".zshrc"
-    When they get linked by Dotify
+    When I successfully run `dotify link --force`
     Then ".bash_profile" should be linked to Dotify
       And ".gemrc" should be linked to Dotify
       And ".vimrc" should be linked to Dotify
@@ -31,7 +31,7 @@ Feature: linking files to Dotify
           - .gemrc
           - .zshrc
       """
-    When they get linked by Dotify
+    When I successfully run `dotify link --force`
       And I cd to ".dotify"
     Then the following files should exist:
       | .vimrc        |

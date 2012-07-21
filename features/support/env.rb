@@ -14,6 +14,8 @@ Before do
   @cli = Dotify::CLI::Base.new
   @cli.stub(:say)
 
+  ENV["PATH"] = "#{File.expand_path(File.dirname(__FILE__) + '/../../bin')}#{File::PATH_SEPARATOR}#{ENV['PATH']}"
+
   @tmp_home = "/tmp/dotify-test"
   @dirs = [@tmp_home]
   ENV["HOME"] = @tmp_home
