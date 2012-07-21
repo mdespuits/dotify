@@ -46,6 +46,19 @@ During the installation process, a Vim instance will open with a sample `.dotrc`
 
 Alternatively, you could run `dotify setup` to setup Dotify's configuration, followed by `dotify install` to add the initial files into Dotify.
 
+## Install from Github
+
+Already have your setup on Github and want it back (or copied to your other machine)? See another setup that you want to try? Run the `github` task with the username and repo you want.
+
+For example:
+
+    $ dotify github mattdbridges/dots
+    Pulling mattdbridges/dots from Github into /Users/computer-user/.dotify...
+    Backing up dotfile and installing Dotify files...
+    Successfully installed mattdbridges/dots from Dotify!
+
+This command will pull the repo from Github into the ~/.dotify path if it does not already exist. It will then backup any existing dotfiles matching those in the new ~/.dotify directory and link all the files you just pulled down from Github. If Dotify detects that you have submodules (inside of your Vim configuration for example), it will automatically initialize and update them (*not* pull them from the original repos).
+
 ## Link single files
 
 After you have setup Dotify, you can add files one by one if you did not add them during setup.
@@ -140,15 +153,16 @@ This tool is powered by the amazing library, [Thor](http://whatisthor.com/). You
 
     $ dotify help
     Tasks:
-      dotify edit [FILE]          # Edit a dotify file
-      dotify help [TASK]          # Describe available tasks or one specific task
-      dotify install              # Install files from your home directory into Dotify
-      dotify link [[FILENAME]]    # Link up one or all of your dotfiles (FILENAME is optional)
-      dotify list                 # List the installed dotfiles
-      dotify save                 # Save Dotify files and push to Github.
-      dotify setup                # Setup your system for Dotify to manage your dotfiles
-      dotify unlink [[FILENAME]]  # Unlink one or all of your dotfiles (FILENAME is optional)
-      dotify version              # Check your Dotify version
+      dotify edit [FILE]               # Edit a dotify file
+      dotify github [USERNAME]/[REPO]  # Install the dotfiles from a Github repo into Dotify. (Backs up any files that would be overwritten)
+      dotify help [TASK]               # Describe available tasks or one specific task
+      dotify install                   # Install files from your home directory into Dotify
+      dotify link [[FILENAME]]         # Link up one or all of your dotfiles (FILENAME is optional)
+      dotify list                      # List the installed dotfiles
+      dotify save                      # Save Dotify files and push to Github.
+      dotify setup                     # Setup your system for Dotify to manage your dotfiles
+      dotify unlink [[FILENAME]]       # Unlink one or all of your dotfiles (FILENAME is optional)
+      dotify version                   # Check your Dotify version
 
 ## Contributing
 
