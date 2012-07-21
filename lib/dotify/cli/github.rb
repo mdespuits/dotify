@@ -7,7 +7,6 @@ module Dotify
     class Github
 
       include Utilities
-      extend Utilities
 
       def initialize(options = {})
         self.class.run_if_git_repo do
@@ -42,9 +41,7 @@ module Dotify
       end
 
       def self.run_if_git_repo
-        if File.exists? Config.path('.git')
-          return yield
-        end
+        return yield if File.exists? Config.path('.git')
         inform "You need to make ~/.dotify a Git repo to run this task."
       end
 

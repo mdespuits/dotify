@@ -14,6 +14,15 @@ module Dotify
     describe Utilities do
       let(:test_cli) { FakeCli.new }
 
+      describe "instance and class methods" do
+        it "should be included and extended" do
+          FakeCli.should respond_to :inform
+          test_cli.should respond_to :inform
+          FakeCli.should respond_to :run_if_installed
+          test_cli.should respond_to :run_if_installed
+        end
+      end
+
       describe Utilities, "#inform" do
         it "should have an inform method" do
           expect(test_cli).to respond_to :inform
