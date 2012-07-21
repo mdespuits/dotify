@@ -15,6 +15,7 @@ Given ".dotrc has contents:" do |content|
 end
 
 When /^they get linked by Dotify$/ do
+  @files_to_link = Dotify::Collection.new(:dotfiles).map(&:filename)
   @files_to_link.each { |file| Dotify::Dot.new(file).link }
 end
 

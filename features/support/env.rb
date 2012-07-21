@@ -13,11 +13,13 @@ Before do
   @cli = Dotify::CLI::Base.new
   @cli.stub(:say)
 
-  ENV["HOME"] = "/tmp"
+  FileUtils.mkdir_p "/tmp/dotify-test"
+  ENV["HOME"] = "/tmp/dotify-test"
   `rm -rf #{File.join(ENV["HOME"], '.bash_profile')}`
   `rm -rf #{File.join(ENV["HOME"], '.gemrc')}`
 end
 
 After do
+  FileUtils.rm_rf "/tmp/dotify-test"
   ENV["HOME"] = @__orig_home
 end
