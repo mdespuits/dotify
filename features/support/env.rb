@@ -5,6 +5,7 @@ require 'fileutils'
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'dotify'
 require 'cucumber/rspec/doubles'
+require 'aruba/cucumber'
 
 Before do
   @__orig_home = ENV["HOME"]
@@ -13,13 +14,14 @@ Before do
   @cli = Dotify::CLI::Base.new
   @cli.stub(:say)
 
-  FileUtils.mkdir_p "/tmp/dotify-test"
-  ENV["HOME"] = "/tmp/dotify-test"
+  @tmp_home = "/tmp/dotify-test"
+  @dirs = [@tmp_home]
+  ENV["HOME"] = @tmp_home
   `rm -rf #{File.join(ENV["HOME"], '.bash_profile')}`
   `rm -rf #{File.join(ENV["HOME"], '.gemrc')}`
 end
 
 After do
-  FileUtils.rm_rf "/tmp/dotify-test"
+  FileUtils.rm_rf @tmp_home
   ENV["HOME"] = @__orig_home
 end
