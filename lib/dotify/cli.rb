@@ -4,7 +4,7 @@ require 'fileutils'
 require 'net/http'
 
 require 'dotify'
-require 'dotify/version_checker'
+require 'dotify/version'
 require 'dotify/cli/utilities'
 require 'dotify/cli/github'
 
@@ -70,17 +70,17 @@ module Dotify
       method_option :check, :aliases => '-c', :default => false, :type => :boolean, :desc => "Check Rubygems.org to see if your installed version of Dotify is out of date."
       def version
         return say "Dotify Version: v#{Dotify.version}", :blue unless options[:check]
-        if VersionChecker.out_of_date?
+        if Version.out_of_date?
           say "Your version of Dotify is out of date.", :yellow
           inform "  Your Version:   #{Dotify.version}"
-          inform "  Latest Version: #{VersionChecker.version}"
+          inform "  Latest Version: #{Version.version}"
           say "I recommend that you uninstall Dotify completely before updating", :yellow
         else
           inform "Your version of Dotify is up to date: #{Dotify.version}"
         end
       rescue Exception => e
         say "There was an error checking your Dotify version. Please try again.", :red
-        say VersionChecker.handle_error(e) if options[:verbose] == true
+        say Version.handle_error(e) if options[:verbose] == true
       end
 
       desc :setup, "Setup your system for Dotify to manage your dotfiles"
