@@ -4,6 +4,18 @@ Feature: linking files to Dotify
   we need to be able to link files
   from the home directory -> ~/.dotify.
 
+  @slow_process
+  Scenario: Pulling from Github
+    When I successfully run `dotify github mattdbridges/dots`
+    Then the following files should exist:
+      | .bash_profile |
+      | .gemrc        |
+      | .railsrc      |
+      | .vimrc        |
+      | .zshrc        |
+      And ".bash_profile" should be linked to Dotify
+      And ".vimrc" should be linked to Dotify
+
   Scenario: Linking files
     Given a directory named ".dotify"
       And an empty file named ".dotrc"

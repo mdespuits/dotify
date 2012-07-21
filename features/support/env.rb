@@ -8,7 +8,8 @@ require 'cucumber/rspec/doubles'
 require 'aruba/cucumber'
 
 Before('@slow_process') do
-
+  @aruba_timeout_seconds = 30
+  @aruba_io_wait_seconds = 30
 end
 
 Before do
