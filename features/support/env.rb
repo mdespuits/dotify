@@ -21,13 +21,8 @@ Before do
   @dirs = [@tmp_home]
   ENV["PATH"] = "#{File.expand_path(File.dirname(__FILE__) + '/../../bin')}#{File::PATH_SEPARATOR}#{ENV['PATH']}"
 
-  # Stub CLI say method
-  @cli = Dotify::CLI::Base.new
-  @cli.stub(:say)
-
+  FileUtils.mkdir_p @tmp_home
   ENV["HOME"] = @tmp_home
-  `rm -rf #{File.join(ENV["HOME"], '.bash_profile')}`
-  `rm -rf #{File.join(ENV["HOME"], '.gemrc')}`
 end
 
 After do
