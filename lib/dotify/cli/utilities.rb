@@ -14,6 +14,11 @@ module Dotify
         inform "You need to run 'dotify setup' before you can run this task."
       end
 
+      def run_if_not_installed(&blk)
+        return yield unless Config.installed?
+        inform "You need to uninstall Dotify before you can run this task"
+      end
+
       def inform(message)
         say message, :blue
       end
