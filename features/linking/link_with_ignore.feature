@@ -4,6 +4,7 @@ Feature: Linking Files
   in our home directory (i.e. sensitive info,
   massive folders, etc...).
 
+  @long_process
   Scenario: Linking files with ignored definitions
     Given a directory named ".dotify"
       And an empty file named ".dotrc"
