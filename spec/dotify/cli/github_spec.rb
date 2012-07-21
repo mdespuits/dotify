@@ -5,6 +5,9 @@ module Dotify
   module CLI
     describe Github do
 
+      it { should respond_to :save }
+      it { should respond_to :pull }
+
       describe Github, "#run_if_git_repo" do
         before { Github.stub(:inform) }
         it "should yield the block if a .git directory exists in Dotify" do

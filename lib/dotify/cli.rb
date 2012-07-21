@@ -35,26 +35,13 @@ module Dotify
       method_option :verbose, :aliases => '-v', :type => :boolean, :default => true,  :desc => "Display file creation and status updates."
       method_option :push,    :aliases => '-p', :type => :boolean, :default => false, :desc => "Force the push to the remote repository."
       def save
-        Github.new(options)
+        Github.new(options).save
       end
 
       desc 'github [USERNAME]/[REPO]', "Install the dotfiles from a Github repo into Dotify. (Backs up any files that would be overwritten)"
       method_option :debug, :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
       def github(repo)
-        return inform "Dotify has already been setup." if Dotify.installed?
-        git_repo_name = "git@github.com:#{repo}.git"
-        inform "Pulling #{repo} from Github into #{Config.path}..."
-        Git.clone(git_repo_name, Config.path)
-        inform "Backing up dotfile and installing Dotify files..."
-        Collection.new(:dotify).each { |file| file.backup_and_link }
-        if File.exists? File.join(Config.path, ".gitmodules")
-          inform "Initializing and updating submodules in Dotify now..."
-          system "cd #{Config.path} && git submodule init &> /dev/null && git submodule update &> /dev/null"
-        end
-        inform "Dotify successfully installed #{repo} from Github!"
-      rescue Git::GitExecuteError => e
-        say "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it.", :red
-        say "Git Error: #{e.message}", :red if options[:debug]
+        Github.new(options).pull(repo)
       end
 
       desc :list, "List the installed dotfiles"
