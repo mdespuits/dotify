@@ -20,6 +20,11 @@ Before('@long_process') do
   @aruba_timeout_seconds = 15
 end
 
+Before('@really_long_process') do
+  @aruba_io_wait_seconds = 20
+  @aruba_timeout_seconds = 40
+end
+
 Before do
   @__orig_home = ENV["HOME"]
   @tmp_home = "/tmp/dotify-test"

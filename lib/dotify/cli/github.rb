@@ -52,6 +52,7 @@ module Dotify
           inform "Pulling #{repo} from Github into #{Config.path}..."
           Git.clone(git_repo_name, Config.path)
           inform "Backing up dotfile and installing Dotify files..."
+          Dot.new(".dotrc").backup_and_link # Link the new .dotrc file before trying to link the new files
           Collection.new(:dotify).each { |file| file.backup_and_link }
           if File.exists? File.join(Config.path, ".gitmodules")
             inform "Initializing and updating submodules in Dotify now..."
