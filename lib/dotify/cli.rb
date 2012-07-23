@@ -4,9 +4,6 @@ require 'fileutils'
 require 'net/http'
 
 require 'dotify'
-require 'dotify/version'
-require 'dotify/cli/utilities'
-require 'dotify/cli/github'
 
 module Dotify
   module CLI
