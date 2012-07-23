@@ -12,11 +12,13 @@ rvm:
   - rbx-19mode
 matrix:
   allow_failures:
-  - jdk: openjdk6
-    rvm: jruby-18mode
-    rvm: jruby-19mode
-  - jdk: openjdk7
-    rvm: jruby-18mode
-    rvm: jruby-19mode
+  - rvm: jruby-18mode
+    jdk: openjdk6
+  - rvm: jruby-19mode
+    jdk: openjdk6
+  - rvm: jruby-18mode
+    jdk: openjdk7
+  - rvm: jruby-19mode
+    jdk: openjdk7
   - rvm: rbx-18mode
   - rvm: rbx-19mode
