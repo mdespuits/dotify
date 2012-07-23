@@ -1,3 +1,4 @@
+jdk: openjdk7
 language: ruby
 script:
   - bundle exec rspec spec
