@@ -5,7 +5,7 @@ end
 
 Given /^(.*) does not exist in (home|dotify)$/i do |file, location|
   location = location == 'home' ? :home : :path
-  system "rm -rf #{Dotify::Config.send(location, file)}"
+  %x[rm -rf #{Dotify::Config.send(location, file)}]
 end
 
 Then /^"(.*?)" should be linked to Dotify$/ do |file|
