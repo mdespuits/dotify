@@ -4,7 +4,7 @@ Feature: Linking Files
   from a repo in Github. And set them up on
   my system.
 
-  @slow_process
+  @long_process
   Scenario: Pulling from Github
     When I successfully run `dotify github mattdbridges/simple_dotfiles`
     Then the following files should exist:
