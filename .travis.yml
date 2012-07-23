@@ -12,7 +12,11 @@ matrix:
   include:
   - rvm: jruby-18mode
     jdk: openjdk7
+  - rvm: jruby-19mode
+    jdk: openjdk7
 
   allow_failures:
   - rvm: jruby-18mode
+  - rvm: jruby-19mode
   - rvm: rbx-18mode
+  - rvm: rbx-19mode
