@@ -1,4 +1,3 @@
-require 'dotify/cli/utilities'
 require 'dotify'
 
 module Dotify

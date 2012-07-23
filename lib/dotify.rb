@@ -1,13 +1,19 @@
 require 'fileutils'
 
+# Everything else
 require 'dotify/config'
 require 'dotify/errors'
 require 'dotify/version'
-require 'dotify/cli/utilities'
-require 'dotify/cli/github'
+
+# Objects to manage dotfiles
 require 'dotify/dot'
 require 'dotify/collection'
 require 'dotify/filter'
+
+# CLI
+require 'dotify/cli/utilities'
+require 'dotify/cli/listing'
+require 'dotify/cli/github'
 require 'dotify/cli'
 
 
