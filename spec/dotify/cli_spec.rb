@@ -3,7 +3,7 @@ require 'dotify/cli'
 require 'thor'
 
 module Dotify
-  describe CLI do
+  describe CLI::Base do
     let!(:cli) { CLI::Base.new }
     before do
       Dotify.stub(:installed?).and_return true
@@ -18,7 +18,35 @@ module Dotify
       Filter.stub(:home).and_return([vimrc, bash_profile, gitconfig, zshrc])
     end
 
-    describe CLI, "#edit" do
+    describe CLI::Base, "#source_root" do
+      it "should return the right path" do
+        CLI::Base.source_root.should == File.expand_path("../../../templates", __FILE__)
+      end
+    end
+
+    describe CLI::Base, "github actions" do
+      let(:opts) { Hash.new }
+      let(:github) { double("Github") }
+      before do
+        cli.stub(:options).and_return opts
+      end
+      describe CLI::Base, "#save" do
+        it "should call Github save and pass in the options" do
+          CLI::Github.should_receive(:new).with(opts).and_return github
+          github.should_receive(:save)
+          cli.save
+        end
+      end
+      describe CLI::Base, "#github" do
+        it "should create a new instance of Github with the right options and call pull with the right repo" do
+          CLI::Github.should_receive(:new).with(opts).and_return github
+          github.should_receive(:pull).with("mattdbridges/repo")
+          cli.github("mattdbridges/repo")
+        end
+      end
+    end
+
+    describe CLI::Base, "#edit" do
       let(:dot) { double('dot', :linked? => true, :dotify => '/tmp/dotify/.vimrc') }
       before do
         Dot.stub(:new).and_return(dot)
@@ -41,7 +69,7 @@ module Dotify
       end
     end
 
-    describe CLI, "#link" do
+    describe CLI::Base, "#link" do
       before do
         cli.stub(:file_action)
         Config.stub(:installed?).and_return true
@@ -66,7 +94,7 @@ module Dotify
       end
     end
 
-    describe CLI, "#unlink" do
+    describe CLI::Base, "#unlink" do
       before do
         cli.stub(:file_action)
         Config.stub(:installed?).and_return true
