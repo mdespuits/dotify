@@ -23,6 +23,23 @@ module Dotify
         say message, :blue
       end
 
+      def file_action(action, file, options = {})
+        case action.to_sym
+        when :link
+          return inform "'#{file.dotfile}' does not exist." unless file.in_home_dir?
+          return say_status :linked, file.dotfile if file.linked?
+        when :unlink
+          return inform "'#{file}' does not exist in Dotify."unless file.linked?
+        else
+          say "You can't run the action :#{action} on a file."
+        end
+
+        if options[:force] == true || yes?("Do you want to #{action} #{file} #{action.to_sym == :link ? :to : :from} Dotify? [Yn]", :blue)
+          file.send(action) if file.respond_to? action
+          say_status "#{action}ed", file.dotfile
+        end
+      end
+
     end
   end
 end
