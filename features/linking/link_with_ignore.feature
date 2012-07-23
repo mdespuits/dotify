@@ -20,12 +20,11 @@ Feature: Linking Files
           - .zshrc
       """
     When I successfully run `dotify link --force`
-      And I cd to ".dotify"
     Then the following files should exist:
-      | .vimrc        |
-      | .bash_profile |
+      | .dotify/.vimrc        |
+      | .dotify/.bash_profile |
       And ".bash_profile" should be linked to Dotify
       And ".vimrc" should be linked to Dotify
       And the following files should not exist:
-        | .gemrc |
-        | .zshrc |
+        | .dotify/.gemrc |
+        | .dotify/.zshrc |

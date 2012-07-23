@@ -17,7 +17,7 @@ end
 require 'dotify'
 
 Before('@long_process') do
-  @aruba_timeout_seconds = 10
+  @aruba_timeout_seconds = 15
 end
 
 Before do
