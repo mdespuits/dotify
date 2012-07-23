@@ -13,6 +13,10 @@ rvm:
 matrix:
   include:
   - rvm: jruby-18mode
+    jdk: openjdk6
+  - rvm: jruby-19mode
+    jdk: openjdk6
+  - rvm: jruby-18mode
     jdk: openjdk7
   - rvm: jruby-19mode
     jdk: openjdk7
