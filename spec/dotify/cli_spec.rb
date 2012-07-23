@@ -48,7 +48,7 @@ module Dotify
 
     describe CLI::Base, "#list" do
       it "should delegate to the Listing class" do
-        list = CLI::Listing.new
+        list = CLI::Listing.new(Dotify.collection.linked)
         CLI::Listing.should_receive(:new).and_return list
         list.should_receive(:write)
         cli.list

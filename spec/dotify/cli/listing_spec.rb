@@ -5,22 +5,24 @@ require 'spec_helper'
 module Dotify
   module CLI
     describe Listing do
-      let(:listing) { Listing.new }
-      before { listing.stub(:inform) }
-      it "should pull all of the linked files in Collection" do
-        listing.collection.should == Dotify.collection.linked
-      end
-      it "should inform the user of the number of files linked" do
-        listing.collection.stub(:count).and_return 3
-        listing.count.should == 3
-      end
-      it "should output the right content" do
-        listing.stub(:collection).and_return [
+      let(:collection) do
+        [
           Dot.new(".dotrc"),
           Dot.new(".gitconfig"),
           Dot.new(".vimrc"),
           Dot.new(".zshrc")
         ]
+      end
+      let(:listing) { Listing.new(collection) }
+      before { listing.stub(:inform) }
+      it "should assign the passed array to the :collection attr_reader" do
+        listing.collection.should == collection
+      end
+      it "should count the files correctly" do
+        listing.collection.stub(:count).and_return 3
+        listing.count.should == 3
+      end
+      it "should call say the right number of times" do
         Thor::Shell::Color.any_instance.should_receive(:say).exactly(listing.collection.size).times
         listing.write
       end

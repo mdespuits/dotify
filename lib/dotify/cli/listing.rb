@@ -9,8 +9,8 @@ module Dotify
 
       attr_reader :collection
 
-      def initialize
-        @collection = Dotify.collection.linked
+      def initialize(collection)
+        @collection = collection
       end
 
       def count
