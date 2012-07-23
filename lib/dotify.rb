@@ -1,28 +1,17 @@
-require 'dotify/version'
-require 'dotify/errors'
-
 require 'fileutils'
+
+require 'dotify/config'
+require 'dotify/errors'
+require 'dotify/version'
 require 'dotify/cli/utilities'
 require 'dotify/cli/github'
+require 'dotify/dot'
+require 'dotify/collection'
+require 'dotify/filter'
+require 'dotify/cli'
+
 
 module Dotify
-
-  # Yeah, I know. Ruby 2.0 is not supporting autoload.
-  # Well, I'm keeping it here for now because I feel like
-  # it and I don't want to require all of the files from
-  # the start if I can avoid it.
-  #
-  # Anyway, I'll fix it eventually, I just am feeling a bit
-  # lazy right now.
-  autoload :Config,     'dotify/config'
-  autoload :Collection, 'dotify/collection'
-  autoload :Filter,     'dotify/filter'
-  autoload :Dot,        'dotify/dot'
-  autoload :CLI,        'dotify/cli'
-
-  module CLI
-    autoload :Base,        'dotify/cli'
-  end
 
   def self.installed?
     Config.installed?
