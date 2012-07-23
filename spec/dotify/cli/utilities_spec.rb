@@ -59,10 +59,15 @@ module Dotify
           Config.stub(:installed?).and_return false
           expect { |b| test_cli.run_if_installed(&b) }.not_to yield_control
         end
-        it "should inform user if Dotiyf is not installed" do
+        it "should inform user if Dotify is not installed" do
           Config.stub(:installed?).and_return false
           test_cli.should_receive(:inform).once
           test_cli.run_if_installed { }
+        end
+        it "should not inform user if Dotify is not installed" do
+          Config.stub(:installed?).and_return false
+          test_cli.should_not_receive(:inform)
+          test_cli.run_if_installed(false) { }
         end
       end
 
@@ -82,6 +87,11 @@ module Dotify
           Config.stub(:installed?).and_return true
           test_cli.should_receive(:inform).once
           test_cli.run_if_not_installed { }
+        end
+        it "should not inform user if Dotify is not installed" do
+          Config.stub(:installed?).and_return true
+          test_cli.should_not_receive(:inform)
+          test_cli.run_if_installed(false) { }
         end
       end
 

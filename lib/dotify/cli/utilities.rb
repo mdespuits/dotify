@@ -9,14 +9,46 @@ module Dotify
         base.extend(self)
       end
 
-      def run_if_installed(&blk)
+      # Only run the passed block if Dotify is installed.
+      #
+      # Usage:
+      #
+      #   run_if_installed do
+      #     # ...code to run...
+      #   end
+      #
+      # To run without the output warning, pass false as a parameter.
+      #
+      # Usage:
+      #
+      #   run_if_installed(false) do
+      #     # ...code to run...
+      #   end
+      #
+      def run_if_installed(output = true, &blk)
         return yield if Config.installed?
-        inform "You need to run 'dotify setup' before you can run this task."
+        inform "You need to run `dotify setup` before you can run this task." if output
       end
 
-      def run_if_not_installed(&blk)
+      # Only run the passed block if Dotify is not installed.
+      #
+      # Usage:
+      #
+      #   run_if_not_installed do
+      #     # ...code to run...
+      #   end
+      #
+      # To run without the output warning, pass false as a parameter.
+      #
+      # Usage:
+      #
+      #   run_if_not_installed(false) do
+      #     # ...code to run...
+      #   end
+      #
+      def run_if_not_installed(output = true, &blk)
         return yield unless Config.installed?
-        inform "You need to uninstall Dotify before you can run this task"
+        inform "You need to uninstall Dotify before you can run this task" if output
       end
 
       def inform(message)
