@@ -6,9 +6,9 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 $:.unshift File.expand_path("../../lib", __FILE__)
 require 'thor/util'
-require 'simplecov'
 
 unless ENV["SKIP_SIMPLECOV"] == 'true'
+  require 'simplecov'
   SimpleCov.start do
     load_adapter 'test_frameworks'
   end
