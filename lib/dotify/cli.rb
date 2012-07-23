@@ -4,6 +4,7 @@ require 'fileutils'
 require 'net/http'
 
 require 'dotify'
+require 'dotify/cli/listing'
 
 module Dotify
   module CLI
@@ -41,11 +42,7 @@ module Dotify
 
       desc :list, "List the installed dotfiles"
       def list
-        inform "Dotify is managing #{Dotify.collection.linked.count} files:\n"
-        Dotify.collection.linked.each do |dot|
-          say "   * #{dot.filename}", :yellow
-        end
-        $stdout.write "\n"
+        Listing.new.write
       end
 
       desc 'edit [FILE]', "Edit a dotify file"

@@ -46,6 +46,15 @@ module Dotify
       end
     end
 
+    describe CLI::Base, "#list" do
+      it "should delegate to the Listing class" do
+        list = CLI::Listing.new
+        CLI::Listing.should_receive(:new).and_return list
+        list.should_receive(:write)
+        cli.list
+      end
+    end
+
     describe CLI::Base, "#edit" do
       let(:dot) { double('dot', :linked? => true, :dotify => '/tmp/dotify/.vimrc') }
       before do
