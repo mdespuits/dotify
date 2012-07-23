@@ -6,7 +6,7 @@ Feature: Linking Files
 
   @slow_process
   Scenario: Pulling from Github
-    When I successfully run `dotify github mattdbridges/dots`
+    When I successfully run `dotify github mattdbridges/simple_dotfiles`
     Then the following files should exist:
       | .gitconfig    |
       | .vimrc        |
