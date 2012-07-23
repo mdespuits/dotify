@@ -1,6 +1,7 @@
 language: ruby
-script: SKIP_SIMPLECOV=true bundle exec rspec spec
-after_script: bundle exec cucumber --no-profile --color --format progress --strict
+script:
+  - bundle exec rspec spec
+  - bundle exec cucumber --no-profile --color --format progress --strict
 rvm:
   - 1.8.7
   - 1.9.2

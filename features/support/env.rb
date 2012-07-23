@@ -3,9 +3,18 @@ require 'thor/util'
 require 'fileutils'
 
 $:.unshift(File.dirname(__FILE__) + '/../../lib')
-require 'dotify'
 require 'cucumber/rspec/doubles'
 require 'aruba/cucumber'
+
+if ENV["RUN_SIMPLECOV"] == 'true'
+  require 'simplecov'
+  SimpleCov.start do
+    coverage_dir 'coverage/cuke'
+    load_adapter 'test_frameworks'
+  end
+end
+
+require 'dotify'
 
 Before('@long_process') do
   @aruba_timeout_seconds = 10

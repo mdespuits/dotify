@@ -6,7 +6,7 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 $:.unshift File.expand_path("../../lib", __FILE__)
 
-unless ENV["SKIP_SIMPLECOV"] == 'true'
+if ENV["RUN_SIMPLECOV"] == 'true'
   require 'simplecov'
   SimpleCov.start 'test_frameworks'
 end
