@@ -23,6 +23,14 @@ module Dotify
         say message, :blue
       end
 
+      def caution(message)
+        say message, :red
+      end
+
+      def say(message, color)
+        Thor::Shell::Color.new.say(" ** #{message}", color)
+      end
+
       def file_action(action, file, options = {})
         case action.to_sym
         when :link

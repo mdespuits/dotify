@@ -74,7 +74,7 @@ module Dotify
           inform "Your version of Dotify is up to date: #{Dotify.version}"
         end
       rescue Exception => e
-        say "There was an error checking your Dotify version. Please try again.", :red
+        caution "There was an error checking your Dotify version. Please try again."
         say Version.handle_error(e) if options[:verbose] == true
       end
 

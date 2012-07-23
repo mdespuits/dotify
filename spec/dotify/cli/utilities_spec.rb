@@ -23,6 +23,13 @@ module Dotify
         end
       end
 
+      describe Utilities, "#say" do
+        it "should pass to Thor::Shell::Basic with right params" do
+          Thor::Shell::Color.any_instance.should_receive(:say).with(" ** something", :blue).once
+          test_cli.say "something", :blue
+        end
+      end
+
       describe Utilities, "#inform" do
         it "should have an inform method" do
           expect(test_cli).to respond_to :inform
@@ -30,6 +37,13 @@ module Dotify
         it "should delegate to Thor::Actions say method" do
           test_cli.should_receive(:say).with("some message", :blue)
           test_cli.inform("some message")
+        end
+      end
+
+      describe Utilities, "#caution" do
+        it "should pass to Thor::Shell::Basic with right params" do
+          test_cli.should_receive(:say).with("something", :red)
+          test_cli.caution "something"
         end
       end
 
