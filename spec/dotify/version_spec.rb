@@ -24,13 +24,22 @@ module Dotify
     describe Version, "#current?" do
       it "should be false if version is not current" do
         stub_const "Dotify::VERSION", '0.2.0'
-          Version.stub(:version).and_return('0.1.9')
+        Version.stub(:version).and_return('0.1.9')
         Version.current?.should == false
-    end
+      end
       it "should be true if version is current" do
         stub_const "Dotify::VERSION", '0.2.0'
         Version.stub(:version).and_return('0.2.0')
         Version.current?.should == true
+      end
+    end
+    describe Version, "#handle_error" do
+      it "should output the right stuff" do
+        error = double("fake", :message => "Fake message", :backtrace => ["fake", "backtrace"])
+        result = Version.handle_error(error)
+        result.should =~ %r{Fake message}
+        result.should =~ %r{fake}
+        result.should =~ %r{backtrace}
       end
     end
   end

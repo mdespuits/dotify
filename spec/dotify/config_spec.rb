@@ -23,6 +23,10 @@ module Dotify
           YAML.stub(:load_file).with(Config.file).and_raise(TypeError)
           Config.retrieve.should == {}
         end
+        it "should return an empty hash if the config file does not exist" do
+          File.stub(:exists?).with(Config.file).and_return false
+          Config.retrieve.should == {}
+        end
         it "should return an the hash returned by YAML#load_file" do
           YAML.stub(:load_file).and_return({ :test => 'example' })
           Config.retrieve.should == { :test => 'example' }
