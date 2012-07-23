@@ -1,10 +1,10 @@
-require 'multi_json'
 module Dotify
   VERSION = "0.6.6"
 
   class Version
     class << self
       def run_check!
+        require 'multi_json'
         return if !@version.nil?
 
         resp = Net::HTTP.get('rubygems.org', '/api/v1/versions/dotify.json')
