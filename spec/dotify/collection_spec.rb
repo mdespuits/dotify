@@ -1,14 +1,26 @@
 require 'spec_helper'
 
 module Dotify
+  class LinkedDot < Dot
+    def in_home_dir?; true; end
+    def in_dotify?; true; end
+    def linked_to_dotify?; true; end
+  end
+
+  class UnlinkedDot < Dot
+    def in_home_dir?; true; end
+    def in_dotify?; false; end
+    def linked_to_dotify?; false; end
+  end
+
   describe Collection do
 
     let(:collection) { Collection.new }
     let(:home_files) {
       [
-        @bashrc = double('dot1', :filename => '.bashrc', :linked? => false),
-        @gitconfig = double('dot2', :filename => '.gitconfig', :linked? => false),
-        @vimrc = double('dot3', :filename => '.vimrc', :linked? => true),
+        @bashrc = UnlinkedDot.new(".bashrc"),
+        @gitconfig = UnlinkedDot.new(".gitconfig"),
+        @vimrc = LinkedDot.new(".vimrc")
       ]
     }
     describe "methods" do
