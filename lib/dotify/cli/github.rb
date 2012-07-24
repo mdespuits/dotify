@@ -99,7 +99,7 @@ module Dotify
         private
 
           def use_ssh_repo?
-            options.fetch(:ssh, false) == true || ENV['PUBLIC_GITHUB_REPOS'] == 'true'
+            (options.fetch(:ssh, false) == true || ENV['PUBLIC_GITHUB_REPOS'] != 'true')
           end
 
       end
