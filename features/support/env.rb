@@ -30,7 +30,7 @@ Before do
   @tmp_home = "/tmp/dotify-test"
 
   ## Aruba config ##
-  @aruba_timeout_seconds = 6
+  @aruba_timeout_seconds = 10
   @dirs = [@tmp_home]
   ENV["PATH"] = "#{File.expand_path(File.dirname(__FILE__) + '/../../bin')}#{File::PATH_SEPARATOR}#{ENV['PATH']}"
   ENV['PUBLIC_GITHUB_REPOS'] = 'true'
