@@ -3,22 +3,17 @@ script:
   - bundle exec rspec spec
   - bundle exec cucumber --no-profile --color --format progress --strict --tags ~@really_long_process
 rvm: 1.9.3
+env: PUBLIC_GITHUB_REPOS=true
 matrix:
   include:
   - rvm: 1.8.7
-    env: PUBLIC_GITHUB_REPOS=true
   - rvm: 1.9.2
-    env: PUBLIC_GITHUB_REPOS=true
   - rvm: jruby-18mode
-    env: PUBLIC_GITHUB_REPOS=true
     jdk: openjdk7
   - rvm: jruby-19mode
-    env: PUBLIC_GITHUB_REPOS=true
     jdk: openjdk7
   - rvm: rbx-18mode
-    env: PUBLIC_GITHUB_REPOS=true
   - rvm: rbx-19mode
-    env: PUBLIC_GITHUB_REPOS=true
   allow_failures:
   - rvm: jruby-18mode
   - rvm: jruby-19mode
