@@ -2,11 +2,11 @@ language: ruby
 script:
   - bundle exec rspec spec
   - bundle exec cucumber --no-profile --color --format progress --strict --tags ~@really_long_process
+rvm: 1.9.3
 matrix:
   include:
   - rvm: 1.8.7
   - rvm: 1.9.2
-  - rvm: 1.9.3
   - rvm: jruby-18mode
     jdk: openjdk7
   - rvm: jruby-19mode
