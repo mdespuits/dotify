@@ -48,7 +48,7 @@ module Dotify
 
       def pull(repo)
         run_if_not_installed do
-          git_repo_name = repo_path(repo)
+          git_repo_name = github_repo_url(repo)
           inform "Pulling #{repo} from Github into #{Config.path}..."
           Git.clone(git_repo_name, Config.path)
           inform "Backing up dotfile and installing Dotify files..."
@@ -56,16 +56,16 @@ module Dotify
           Collection.new(:dotify).each { |file| file.backup_and_link }
           if File.exists? File.join(Config.path, ".gitmodules")
             inform "Initializing and updating submodules in Dotify now..."
-            system "cd #{Config.path} && git submodule init &> /dev/null && git submodule update &> /dev/null"
+            %x[cd #{Config.path} && git submodule init &> /dev/null && git submodule update &> /dev/null]
           end
           inform "Dotify successfully installed #{repo} from Github!"
         end
       rescue Git::GitExecuteError => e
-        say "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it.", :red
-        say "Git Error: #{e.message}", :red if options[:debug]
+        caution "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it." 
+        caution "Git Error: #{e.message}" if options[:debug]
       end
 
-      def repo_path(name)
+      def github_repo_url(name)
         repo_location = ENV['PUBLIC_GITHUB_REPOS'] == 'true' ? 'git://github.com/' : 'git@github.com:'
         git_repo_name = "#{repo_location}#{name}.git"
       end
