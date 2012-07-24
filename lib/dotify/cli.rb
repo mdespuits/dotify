@@ -42,7 +42,7 @@ module Dotify
 
       desc :list, "List the installed dotfiles"
       def list
-        Listing.new(Dotify.collection.linked).write
+        Listing.new(Dotify.collection.linked, options).write
       end
 
       desc 'edit [FILE]', "Edit a dotify file"

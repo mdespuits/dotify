@@ -13,10 +13,11 @@ module Dotify
           Dot.new(".zshrc")
         ]
       end
-      let(:listing) { Listing.new(collection) }
+      let(:listing) { Listing.new(collection, { :force => true }) }
       before { listing.stub(:inform) }
       it "should assign the passed array to the :collection attr_reader" do
         listing.collection.should == collection
+        listing.options.should == { :force => true }
       end
       it "should count the files correctly" do
         listing.collection.stub(:count).and_return 3

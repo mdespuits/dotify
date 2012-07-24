@@ -6,10 +6,11 @@ module Dotify
 
       include CLI::Utilities
 
-      attr_reader :collection
+      attr_reader :collection, :options
 
-      def initialize(collection)
+      def initialize(collection, options = {})
         @collection = collection
+        @options = options
       end
 
       def count
