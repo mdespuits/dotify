@@ -24,17 +24,31 @@ module Dotify
         end
       end
 
-      describe Github, "#github_repo_url" do
-        after { ENV["PUBLIC_GITHUB_REPOS"] = 'false' }
-        it "should return a public repo url when env is public" do
-          ENV["PUBLIC_GITHUB_REPOS"] = 'true'
-          Github.new.github_repo_url("mattdbridges/dots").should == "git://github.com/mattdbridges/dots.git"
+      describe Github::Puller do
+        before { Github::Puller.any_instance.stub(:inform) }
+        let(:puller) { Github::Puller.new(double, double, {}) }
+
+        describe Github::Puller, "#github_repo_url" do
+          it "should return a public repo url when env is public" do
+            puller.stub(:use_ssh_repo?).and_return(false)
+            puller.url("mattdbridges/dots").should == "git://github.com/mattdbridges/dots.git"
+          end
+          it "should return a SSH repo url when env is not public" do
+            puller.stub(:use_ssh_repo?).and_return(true)
+            puller.url("mattdbridges/dots").should == "git@github.com:mattdbridges/dots.git"
+          end
         end
-        it "should return a SSH repo url when env is not public" do
-          ENV["PUBLIC_GITHUB_REPOS"] = 'false'
-          Github.new.github_repo_url("mattdbridges/dots").should == "git@github.com:mattdbridges/dots.git"
+
+        describe Github::Puller, "#clone" do
+          it "should delegate to Git clone and clone to the right place" do
+            puller.stub(:path).and_return("/tmp/home/.dotify")
+            puller.stub(:url).and_return("something")
+            Git.should_receive(:clone).with("something", "/tmp/home/.dotify")
+            puller.clone
+          end
         end
       end
+
     end
   end
 end

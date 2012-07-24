@@ -48,26 +48,60 @@ module Dotify
 
       def pull(repo)
         run_if_not_installed do
-          git_repo_name = github_repo_url(repo)
-          inform "Pulling #{repo} from Github into #{Config.path}..."
-          Git.clone(git_repo_name, Config.path)
-          inform "Backing up dotfile and installing Dotify files..."
+          puller = Puller.new(repo, Config.path, options)
+          puller.clone
           Dot.new(".dotrc").backup_and_link # Link the new .dotrc file before trying to link the new files
           Collection.new(:dotify).each { |file| file.backup_and_link }
-          if File.exists? File.join(Config.path, ".gitmodules")
-            inform "Initializing and updating submodules in Dotify now..."
-            %x[cd #{Config.path} && git submodule init &> /dev/null && git submodule update &> /dev/null]
-          end
-          inform "Dotify successfully installed #{repo} from Github!"
+          puller.initialize_submodules_in(Config.path(".gitmodules"))
+          puller.finish
         end
       rescue Git::GitExecuteError => e
         caution "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it." 
         caution "Git Error: #{e.message}" if options[:debug]
       end
 
-      def github_repo_url(name)
-        repo_location = ENV['PUBLIC_GITHUB_REPOS'] == 'true' ? 'git://github.com/' : 'git@github.com:'
-        git_repo_name = "#{repo_location}#{name}.git"
+      class Puller
+        attr_reader :repo, :path, :options
+
+        include Utilities
+
+        def initialize(repo, path, options = {})
+          @repo, @path, @options = repo, path, options
+          inform "Backing up dotfile and installing Dotify files..."
+        end
+
+        def clone
+          inform "Pulling #{repo} from Github into #{path}..."
+          @repo = Git.clone(url(repo), path)
+          self
+        end
+
+        def inform(message)
+          super(message) if options[:verbose]
+        end
+
+        def finish
+          inform "Dotify successfully installed #{repo} from Github!"
+        end
+
+        def url(name)
+          "git#{use_ssh_repo? ? '@github.com:' : '://github.com/'}#{name}.git"
+        end
+
+        def initialize_submodules_in(modules_path)
+          if File.exists? modules_path
+            inform "Initializing and updating submodules in Dotify now..."
+            system "cd #{path} && git submodule init &> /dev/null && git submodule update &> /dev/null"
+          end
+          self
+        end
+
+        private
+
+          def use_ssh_repo?
+            options.fetch(:ssh, false) == true || ENV['PUBLIC_GITHUB_REPOS'] == 'true'
+          end
+
       end
 
       def self.run_if_git_repo
