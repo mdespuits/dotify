@@ -33,7 +33,6 @@ Before do
   @aruba_timeout_seconds = 10
   @dirs = [@tmp_home]
   ENV["PATH"] = "#{File.expand_path(File.dirname(__FILE__) + '/../../bin')}#{File::PATH_SEPARATOR}#{ENV['PATH']}"
-  ENV['PUBLIC_GITHUB_REPOS'] = 'true'
 
   FileUtils.mkdir_p @tmp_home
   ENV["HOME"] = @tmp_home

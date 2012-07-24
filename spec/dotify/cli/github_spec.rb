@@ -28,14 +28,42 @@ module Dotify
         before { Github::Puller.any_instance.stub(:inform) }
         let(:puller) { Github::Puller.new(double, double, {}) }
 
-        describe Github::Puller, "#github_repo_url" do
+        describe "#github_repo_url" do
           it "should return a public repo url when env is public" do
             puller.stub(:use_ssh_repo?).and_return(false)
-            puller.url("mattdbridges/dots").should == "git://github.com/mattdbridges/dots.git"
+            puller.url == "git://github.com/mattdbridges/dots.git"
           end
           it "should return a SSH repo url when env is not public" do
             puller.stub(:use_ssh_repo?).and_return(true)
-            puller.url("mattdbridges/dots").should == "git@github.com:mattdbridges/dots.git"
+            puller.url == "git@github.com:mattdbridges/dots.git"
+          end
+        end
+
+        describe "#use_ssh_repo?" do
+          let(:puller) { Github::Puller.new(double, double, {}) }
+          it "should return false if options[:ssh] is not true" do
+            puller.stub(:options).and_return({ :ssh => false })
+            expect(puller.use_ssh_repo?).to eq false
+          end
+          it "should return false if options[:ssh] is not even set" do
+            puller.stub(:options).and_return({})
+            expect(puller.use_ssh_repo?).to eq false
+          end
+          it "should return true if options[:ssh] is true" do
+            puller.stub(:options).and_return({ :ssh => true })
+            expect(puller.use_ssh_repo?).to eq true
+          end
+        end
+
+        describe "#github_url" do
+          let(:puller) { Github::Puller.new(double, double, {}) }
+          it "should return false if options[:ssh] is not true" do
+            puller.stub(:use_ssh_repo?).and_return true
+            expect(puller.github_url).to eq "@github.com:"
+          end
+          it "should return false if options[:ssh] is not true" do
+            puller.stub(:use_ssh_repo?).and_return false
+            expect(puller.github_url).to eq "://github.com/"
           end
         end
 

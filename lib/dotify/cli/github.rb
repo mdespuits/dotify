@@ -72,7 +72,7 @@ module Dotify
 
         def clone
           inform "Pulling #{repo} from Github into #{path}..."
-          @repo = Git.clone(url(repo), path)
+          @repo = Git.clone(url, path)
           self
         end
 
@@ -84,8 +84,8 @@ module Dotify
           inform "Dotify successfully installed #{repo} from Github!"
         end
 
-        def url(name)
-          "git#{use_ssh_repo? ? '@github.com:' : '://github.com/'}#{name}.git"
+        def url
+          "git#{github_url}#{repo}.git"
         end
 
         def initialize_submodules_in(modules_path)
@@ -96,11 +96,13 @@ module Dotify
           self
         end
 
-        private
+        def github_url
+          use_ssh_repo? ? '@github.com:' : '://github.com/'
+        end
 
-          def use_ssh_repo?
-            (options.fetch(:ssh, false) == true || ENV['PUBLIC_GITHUB_REPOS'] != 'true')
-          end
+        def use_ssh_repo?
+          options.fetch(:ssh, false) == true
+        end
 
       end
 
