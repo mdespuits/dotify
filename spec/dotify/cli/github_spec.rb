@@ -25,8 +25,7 @@ module Dotify
       end
 
       describe Github::Pull do
-        before { Github::Pull.any_instance.stub(:inform) }
-        let(:puller) { Github::Pull.new(double, double, {}) }
+        let(:puller) { Github::Pull.new(double, double, { :verbose => false }) }
 
         describe "#github_repo_url" do
           it "should return a public repo url when env is public" do
@@ -40,7 +39,6 @@ module Dotify
         end
 
         describe "#use_ssh_repo?" do
-          let(:puller) { Github::Pull.new(double, double, {}) }
           it "should return false if options[:ssh] is not true" do
             puller.stub(:options).and_return({ :ssh => false })
             expect(puller.use_ssh_repo?).to eq false
@@ -56,7 +54,6 @@ module Dotify
         end
 
         describe "#github_url" do
-          let(:puller) { Github::Pull.new(double, double, {}) }
           it "should return false if options[:ssh] is not true" do
             puller.stub(:use_ssh_repo?).and_return true
             expect(puller.github_url).to eq "@github.com:"
