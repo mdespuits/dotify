@@ -15,7 +15,7 @@ module Dotify
       gitconfig.stub(:linked?).and_return(false)
       zshrc = Dot.new('.zshrc')
       zshrc.stub(:linked?).and_return(false)
-      Filter.stub(:home).and_return([vimrc, bash_profile, gitconfig, zshrc])
+      Collection::Filter.stub(:home).and_return([vimrc, bash_profile, gitconfig, zshrc])
     end
 
     describe CLI::Base, "#source_root" do

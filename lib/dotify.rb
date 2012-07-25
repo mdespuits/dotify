@@ -8,7 +8,6 @@ require 'dotify/version'
 # Objects to manage dotfiles
 require 'dotify/dot'
 require 'dotify/collection'
-require 'dotify/filter'
 
 # CLI
 require 'dotify/cli/utilities'

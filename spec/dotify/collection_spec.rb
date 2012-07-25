@@ -31,24 +31,24 @@ module Dotify
       end
     end
 
-    describe "pulling Filter#home or Filter#dotify files" do
-      it "should pull from Filter#home when default or dotfiles" do
-        Filter.should_receive(:home).once
+    describe "pulling Collection::Filter#home or Collection::Filter#dotify files" do
+      it "should pull from Collection::Filter#home when default or dotfiles" do
+        Collection::Filter.should_receive(:home).once
         Collection.home
       end
-      it "should pull from Filter#dotify when default or dotfiles" do
-        Filter.should_receive(:dotify).once
+      it "should pull from Collection::Filter#dotify when default or dotfiles" do
+        Collection::Filter.should_receive(:dotify).once
         Collection.dotify
       end
     end
-    it "should pull the files from Filter.home" do
+    it "should pull the files from Collection::Filter.home" do
       files = [stub, stub, stub]
-      Filter.stub(:home).and_return files
+      Collection::Filter.stub(:home).and_return files
       Collection.home.dots.should == files
     end
-    it "should pull the files from Filter.home" do
+    it "should pull the files from Collection::Filter.home" do
       files = [stub, stub, stub]
-      Filter.stub(:dotify).and_return files
+      Collection::Filter.stub(:dotify).and_return files
       Collection.dotify.dots.should == files
     end
 
