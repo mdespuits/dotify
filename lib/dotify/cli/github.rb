@@ -52,50 +52,74 @@ module Dotify
           puller.clone
           Dot.new(".dotrc").backup_and_link # Link the new .dotrc file before trying to link the new files
           Collection.new(:dotify).each { |file| file.backup_and_link }
-          puller.initialize_submodules_in(Config.path(".gitmodules"))
+          puller.initialize_submodules
           puller.finish
         end
       rescue Git::GitExecuteError => e
-        caution "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it." 
+        caution "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it."
         caution "Git Error: #{e.message}" if options[:debug]
       end
 
+      # CLI::Github::Pull
+      #
+      # That handles the behavior of the CLI when pulling
+      # a repo from Github.
+      #
       class Pull
         attr_reader :repo, :path, :options
 
         include Utilities
 
+        # It receives a repo name in the form of [USERNAME]/[REPO] and
+        # the path into which is should be initialized as well as a few options
+        # to specify behavior.
+        #
+        # === Parameters
+        # repo<String>:: The [USERNAME]/[REPO] of the dotfiles
+        # path<String>:: The absolute path to clone the repo into.
+        # options<Hash>:: Options to specify behavior
+        #
+        # === Example
+        #
+        #   pull = Pull.new("mattdbridges/dots", "/Users/mattbridges//.dotify", { :force => true, :ssh => true })
+        #
         def initialize(repo, path, options = {})
           @repo, @path, @options = repo, path, options
           inform "Backing up dotfile and installing Dotify files..."
         end
 
+        # Clone the repo from the url into the specified path.
         def clone
           inform "Pulling #{repo} from Github into #{path}..."
-          @repo = Git.clone(url, path)
-          self
+          Git.clone(url, path)
         end
 
-        def inform(message)
+        def inform(message) #:nodoc:
           super(message) if options[:verbose]
         end
 
-        def finish
+        def finish #:nodoc:
           inform "Dotify successfully installed #{repo} from Github!"
         end
 
+        # The URL of the Github repo to pull.
+        #
+        # If the options passed into Pull.new include `{ :ssh => true }`, then
+        # The URL will be in the SSH format. By default, the `:ssh` is `false`,
+        # so it will return the Git URL format.
         def url
           "git#{github_url}#{repo}.git"
         end
 
-        def initialize_submodules_in(modules_path)
-          if File.exists? modules_path
+        # Initialize the submodules of the repo if any are present
+        def initialize_submodules
+          if File.exists? File.join(path, ".gitmodules")
             inform "Initializing and updating submodules in Dotify now..."
             system "cd #{path} && git submodule init &> /dev/null && git submodule update &> /dev/null"
           end
-          self
         end
 
+        # Determine the type of Github repo url to use when pulling
         def github_url
           use_ssh_repo? ? '@github.com:' : '://github.com/'
         end
