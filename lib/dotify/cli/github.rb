@@ -62,7 +62,7 @@ module Dotify
 
       # CLI::Github::Pull
       #
-      # That handles the behavior of the CLI when pulling
+      # Handles the behavior of the CLI when pulling
       # a repo from Github.
       #
       class Pull
