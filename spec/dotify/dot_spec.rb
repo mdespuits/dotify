@@ -1,15 +1,8 @@
 require 'spec_helper'
 require 'dotify/dot'
 
-class DummyDot
-  def dotfile
-    '.dummy'
-  end
-  def dotify
-    '.dotify/.dummy'
-  end
-
-  def linked?; end
+class DummyDot < Dotify::Dot
+  def linked?; false; end
   def in_home_dir?; true; end
   def in_dotify?; true; end
 end
@@ -17,16 +10,13 @@ end
 module Dotify
 
   describe Actions do
-    let!(:dummy) { DummyDot.new }
+    let!(:dummy) { DummyDot.new(".dummy") }
     subject { dummy }
     before { dummy.extend(Actions) }
     it { should respond_to :link }
     it { should respond_to :unlink }
 
     describe Actions, "#link" do
-      before do
-        subject.stub(:linked?) { false }
-      end
       it "should not do anything if the file is linked" do
         subject.stub(:linked?) { true }
         subject.link.should == false
@@ -67,7 +57,6 @@ module Dotify
     end
     describe Actions, "#unlink" do
       it "should not do anything if the file is not linked" do
-        subject.stub(:linked?) { false }
         FileUtils.should_not_receive(:rm_rf)
         FileUtils.should_not_receive(:cp_r)
         FileUtils.should_not_receive(:rm_rf)
@@ -127,7 +116,8 @@ module Dotify
     describe Dot, "#linked_to_dotify?" do
       let(:dot) { Dot.new(".bashrc") }
       it "should return false when an error is raised" do
-        dot.stub(:symlink).and_return NoSymlink
+        File.stub(:symlink?).with(dot.dotfile).and_return false
+        dot.stub(:symlink).and_return false
         dot.linked_to_dotify?.should be_false
       end
       it "should return true if the dotfile is linked to the Dotify file" do
@@ -143,7 +133,7 @@ module Dotify
     describe Dot, "#linked?" do
       let(:dot) { Dot.new(".bashrc") }
       before do
-        dot.stub(:in_dotify?).and_return true # stub identical file check
+        dot.stub(:in_dotify?).and_return true # stub identical filename check
       end
       it "should return true if all checks work" do
         dot.stub(:linked_to_dotify?).and_return true # stub dotify file exist check
@@ -158,13 +148,14 @@ module Dotify
     describe Dot, "#symlink" do
       let!(:dot) { Dot.new(".symlinked") }
       it "should return the symlink for the file" do
+        File.stub(:symlink?).with(dot.dotfile).and_return true
         File.should_receive(:readlink).with(dot.dotfile).once
         dot.symlink
       end
-      it "should return NoSymlink if error or no symlink" do
-        File.stub(:readlink).with(dot.dotfile).and_raise(StandardError)
+      it "should return false if error or no symlink" do
+        File.stub(:symlink?).with(dot.dotfile).and_return false
         expect { dot.symlink }.not_to raise_error
-        dot.symlink.should == NoSymlink
+        dot.symlink.should == false
       end
     end
 
