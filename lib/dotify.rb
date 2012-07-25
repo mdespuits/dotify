@@ -28,6 +28,6 @@ module Dotify
   end
 
   def self.collection
-    @collection ||= Collection.new
+    @collection ||= Collection.home
   end
 end

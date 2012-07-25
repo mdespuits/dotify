@@ -5,15 +5,18 @@ module Dotify
 
     attr_accessor :dots
 
+    def self.home
+      Collection.new(Filter.home)
+    end
+
+    def self.dotify
+      Collection.new(Filter.dotify)
+    end
+
     # Pulls an array of Dots from the home
     # directory.
-    def initialize(location = :dotfiles)
-      @dots ||= case location
-                when :dotfiles then Filter.home
-                when :dotify then Filter.dotify
-                else
-                  raise ArgumentError, "You must specify :dotfiles or :dotify when initializing Collection"
-                end
+    def initialize(dots_from_filter)
+      @dots ||= dots_from_filter
     end
 
     # Defined each method for Enumerable
