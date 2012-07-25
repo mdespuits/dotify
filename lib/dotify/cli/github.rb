@@ -48,7 +48,7 @@ module Dotify
 
       def pull(repo)
         run_if_not_installed do
-          puller = Puller.new(repo, Config.path, options)
+          puller = Pull.new(repo, Config.path, options)
           puller.clone
           Dot.new(".dotrc").backup_and_link # Link the new .dotrc file before trying to link the new files
           Collection.new(:dotify).each { |file| file.backup_and_link }
@@ -60,7 +60,7 @@ module Dotify
         caution "Git Error: #{e.message}" if options[:debug]
       end
 
-      class Puller
+      class Pull
         attr_reader :repo, :path, :options
 
         include Utilities

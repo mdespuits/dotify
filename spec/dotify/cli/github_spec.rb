@@ -24,9 +24,9 @@ module Dotify
         end
       end
 
-      describe Github::Puller do
-        before { Github::Puller.any_instance.stub(:inform) }
-        let(:puller) { Github::Puller.new(double, double, {}) }
+      describe Github::Pull do
+        before { Github::Pull.any_instance.stub(:inform) }
+        let(:puller) { Github::Pull.new(double, double, {}) }
 
         describe "#github_repo_url" do
           it "should return a public repo url when env is public" do
@@ -40,7 +40,7 @@ module Dotify
         end
 
         describe "#use_ssh_repo?" do
-          let(:puller) { Github::Puller.new(double, double, {}) }
+          let(:puller) { Github::Pull.new(double, double, {}) }
           it "should return false if options[:ssh] is not true" do
             puller.stub(:options).and_return({ :ssh => false })
             expect(puller.use_ssh_repo?).to eq false
@@ -56,7 +56,7 @@ module Dotify
         end
 
         describe "#github_url" do
-          let(:puller) { Github::Puller.new(double, double, {}) }
+          let(:puller) { Github::Pull.new(double, double, {}) }
           it "should return false if options[:ssh] is not true" do
             puller.stub(:use_ssh_repo?).and_return true
             expect(puller.github_url).to eq "@github.com:"
@@ -67,7 +67,7 @@ module Dotify
           end
         end
 
-        describe Github::Puller, "#clone" do
+        describe Github::Pull, "#clone" do
           it "should delegate to Git clone and clone to the right place" do
             puller.stub(:path).and_return("/tmp/home/.dotify")
             puller.stub(:url).and_return("something")
