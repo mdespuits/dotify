@@ -31,25 +31,61 @@ module Dotify
       end
     end
 
-    describe "pulling Collection::Filter#home or Collection::Filter#dotify files" do
-      it "should pull from Collection::Filter#home when default or dotfiles" do
-        Collection::Filter.should_receive(:home).once
-        Collection.home
+    describe "#home and #dotify methods" do
+      it "#home should return the right home Dot objects" do
+        Config.stub(:ignore).with(:dotfiles).and_return %w[.vimrc]
+        Collection.should_receive(:dotfiles).with("/tmp/home/.*").and_return(
+          [LinkedDot.new(".."), UnlinkedDot.new("."), LinkedDot.new(".bash_profile"), UnlinkedDot.new(".vimrc"), LinkedDot.new(".zshrc")]
+        )
+        Collection.home.filenames.should == %w[.bash_profile .zshrc]
       end
-      it "should pull from Collection::Filter#dotify when default or dotfiles" do
-        Collection::Filter.should_receive(:dotify).once
-        Collection.dotify
+      it "#dotify should return the right home Dot objects" do
+        Config.stub(:ignore).with(:dotify).and_return %w[.vimrc]
+        Collection.should_receive(:dotfiles).with("/tmp/home/.dotify/.*").and_return(
+          [LinkedDot.new(".."), UnlinkedDot.new("."), LinkedDot.new(".bash_profile"), UnlinkedDot.new(".vimrc"), LinkedDot.new(".zshrc")]
+        )
+        Collection.dotify.filenames.should == %w[.bash_profile .zshrc]
       end
     end
-    it "should pull the files from Collection::Filter.home" do
-      files = [stub, stub, stub]
-      Collection::Filter.stub(:home).and_return files
-      Collection.home.dots.should == files
+
+    describe Collection, "#filter_only_dots" do
+      it 'should not return and . or .. directories' do
+        dots = [LinkedDot.new('.'), LinkedDot.new('..'), LinkedDot.new('.vimrc')]
+        Collection.stub(:dots).and_return dots
+        collection = Collection.new(Collection.dots)
+        collection.filter_only_dots.should == Array(dots.last)
+      end
     end
-    it "should pull the files from Collection::Filter.home" do
-      files = [stub, stub, stub]
-      Collection::Filter.stub(:dotify).and_return files
-      Collection.dotify.dots.should == files
+
+    describe Collection, "#ignore" do
+      let(:dots) { [LinkedDot.new('.bash_profile'), LinkedDot.new('.zshrc'), LinkedDot.new('.vimrc')] }
+      it "should only return files that are not ignored" do
+        Collection.stub(:dots).and_return dots
+        Config.stub(:ignore).with(:dotfiles).and_return [".zshrc", ".bash_profile"]
+        Collection.new(Collection.dots).ignore(:dotfiles).should == Array(dots.last)
+      end
+    end
+
+    describe Collection, ".dotfiles" do
+      let!(:dirfiles) { %w[.vimrc .zshrc .vim] }
+      it "should pass the glob to Dir[]" do
+        Dir.should_receive(:[]).with(".*").and_return dirfiles
+        Collection.dotfiles(".*")
+      end
+      it "should return an array of Dotify::Dot objects" do
+        Dir.stub(:[]).with(".*").and_return dirfiles
+        dotfiles = Collection.dotfiles(".*")
+        dotfiles.each { |d| d.should be_instance_of Dot }
+        dotfiles.first.filename.should == ".vimrc"
+        dotfiles[1].filename.should == ".zshrc"
+        dotfiles.last.filename.should == ".vim"
+      end
+    end
+
+    describe Collection, "#filenames" do
+      it "should only return the filename strings" do
+        Collection.new([LinkedDot.new('.vimrc'), UnlinkedDot.new(".zshrc")]).filenames.should == ['.vimrc', '.zshrc']
+      end
     end
 
     describe Collection, "#linked" do

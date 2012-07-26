@@ -4,48 +4,57 @@ module Dotify
     include Enumerable
 
     attr_accessor :dots
-    module Filter
-      extend self
-      def home
-        result = dots(Config.home('.*'))
-        filter_ignore_files!(result, :dotfiles)
-      end
-
-      def dotify
-        result = dots(Config.path('.*'))
-        filter_ignore_files!(result, :dotify)
-      end
-
-      def dots(glob)
-        filter_dot_directories! Dir[glob].map{ |file| Dot.new(file) }
-      end
-
-      def filter_dot_directories!(dots)
-        [*dots].delete_if { |f| %w[. ..].include? f.filename }
-      end
-
-      def filter_ignore_files!(dots, ignore)
-        ignoring = Config.ignore(ignore)
-        [*dots].delete_if { |f| ignoring.include?(f.filename) }
-      end
-
-      def filenames(dots)
-        dots.map(&:filename)
-      end
-    end
 
     def self.home
-      Collection.new(Filter.home)
+      collection = Collection.new(Collection.dotfiles(Config.home(".*")))
+      collection.ignore(:dotfiles)
+      collection.filter_only_dots
+      collection
     end
 
     def self.dotify
-      Collection.new(Filter.dotify)
+      collection = Collection.new(Collection.dotfiles(Config.path(".*")))
+      collection.ignore(:dotify)
+      collection.filter_only_dots
+      collection
+    end
+
+    # Passes a Dir glob into Dir#[] and returns
+    # an array of Dot objects.
+    def self.dotfiles(glob)
+      Dir[glob].map{ |f| Dot.new(f) }
     end
 
     # Pulls an array of Dots from the home
     # directory.
     def initialize(dots_from_filter)
       @dots ||= dots_from_filter
+    end
+
+    # Reject any files that are ignored in Dotify's
+    # .dotrc file.
+    #
+    # Destructively alters the array of
+    # Dot objects stored in @dots.
+    #
+    def ignore(ignore)
+      ignores = Config.ignore(ignore)
+      @dots = reject { |f| ignores.include?(f.filename) }
+    end
+
+    # Return the filenames of the given files
+    def filenames
+      map(&:filename)
+    end
+
+    # This removes any directories whose basenames are only dots
+    # (meaning relative paths)
+    #
+    # Destructively alters the array of
+    # Dot objects stored in @dots.
+    #
+    def filter_only_dots
+      @dots = reject { |f| %w[. ..].include? f.filename }
     end
 
     # Defined each method for Enumerable
