@@ -74,7 +74,7 @@ module Dotify
   describe Dot do
 
     describe "populates the attributes correctly" do
-      let(:dot) { Dot.new(".vimrc") }
+      let(:dot) { LinkedDot.new(".vimrc") }
       subject { dot }
       it { should respond_to :filename }
       it { should respond_to :dotify }
@@ -131,10 +131,7 @@ module Dotify
     end
 
     describe Dot, "#linked?" do
-      let(:dot) { Dot.new(".bashrc") }
-      before do
-        dot.stub(:in_dotify?).and_return true # stub identical filename check
-      end
+      let(:dot) { LinkedDot.new(".bashrc") }
       it "should return true if all checks work" do
         dot.stub(:linked_to_dotify?).and_return true # stub dotify file exist check
         dot.linked?.should == true
@@ -146,7 +143,7 @@ module Dotify
     end
 
     describe Dot, "#symlink" do
-      let!(:dot) { Dot.new(".symlinked") }
+      let!(:dot) { LinkedDot.new(".symlinked") }
       it "should return the symlink for the file" do
         File.stub(:symlink?).with(dot.dotfile).and_return true
         File.should_receive(:readlink).with(dot.dotfile).once
@@ -161,9 +158,8 @@ module Dotify
 
     describe "inspecting dot" do
       it "should display properly" do
-        Dot.new(".zshrc").inspect.should == "#<Dotify::Dot filename: '.zshrc' linked: false>"
-        bash = Dot.new(".bashrc")
-        bash.stub(:linked?).and_return true
+        UnlinkedDot.new(".zshrc").inspect.should == "#<Dotify::Dot filename: '.zshrc' linked: false>"
+        bash = LinkedDot.new(".bashrc")
         bash.inspect.should == "#<Dotify::Dot filename: '.bashrc' linked: true>"
 
       end

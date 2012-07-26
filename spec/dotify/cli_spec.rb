@@ -7,14 +7,10 @@ module Dotify
     let!(:cli) { CLI::Base.new }
     before do
       Dotify.stub(:installed?).and_return true
-      vimrc = Dot.new('.zshrc')
-      vimrc.stub(:linked?).and_return(true)
-      bash_profile = Dot.new('.bash_profile')
-      bash_profile.stub(:linked?).and_return(true)
-      gitconfig = Dot.new('.gitconfig')
-      gitconfig.stub(:linked?).and_return(false)
-      zshrc = Dot.new('.zshrc')
-      zshrc.stub(:linked?).and_return(false)
+      vimrc = UnlinkedDot.new('.zshrc')
+      bash_profile = LinkedDot.new('.bash_profile')
+      gitconfig = UnlinkedDot.new('.gitconfig')
+      zshrc = LinkedDot.new('.zshrc')
       Collection.any_instance.stub(:dots).and_return([vimrc, bash_profile, gitconfig, zshrc])
     end
 

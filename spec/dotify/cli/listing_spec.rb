@@ -7,10 +7,10 @@ module Dotify
     describe Listing do
       let(:collection) do
         [
-          Dot.new(".dotrc"),
-          Dot.new(".gitconfig"),
-          Dot.new(".vimrc"),
-          Dot.new(".zshrc")
+          LinkedDot.new(".dotrc"),
+          LinkedDot.new(".gitconfig"),
+          LinkedDot.new(".vimrc"),
+          LinkedDot.new(".zshrc")
         ]
       end
       let(:listing) { Listing.new(collection, { :force => true }) }
