@@ -42,7 +42,7 @@ module Dotify
         dots = [LinkedDot.new('.'), LinkedDot.new('..'), LinkedDot.new('.vimrc')]
         Collection.stub(:dots).and_return dots
         collection = Collection.new(Collection.dots)
-        collection.filter_only_dots.should == Array(dots.last)
+        collection.filter_only_dots.dots.should == Array(dots.last)
       end
     end
 
@@ -51,7 +51,7 @@ module Dotify
       it "should only return files that are not ignored" do
         Collection.stub(:dots).and_return dots
         Config.stub(:ignore).with(:dotfiles).and_return [".zshrc", ".bash_profile"]
-        Collection.new(Collection.dots).ignore(:dotfiles).should == Array(dots.last)
+        Collection.new(Collection.dots).ignore(:dotfiles).dots.should == Array(dots.last)
       end
     end
 

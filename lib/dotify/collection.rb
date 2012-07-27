@@ -6,17 +6,11 @@ module Dotify
     attr_accessor :dots
 
     def self.home
-      collection = Collection.new(Collection.dotfiles(Config.home(".*")))
-      collection.ignore(:dotfiles)
-      collection.filter_only_dots
-      collection
+      Collection.new(Collection.dotfiles(Config.home(".*"))).ignore(:dotfiles).filter_only_dots
     end
 
     def self.dotify
-      collection = Collection.new(Collection.dotfiles(Config.path(".*")))
-      collection.ignore(:dotify)
-      collection.filter_only_dots
-      collection
+      Collection.new(Collection.dotfiles(Config.path(".*"))).ignore(:dotify).filter_only_dots
     end
 
     # Passes a Dir glob into Dir#[] and returns
@@ -40,6 +34,7 @@ module Dotify
     def ignore(ignore)
       ignores = Config.ignore(ignore)
       @dots = reject { |f| ignores.include?(f.filename) }
+      self
     end
 
     # Return the filenames of the given files
@@ -55,6 +50,7 @@ module Dotify
     #
     def filter_only_dots
       @dots = reject { |f| %w[. ..].include? f.filename }
+      self
     end
 
     # Defined each method for Enumerable
