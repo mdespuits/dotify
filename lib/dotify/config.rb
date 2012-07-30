@@ -15,7 +15,7 @@ module Dotify
       }
     }.freeze
 
-    def dirname
+    def dir
       '.dotify'
     end
 
@@ -24,7 +24,7 @@ module Dotify
     end
 
     def path(file_or_path = nil)
-      joins = [self.home, dirname]
+      joins = [self.home, self.dir]
       joins << file_or_path unless file_or_path.nil?
       File.join *joins
     end
