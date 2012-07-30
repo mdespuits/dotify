@@ -66,6 +66,10 @@ module Dotify
       # a repo from Github.
       #
       class Pull
+
+        # Need to be able to read the repo that is being pulled, the
+        # path that it is being cloned to, and any options passsed down
+        # from the CLI.
         attr_reader :repo, :path, :options
 
         include Utilities
