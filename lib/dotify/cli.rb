@@ -76,8 +76,8 @@ module Dotify
       end
 
       desc :setup, "Setup your system for Dotify to manage your dotfiles"
-      method_option :install, :type => :boolean, :default => true, :desc => "Install Dotify after setup"
-      method_option "edit-config", :type => :boolean, :default => true, :desc => "Edit Dotify's configuration."
+      method_option :install, :type => :boolean, :default => false, :desc => "Install Dotify after setup"
+      method_option "edit-config", :type => :boolean, :default => false, :desc => "Edit Dotify's configuration."
       method_options :verbose => true
       def setup
         # Warn if Dotify is already setup
@@ -93,10 +93,12 @@ module Dotify
           template '.dotrc', Config.file, :verbose => options[:verbose]
         end
 
-        inform "Editing config file..."
-        sleep 0.5 # Give a little time for reading the message
-        invoke :edit, [Config.file]
-        inform "Config file updated."
+        if options["edit-config"] == true
+          inform "Editing config file..."
+          sleep 0.5 # Give a little time for reading the message
+          invoke :edit, [Config.file]
+          inform "Config file updated."
+        end
 
         # Run install task if specified
         invoke :install if options[:install] == true
