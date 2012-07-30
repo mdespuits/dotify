@@ -8,8 +8,6 @@ module Dotify
     extend self
 
     DEFAULTS = {
-      :dirname => '.dotify',
-      :file => '.dotrc',
       :editor => 'vim',
       :ignore => {
         :dotify => %w[.DS_Store .git .gitmodule],
@@ -18,7 +16,7 @@ module Dotify
     }.freeze
 
     def dirname
-      @dirname ||= DEFAULTS[:dirname]
+      '.dotify'
     end
 
     def home(file_or_path = nil)
@@ -57,7 +55,7 @@ module Dotify
     end
 
     def file
-      File.join(home, DEFAULTS[:file])
+      File.join(home, '.dotrc')
     end
 
     private
