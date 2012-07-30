@@ -34,24 +34,15 @@ module Dotify
     end
 
     def editor
-      retrieve.fetch(:editor, DEFAULTS[:editor])
+      get.fetch(:editor, DEFAULTS[:editor])
     end
 
     def ignore(what)
-      (retrieve.fetch(:ignore, {}).fetch(what, []) + DEFAULTS[:ignore].fetch(what, [])).uniq
+      (get.fetch(:ignore, {}).fetch(what, []) + DEFAULTS[:ignore].fetch(what, [])).uniq
     end
 
-    def retrieve
-      return @hash if @hash.class == Hash
-      if File.exists?(file)
-        loaded = YAML.load_file(file)
-        @hash = loaded == false ? {} : loaded
-      else
-        @hash = {}
-      end
-      symbolize_keys! @hash
-    rescue TypeError
-      {}
+    def get
+      @hash ||= load!
     end
 
     def file
@@ -59,6 +50,17 @@ module Dotify
     end
 
     private
+
+      def load!
+        hash = {}
+        if File.exists? file
+          result = YAML.load_file file
+          hash = (result == false ? {} : result)
+        end
+        symbolize_keys! hash
+      rescue TypeError
+        {}
+      end
 
       def user_home
         Thor::Util.user_home

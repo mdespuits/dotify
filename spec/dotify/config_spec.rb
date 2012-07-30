@@ -8,7 +8,7 @@ module Dotify
         system "mkdir -p #{Config.home}"
         system "touch #{Config.home(".fake-dotrc")}"
         Config.stub(:file).and_return Config.home(".fake-dotrc")
-        expect { Config.retrieve }.not_to raise_error TypeError
+        expect { Config.get }.not_to raise_error TypeError
       end
       context "dot tests" do
         before do
@@ -17,31 +17,31 @@ module Dotify
         end
         it "should return an empty hash" do
           YAML.stub(:load_file).with(Config.file).and_return({})
-          Config.retrieve.should == {}
+          Config.get.should == {}
         end
         it "should catch the TypeError and return an empty hash" do
           YAML.stub(:load_file).with(Config.file).and_raise(TypeError)
-          Config.retrieve.should == {}
+          Config.get.should == {}
         end
         it "should return an empty hash if the config file does not exist" do
           File.stub(:exists?).with(Config.file).and_return false
-          Config.retrieve.should == {}
+          Config.get.should == {}
         end
         it "should return an the hash returned by YAML#load_file" do
           YAML.stub(:load_file).and_return({ :test => 'example' })
-          Config.retrieve.should == { :test => 'example' }
+          Config.get.should == { :test => 'example' }
         end
         it "should symbolize the keys returned" do
           YAML.stub(:load_file).and_return({ 'test' => 'example' })
-          Config.retrieve.should == { :test => 'example' }
+          Config.get.should == { :test => 'example' }
         end
         it "should return an empty hash if YAML#load_file returns false (commented out config in .dotrc)" do
           YAML.stub(:load_file).with(Config.file).and_return false
-          Config.retrieve.should == {}
+          Config.get.should == {}
         end
         it "should only try to set config from the config file once" do
           YAML.should_receive(:load_file).with(Config.file).once.and_return({ 'test' => 'example' })
-          5.times { Config.retrieve }
+          5.times { Config.get }
         end
       end
     end
@@ -78,7 +78,7 @@ module Dotify
 
     describe "options" do
       before do
-        Config.stub(:retrieve)  do
+        Config.stub(:get)  do
           { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
         end
       end
@@ -86,7 +86,7 @@ module Dotify
         Config.editor.should == Config::DEFAULTS[:editor]
       end
       it "should allow a custom editor" do
-        Config.stub(:retrieve)  do
+        Config.stub(:get)  do
           { :editor => 'subl' }
         end
         Config.editor.should == 'subl'
@@ -101,22 +101,22 @@ module Dotify
 
     describe "ignore files" do
       before do
-        Config.stub(:retrieve)  do
+        Config.stub(:get)  do
           { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
         end
       end
       it "should have a default set of dotfiles" do
-        Config.stub(:retrieve).and_return({})
+        Config.stub(:get).and_return({})
         Config.ignore(:dotify).should include '.git'
         Config.ignore(:dotify).should include '.gitmodule'
         Config.ignore(:dotfiles).should include '.dropbox'
         Config.ignore(:dotfiles).should include '.Trash'
         Config.ignore(:dotfiles).should include '.dotify'
       end
-      it "should retrieve the list of dotfiles to ignore in the home directory" do
+      it "should get the list of dotfiles to ignore in the home directory" do
         Config.ignore(:dotfiles).should include '.gemrc'
       end
-      it "should retrieve the list of dotify files to ignore" do
+      it "should get the list of dotify files to ignore" do
         Config.ignore(:dotify).should include '.gitmodule'
       end
     end
