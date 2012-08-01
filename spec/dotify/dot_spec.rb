@@ -18,13 +18,15 @@ module Dotify
 
     describe Actions, "#link" do
       it "should not do anything if the file is linked" do
-        subject.stub(:linked?) { true }
-        subject.link.should == false
+        s = subject.dup
+        def s.linked?; true; end
+        s.link.should == false
       end
       it "should not do anything if the is not in the home directory" do
-        subject.stub(:linked?) { true }
-        subject.stub(:in_home_dir?) { false }
-        subject.link.should == false
+        s = subject.dup
+        def s.linked?; true; end
+        def s.in_home_dir?; false; end
+        s.link.should == false
       end
       it "should copy the file from the home directory if it is not in Dotify" do
         FileUtils.should_receive(:rm_rf).with(subject.dotfile, :verbose => false)

@@ -5,10 +5,11 @@ module Dotify
 
     describe Config, "#load_config!" do
       it "should not raise a TypeError if the .dotrc file is empty (this is a problem with Psych not liking loading empty files)" do
-        system "mkdir -p #{Config.home}"
-        system "touch #{Config.home(".fake-dotrc")}"
-        Config.stub(:file).and_return Config.home(".fake-dotrc")
-        expect { Config.get }.not_to raise_error TypeError
+        c = Config.dup
+        def c.file; Config.home(".fake-dotrc"); end
+        system "mkdir -p #{c.home}"
+        system "touch #{c.home(".fake-dotrc")}"
+        expect { c.get }.not_to raise_error TypeError
       end
       context "dot tests" do
         before do
@@ -77,19 +78,20 @@ module Dotify
     end
 
     describe "options" do
+      let(:c) { Config.dup }
       before do
-        Config.stub(:get)  do
+        def c.get
           { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
         end
       end
       it "should set a default editor" do
-        Config.editor.should == Config::DEFAULTS[:editor]
+        c.editor.should == c::DEFAULTS[:editor]
       end
       it "should allow a custom editor" do
-        Config.stub(:get)  do
+        def c.get
           { :editor => 'subl' }
         end
-        Config.editor.should == 'subl'
+        c.editor.should == 'subl'
       end
     end
 
@@ -100,24 +102,25 @@ module Dotify
     end
 
     describe "ignore files" do
+      let(:c) { Config.dup }
       before do
-        Config.stub(:get)  do
+        def c.get
           { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
         end
       end
       it "should have a default set of dotfiles" do
-        Config.stub(:get).and_return({})
-        Config.ignore(:dotify).should include '.git'
-        Config.ignore(:dotify).should include '.gitmodule'
-        Config.ignore(:dotfiles).should include '.dropbox'
-        Config.ignore(:dotfiles).should include '.Trash'
-        Config.ignore(:dotfiles).should include '.dotify'
+        def c.get; {}; end
+        c.ignore(:dotify).should include '.git'
+        c.ignore(:dotify).should include '.gitmodule'
+        c.ignore(:dotfiles).should include '.dropbox'
+        c.ignore(:dotfiles).should include '.Trash'
+        c.ignore(:dotfiles).should include '.dotify'
       end
       it "should get the list of dotfiles to ignore in the home directory" do
-        Config.ignore(:dotfiles).should include '.gemrc'
+        c.ignore(:dotfiles).should include '.gemrc'
       end
       it "should get the list of dotify files to ignore" do
-        Config.ignore(:dotify).should include '.gitmodule'
+        c.ignore(:dotify).should include '.gitmodule'
       end
     end
   end

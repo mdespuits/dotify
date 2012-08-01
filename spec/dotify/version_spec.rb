@@ -14,23 +14,25 @@ module Dotify
       end
     end
     describe Version, "#out_of_date?" do
+      let(:v) { Version.dup }
       it "should be return the correct value if version is not current" do
-        Version.stub(:current?).and_return(false)
-        Version.out_of_date?.should == true
-        Version.stub(:current?).and_return(true)
-        Version.out_of_date?.should == false
+        def v.current?; false; end
+        v.out_of_date?.should == true
+        def v.current?; true; end
+        v.out_of_date?.should == false
       end
     end
     describe Version, "#current?" do
+      let(:v) { Version.dup }
       it "should be false if version is not current" do
         stub_const "Dotify::VERSION", '0.2.0'
-        Version.stub(:version).and_return('0.1.9')
-        Version.current?.should == false
+        def v.version; '0.1.9'; end
+        v.current?.should == false
       end
       it "should be true if version is current" do
         stub_const "Dotify::VERSION", '0.2.0'
-        Version.stub(:version).and_return('0.2.0')
-        Version.current?.should == true
+        def v.version; '0.2.0'; end
+        v.current?.should == true
       end
     end
     describe Version, "#handle_error" do
