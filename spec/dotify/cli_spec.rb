@@ -22,20 +22,20 @@ module Dotify
 
     describe CLI::Base, "github actions" do
       let(:opts) { Hash.new }
-      let(:github) { OpenStruct.new(:name => "Github") }
+      let(:github) { OpenStruct.new(:name => "Repo") }
       before do
         cli.stub(:options).and_return opts
       end
       describe CLI::Base, "#save" do
-        it "should call Github save and pass in the options" do
-          CLI::Github.should_receive(:new).with(opts).and_return github
+        it "should call Repo save and pass in the options" do
+          CLI::Repo.should_receive(:new).with(opts).and_return github
           github.should_receive(:save)
           cli.save
         end
       end
       describe CLI::Base, "#github" do
-        it "should create a new instance of Github with the right options and call pull with the right repo" do
-          CLI::Github.should_receive(:new).with(opts).and_return github
+        it "should create a new instance of Repo with the right options and call pull with the right repo" do
+          CLI::Repo.should_receive(:new).with(opts).and_return github
           github.should_receive(:pull).with("mattdbridges/repo")
           cli.github("mattdbridges/repo")
         end

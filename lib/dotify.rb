@@ -12,7 +12,7 @@ require 'dotify/collection'
 # CLI
 require 'dotify/cli/utilities'
 require 'dotify/cli/listing'
-require 'dotify/cli/github'
+require 'dotify/cli/repo'
 require 'dotify/cli'
 
 

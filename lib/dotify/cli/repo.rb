@@ -4,7 +4,7 @@ require 'git'
 
 module Dotify
   module CLI
-    class Github
+    class Repo
 
       include Utilities
 
@@ -32,8 +32,8 @@ module Dotify
           else
             inform "No files have been changed in Dotify."
           end
-          if options[:push] || yes?("Would you like to push these changed to Github? [Yn]", :blue)
-            inform 'Pushing up to Github...'
+          if options[:push] || yes?("Would you like to push these changed to Repo? [Yn]", :blue)
+            inform 'Pushing up to Repo...'
             begin
               repo.push
             rescue Exception => e
@@ -60,10 +60,10 @@ module Dotify
         caution "Git Error: #{e.message}" if options[:debug]
       end
 
-      # CLI::Github::Pull
+      # CLI::Repo::Pull
       #
       # Handles the behavior of the CLI when pulling
-      # a repo from Github.
+      # a repo from Repo.
       #
       class Pull
 
@@ -94,7 +94,7 @@ module Dotify
 
         # Clone the repo from the url into the specified path.
         def clone
-          inform "Pulling #{repo} from Github into #{path}..."
+          inform "Pulling #{repo} from Repo into #{path}..."
           Git.clone(url, path)
         end
 
@@ -103,10 +103,10 @@ module Dotify
         end
 
         def finish #:nodoc:
-          inform "Dotify successfully installed #{repo} from Github!"
+          inform "Dotify successfully installed #{repo} from Repo!"
         end
 
-        # The URL of the Github repo to pull.
+        # The URL of the Repo repo to pull.
         #
         # If the options passed into Pull.new include `{ :ssh => true }`, then
         # The URL will be in the SSH format. By default, the `:ssh` is `false`,
@@ -123,7 +123,7 @@ module Dotify
           end
         end
 
-        # Determine the type of Github repo url to use when pulling
+        # Determine the type of Repo repo url to use when pulling
         def github_url
           use_ssh_repo? ? '@github.com:' : '://github.com/'
         end

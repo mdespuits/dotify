@@ -24,20 +24,20 @@ module Dotify
         File.expand_path("../../../templates", __FILE__)
       end
 
-      desc :save, "Save Dotify files and push to Github."
-      method_option :message, :aliases => '-m', :type => :string, :required => false, :desc => "Git commit message to send to Github"
+      desc :save, "Save Dotify files and push to Repo."
+      method_option :message, :aliases => '-m', :type => :string, :required => false, :desc => "Git commit message to send to Repo"
       method_option :force,   :aliases => '-f', :type => :boolean, :default => false, :desc => "Do not ask for confirmation when adding files to the staging area."
       method_option :debug,   :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
       method_option :verbose, :aliases => '-v', :type => :boolean, :default => true,  :desc => "Display file creation and status updates."
       method_option :push,    :aliases => '-p', :type => :boolean, :default => false, :desc => "Force the push to the remote repository."
       def save
-        Github.new(options).save
+        Repo.new(options).save
       end
 
-      desc 'github [USERNAME]/[REPO]', "Install the dotfiles from a Github repo into Dotify. (Backs up any files that would be overwritten)"
+      desc 'github [USERNAME]/[REPO]', "Install the dotfiles from a Repo repo into Dotify. (Backs up any files that would be overwritten)"
       method_option :debug, :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
       def github(repo)
-        Github.new(options).pull(repo)
+        Repo.new(options).pull(repo)
       end
 
       desc :list, "List the installed dotfiles"
@@ -46,7 +46,7 @@ module Dotify
       end
 
       desc 'edit [FILE]', "Edit a dotify file"
-      method_option :save, :aliases => '-s', :default => false, :type => :boolean, :require => true, :desc => "Save Dotify files and push to Github"
+      method_option :save, :aliases => '-s', :default => false, :type => :boolean, :require => true, :desc => "Save Dotify files and push to Repo"
       def edit(file)
         file = Dot.new(file)
         if file.linked?

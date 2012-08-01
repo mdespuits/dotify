@@ -1,31 +1,31 @@
 require 'spec_helper'
-require 'dotify/cli/github'
+require 'dotify/cli/repo'
 
 module Dotify
   module CLI
-    describe Github do
+    describe Repo do
 
       it { should respond_to :save }
       it { should respond_to :pull }
 
-      describe Github, "#run_if_git_repo" do
-        before { Github.stub(:inform) }
+      describe Repo, "#run_if_git_repo" do
+        before { Repo.stub(:inform) }
         it "should yield the block if a .git directory exists in Dotify" do
           File.stub(:exists?).with(Config.path('.git')).and_return true
-          expect { |b| Github.run_if_git_repo(&b) }.to yield_control
+          expect { |b| Repo.run_if_git_repo(&b) }.to yield_control
         end
         it "should yield the block if a .git directory exists in Dotify" do
           File.stub(:exists?).with(Config.path('.git')).and_return false
-          expect { |b| Github.run_if_git_repo(&b) }.not_to yield_control
+          expect { |b| Repo.run_if_git_repo(&b) }.not_to yield_control
         end
         it "should call inform if a .git directory is missing" do
-          Github.should_receive(:inform).once
-          Github.run_if_git_repo { }
+          Repo.should_receive(:inform).once
+          Repo.run_if_git_repo { }
         end
       end
 
-      describe Github::Pull do
-        let(:puller) { Github::Pull.new(OpenStruct.new, OpenStruct.new, { :verbose => false }) }
+      describe Repo::Pull do
+        let(:puller) { Repo::Pull.new(OpenStruct.new, OpenStruct.new, { :verbose => false }) }
 
         describe "#github_repo_url" do
           it "should return a public repo url when env is public" do
@@ -64,7 +64,7 @@ module Dotify
           end
         end
 
-        describe Github::Pull, "#clone" do
+        describe Repo::Pull, "#clone" do
           it "should delegate to Git clone and clone to the right place" do
             puller.stub(:path).and_return("/tmp/home/.dotify")
             puller.stub(:url).and_return("something")
