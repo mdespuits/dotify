@@ -22,7 +22,7 @@ module Dotify
 
     describe CLI::Base, "github actions" do
       let(:opts) { Hash.new }
-      let(:github) { double("Github") }
+      let(:github) { OpenStruct.new(:name => "Github") }
       before do
         cli.stub(:options).and_return opts
       end
@@ -53,7 +53,7 @@ module Dotify
     end
 
     describe CLI::Base, "#edit" do
-      let(:dot) { double('dot', :linked? => true, :dotify => '/tmp/dotify/.vimrc') }
+      let(:dot) { OpenStruct.new(:linked? => true, :dotify => '/tmp/dotify/.vimrc') }
       before do
         Dot.stub(:new).and_return(dot)
         cli.stub(:exec)

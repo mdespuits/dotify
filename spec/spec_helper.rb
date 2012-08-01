@@ -22,4 +22,5 @@ RSpec.configure do |config|
 end
 
 require 'dotify'
+require 'ostruct'
 Dir["./spec/support/**/*.rb"].each { |f| require f }

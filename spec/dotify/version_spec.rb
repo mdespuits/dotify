@@ -35,7 +35,7 @@ module Dotify
     end
     describe Version, "#handle_error" do
       it "should output the right stuff" do
-        error = double("fake", :message => "Fake message", :backtrace => ["fake", "backtrace"])
+        error = OpenStruct.new(:message => "Fake message", :backtrace => ["fake", "backtrace"])
         result = Version.handle_error(error)
         result.should =~ %r{Fake message}
         result.should =~ %r{fake}

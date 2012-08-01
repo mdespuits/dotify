@@ -25,7 +25,7 @@ module Dotify
       end
 
       describe Github::Pull do
-        let(:puller) { Github::Pull.new(double, double, { :verbose => false }) }
+        let(:puller) { Github::Pull.new(OpenStruct.new, OpenStruct.new, { :verbose => false }) }
 
         describe "#github_repo_url" do
           it "should return a public repo url when env is public" do
