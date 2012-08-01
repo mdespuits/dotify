@@ -11,12 +11,12 @@ if ENV["RUN_SIMPLECOV"] == 'true'
   SimpleCov.start 'test_frameworks'
 end
 
-RSpec.configure do |config|
-  config.treat_symbols_as_metadata_keys_with_true_values = true
-  config.run_all_when_everything_filtered = true
-  config.filter_run :focus
+RSpec.configure do |c|
+  c.treat_symbols_as_metadata_keys_with_true_values = true
+  c.run_all_when_everything_filtered = true
+  c.filter_run :focus
 
-  config.before(:each) do
+  c.before do
     Thor::Util.stub(:user_home) { '/tmp/home' }
   end
 end
