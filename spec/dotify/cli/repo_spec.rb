@@ -19,6 +19,7 @@ module Dotify
           expect { |b| Repo.run_if_git_repo(&b) }.not_to yield_control
         end
         it "should call inform if a .git directory is missing" do
+          File.stub(:exists?).with(Config.path('.git')).and_return false
           Repo.should_receive(:inform).once
           Repo.run_if_git_repo { }
         end

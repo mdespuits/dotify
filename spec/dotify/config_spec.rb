@@ -4,6 +4,7 @@ module Dotify
   describe Config do
     subject { Config }
     describe "defaults" do
+      before { subject.stub(:get).and_return({}) }
       its(:home) { should == Thor::Util.user_home }
       its(:file) { should == '/tmp/home/.dotrc' }
       its(:path) { should == '/tmp/home/.dotify' }
