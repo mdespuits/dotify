@@ -76,7 +76,7 @@ module Dotify
   describe Dot do
 
     describe "populates the attributes correctly" do
-      let(:dot) { LinkedDot.new(".vimrc") }
+      let(:dot) { Dot.new(".vimrc") }
       subject { dot }
       it { should respond_to :filename }
       it { should respond_to :dotify }
@@ -85,33 +85,23 @@ module Dotify
       it { should respond_to :linked? }
       it { should respond_to :linked }
 
-      it "should set the attributes properly" do
-        dot.filename.should == '.vimrc'
-        dot.dotify.should == '/tmp/home/.dotify/.vimrc'
-        dot.dotfile.should == '/tmp/home/.vimrc'
-      end
-      it "should puts the filename" do
-        dot.to_s.should == dot.filename
-      end
+      its(:filename) { should == '.vimrc' }
+      its(:dotify) { should == '/tmp/home/.dotify/.vimrc' }
+      its(:dotfile) { should == '/tmp/home/.vimrc' }
+      its(:to_s) { should == dot.filename }
     end
 
     describe "existence in directories" do
-      let(:dot) { Dot.new(".bashrc") }
-      it "should check for the existence in the home directory" do
-        File.stub(:exists?).with(dot.dotfile).and_return true
-        dot.in_home_dir?.should == true
+      subject { dot }
+      context "when dotfile exists" do
+        let(:dot) { LinkedDot.new(".bashrc") }
+        its(:in_home_dir?) { should == true }
+        its(:in_dotify?) { should == true }
       end
-      it "should return false if the file is not in the home directory" do
-        File.stub(:exists?).with(dot.dotfile).and_return false
-        dot.in_home_dir?.should_not == true
-      end
-      it "should check for the existence of the file in Dotify" do
-        File.stub(:exists?).with(dot.dotify).and_return true
-        dot.in_dotify?.should == true
-      end
-      it "should return false if the file is not in Dotify" do
-        File.stub(:exists?).with(dot.dotify).and_return false
-        dot.in_dotify?.should == false
+      context "when dotfile does not exist" do
+        let(:dot) { UnlinkedDot.new(".bashrc") }
+        its(:in_home_dir?) { should_not == true }
+        its(:in_dotify?) { should_not == true }
       end
     end
 

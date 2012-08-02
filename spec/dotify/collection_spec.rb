@@ -5,6 +5,7 @@ module Dotify
   describe Collection do
 
     let(:collection) { Collection.new(home_files) }
+    subject { collection }
     let(:home_files) {
       [
         @bashrc = UnlinkedDot.new(".bashrc"),
@@ -14,9 +15,7 @@ module Dotify
     }
     describe "methods" do
       %w[each linked unlinked].each do |name|
-        it "should respond to #{name}" do
-          collection.should respond_to name
-        end
+        it { should respond_to name }
       end
     end
 
@@ -73,7 +72,7 @@ module Dotify
 
     describe Collection, "#filenames" do
       it "should only return the filename strings" do
-        Collection.new([LinkedDot.new('.vimrc'), UnlinkedDot.new(".zshrc")]).filenames.should == ['.vimrc', '.zshrc']
+        Collection.new([LinkedDot.new('.vimrc'), UnlinkedDot.new(".zshrc")]).filenames.should == %w[.vimrc .zshrc]
       end
     end
 
@@ -82,13 +81,12 @@ module Dotify
         collection.stub(:dots).and_return home_files
       end
       let(:linked) { collection.linked }
-      it "should return the right Dots" do
-        linked.should include @vimrc
-        linked.should_not include @gitconfig
-        linked.should_not include @bashrc
-      end
+      subject { linked }
+      it { should include @vimrc }
+      it { should_not include @gitconfig }
+      it { should_not include @bashrc }
       it "should yield the correct Dots" do
-        expect { |b| collection.linked.each(&b) }.to yield_successive_args(*linked)
+        expect { |b| subject.each(&b) }.to yield_successive_args(*linked)
       end
     end
 
@@ -97,13 +95,12 @@ module Dotify
         collection.stub(:dots).and_return home_files
       end
       let(:unlinked) { collection.unlinked }
-      it "should return the right Dots" do
-        unlinked.should include @gitconfig
-        unlinked.should include @bashrc
-        unlinked.should_not include @vimrc
-      end
+      subject { unlinked }
+      it { should include @gitconfig }
+      it { should include @bashrc }
+      it { should_not include @vimrc }
       it "should yield the correct Dots" do
-        expect { |b| collection.unlinked.each(&b) }.to yield_successive_args(*unlinked)
+        expect { |b| subject.each(&b) }.to yield_successive_args(*unlinked)
       end
     end
 

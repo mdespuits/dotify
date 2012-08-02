@@ -2,8 +2,15 @@ require 'spec_helper'
 
 module Dotify
   describe Config do
+    subject { Config }
+    describe "defaults" do
+      its(:home) { should == Thor::Util.user_home }
+      its(:file) { should == '/tmp/home/.dotrc' }
+      its(:path) { should == '/tmp/home/.dotify' }
+      its(:editor) { should == Config::DEFAULTS[:editor] }
+    end
 
-    describe Config, "#load_config!" do
+    describe "#load_config!" do
       it "should not raise a TypeError if the .dotrc file is empty (this is a problem with Psych not liking loading empty files)" do
         c = Config.dup
         def c.file; Config.home(".fake-dotrc"); end
@@ -13,7 +20,7 @@ module Dotify
       end
       context "dot tests" do
         before do
-          Config.instance_variable_set("@hash", nil)
+          subject.instance_variable_set("@hash", nil)
           File.stub(:exists?).with(Config.file).and_return true
         end
         it "should return an empty hash" do
@@ -47,58 +54,40 @@ module Dotify
       end
     end
 
-    describe Config, "#installed?" do
-      it "should return true if Dotify has been setup" do
-        File.should_receive(:exists?).with(Config.path).and_return(true)
-        File.should_receive(:directory?).with(Config.path).and_return(true)
-        Config.installed?.should == true
+    describe "installation check" do
+      context "when Dotify has been setup" do
+        before do
+          File.should_receive(:exists?).with(Config.path).and_return(true)
+          File.should_receive(:directory?).with(Config.path).and_return(true)
+        end
+        its(:installed?) { should == true }
       end
-      it "should return false if Dotify has not been setup" do
-        File.should_receive(:exists?).with(Config.path).and_return(true)
-        File.should_receive(:directory?).with(Config.path).and_return(false)
-        Config.installed?.should == false
+      context "when Dotify has not been setup" do
+        before do
+          File.should_receive(:exists?).with(Config.path).and_return(true)
+          File.should_receive(:directory?).with(Config.path).and_return(false)
+        end
+        its(:installed?) { should == false }
       end
     end
 
-    describe Config, "#home" do
-      it "should return the home directory when called without a filename" do
-        Config.home.should == Thor::Util.user_home
-      end
+    describe "file paths" do
       it "should return the home directory with appended path" do
         Config.home(".vimrc").should == '/tmp/home/.vimrc'
-      end
-    end
-    describe Config, "#path" do
-      it "should be able to show the dotify path when not passed any arguments" do
-        Config.path.should == '/tmp/home/.dotify'
       end
       it "should be able to show the dotify path" do
         Config.path('.vimrc').should == '/tmp/home/.dotify/.vimrc'
       end
     end
 
-    describe "options" do
-      let(:c) { Config.dup }
+    describe "setting a custom editor" do
+      subject { Config.dup }
       before do
-        def c.get
-          { :ignore => { :dotfiles => %w[.gemrc], :dotify => %w[.gitmodule] } }
-        end
-      end
-      it "should set a default editor" do
-        c.editor.should == c::DEFAULTS[:editor]
-      end
-      it "should allow a custom editor" do
-        def c.get
+        def subject.get
           { :editor => 'subl' }
         end
-        c.editor.should == 'subl'
       end
-    end
-
-    describe Config, "#file" do
-      it "should return the right page" do
-        Config.file.should == '/tmp/home/.dotrc'
-      end
+      its(:editor) { should == 'subl' }
     end
 
     describe "ignore files" do

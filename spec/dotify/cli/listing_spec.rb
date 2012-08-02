@@ -14,23 +14,29 @@ module Dotify
         ]
       end
       let(:listing) { Listing.new(collection, { :force => true }) }
-      before { listing.stub(:inform) }
-      it "should assign the passed array to the :collection attr_reader" do
-        listing.collection.should == collection
-        listing.options.should == { :force => true }
+      subject { listing }
+
+      before { subject.stub(:inform) } # do not output anything
+
+      describe "attributes" do
+        its(:collection) { should == collection }
+        its(:options) { should == { :force => true } }
       end
-      it "should count the files correctly" do
-        listing.collection.stub(:count).and_return 3
-        listing.count.should == 3
+
+      describe "file counting" do
+        before { subject.collection.stub(:count).and_return 3 }
+        its(:count) { should == 3 }
       end
       it "should call say the right number of times" do
-        Thor::Shell::Color.any_instance.should_receive(:say).exactly(listing.collection.size).times
-        listing.write
+        Thor::Shell::Color.any_instance.should_receive(:say).exactly(subject.collection.size).times
+        subject.write
       end
-      it "should output the right content if there are no dotfiles managed" do
-        listing.should_receive(:inform).once
-        listing.stub(:collection).and_return []
-        listing.write
+      describe "writing the output" do
+        before do
+          subject.stub(:collection).and_return []
+          subject.should_receive(:inform).once
+        end
+        it { subject.write }
       end
     end
   end
