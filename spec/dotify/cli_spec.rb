@@ -21,22 +21,24 @@ module Dotify
     end
 
     describe "#version" do
-      before { cli.stub(:options).and_return({:check => true}) }
-      it "should inform the user whether thing are up out of date" do
-        Version.stub(:out_of_date?).and_return true
-        Dotify.stub(:version) { '1.0.0' }
-        Version.stub(:version) { '1.0.0' }
-        cli.should_receive(:say).at_least(2).times
-        cli.should_receive(:inform).at_least(2).times
+      before do
+        cli.stub(:options).and_return({:check => true})
+        Dotify.stub(:version) { '0.0.1' }
+        Version.build.stub(:latest) { '0.0.1' }
+      end
+      it "should inform the user whether thing are out of date" do
+        Version.build.stub(:current?).and_return false
+        cli.should_receive(:say).exactly(1).times
+        cli.should_receive(:inform).exactly(2).times
         cli.version
       end
       it "should inform the user whether thing are up to date" do
-        Version.stub(:out_of_date?).and_return false
+        Version.build.stub(:current?).and_return true
         cli.should_receive(:inform).once
         cli.version
       end
       it "should inform the user of an error retrieving the version" do
-        Version.stub(:out_of_date?).and_raise Exception
+        Version.build.stub(:current?).and_raise Exception
         cli.should_receive(:caution).once
         cli.version
       end

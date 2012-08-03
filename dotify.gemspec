@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "dotify"
   gem.require_paths = ["lib"]
-  gem.version       = Dotify::VERSION
+  gem.version       = Dotify::Version.build.level
 
   gem.add_runtime_dependency "thor", "~> 0.15.4"
   gem.add_runtime_dependency "multi_json", "~> 1.3.6"

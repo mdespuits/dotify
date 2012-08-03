@@ -23,7 +23,7 @@ module Dotify
   end
 
   def self.version
-    VERSION
+    Version.build.level
   end
 
   def self.collection

@@ -9,7 +9,8 @@ describe Dotify do
   end
 
   it "version is a shortcut method to Dotify::VERSION" do
-    Dotify.version.should == Dotify::VERSION
+    Dotify::Version.build.should_receive(:level)
+    Dotify.version
   end
 
   it "version is a shortcut method to Dotify::VERSION" do

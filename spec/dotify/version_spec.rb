@@ -3,50 +3,76 @@ require 'dotify/version'
 
 module Dotify
   describe Version do
-    describe "#to_s" do
-      it "should equal the right number" do
-        expect(Version.to_s).to eq(Dotify::VERSION)
+    it { should respond_to :out_of_date? }
+    it { should respond_to :current? }
+    it { should respond_to :current }
+
+    describe "#level" do
+      its(:level) { should be_instance_of String }
+      its(:level) { should =~ /#{MAJOR}\./ }
+      its(:level) { should =~ /\.#{MINOR}/ }
+      its(:level) { should =~ /\.#{PATCH}/ }
+    end
+
+    describe "#build" do
+      subject { Version }
+      its(:build) { should be_instance_of described_class }
+    end
+
+    describe "Checker delegation" do
+      it "should delegate to Checker#check_latest_release!" do
+        Version::Checker.should_receive(:check_latest_release!).once
+        Version.build.current
+      end
+      it "should delegate to Checker#check_latest_release!" do
+        Version::Checker.should_receive(:latest_version).once
+        Version.build.latest
       end
     end
-    it "#run_check! should return the right version number" do
-      VCR.use_cassette "version_check" do
-        Version.version.should == '0.2.0'
-      end
-    end
-    describe "#out_of_date?" do
-      subject(:v) { Version.dup }
-      context "out of date" do 
-        before { def v.current?; false; end }
-        its(:out_of_date?) { should == true }
-      end
-      context "up to date" do 
-        before { def v.current?; true; end }
+
+    describe "retrieving the version" do
+      subject { Version.build }
+      context "when out of date" do
+        before { Version::Checker.stub(:check_latest_release!).and_return(true) }
+        its(:current?) { should == true }
         its(:out_of_date?) { should == false }
       end
-    end
-    describe "#current?" do
-      subject(:v) { Version.dup }
-      context "when current" do 
-        before do
-          stub_const "Dotify::VERSION", '0.2.0'
-          def subject.version; '0.1.9'; end
-        end
+      context "when up to date" do
+        before { Version::Checker.stub(:check_latest_release!).and_return(false) }
+        its(:out_of_date?) { should == true }
         its(:current?) { should == false }
       end
-      context "when current" do 
-        before do
-          stub_const "Dotify::VERSION", '0.2.0'
-          def subject.version; '0.2.0'; end
-        end
-        its(:current?) { should == true }
-      end
     end
-    describe "#handle_error" do
-      let(:error) { OpenStruct.new(:message => "Fake message", :backtrace => ["fake", "backtrace"]) }
-      subject { Version.handle_error(error) }
-      it { should =~ %r{Fake message} }
-      it { should =~ %r{fake} }
-      it { should =~ %r{backtrace} }
+  end
+
+  class Version
+    describe Checker do
+      subject { Checker }
+      it { should respond_to :check_latest_release! }
+
+      describe "#latest_version" do
+        subject { Checker }
+        use_vcr_cassette "check latest version"
+        its(:latest_version) { should == '0.6.6' }
+      end
+
+      describe "#check_latest_release" do
+        use_vcr_cassette "check latest version"
+        context "out of date" do
+          it "should prove that the latest version is newer than the current one" do
+            Version.build.stub(:level).and_return '1.0.0'
+            Checker.check_latest_release!
+            Checker.result.should == false
+          end
+        end
+        context "out of date" do
+          it "should prove that the latest version is newer than the current one" do
+            Version.build.stub(:level).and_return '0.6.6'
+            Checker.check_latest_release!
+            Checker.result.should == true
+          end
+        end
+      end
     end
   end
 end
