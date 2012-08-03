@@ -5,7 +5,8 @@ module Dotify
   describe Version do
     it { should respond_to :out_of_date? }
     it { should respond_to :current? }
-    it { should respond_to :current }
+    it { should respond_to :level }
+    it { should respond_to :latest }
 
     describe "#level" do
       its(:level) { should be_instance_of String }
