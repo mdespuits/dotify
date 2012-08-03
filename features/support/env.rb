@@ -6,7 +6,7 @@ $:.unshift(File.dirname(__FILE__) + '/../../lib')
 require 'cucumber/rspec/doubles'
 require 'aruba/cucumber'
 
-if ENV["RUN_SIMPLECOV"] == 'true'
+unless ENV["CI"]
   require 'simplecov'
   SimpleCov.start do
     coverage_dir 'coverage/cuke'
