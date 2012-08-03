@@ -20,25 +20,69 @@ module Dotify
       end
     end
 
+    describe "#version" do
+      before { cli.stub(:options).and_return({:check => true}) }
+      it "should inform the user whether thing are up out of date" do
+        Version.stub(:out_of_date?).and_return true
+        Dotify.stub(:version) { '1.0.0' }
+        Version.stub(:version) { '1.0.0' }
+        cli.should_receive(:say).at_least(2).times
+        cli.should_receive(:inform).at_least(2).times
+        cli.version
+      end
+      it "should inform the user whether thing are up to date" do
+        Version.stub(:out_of_date?).and_return false
+        cli.should_receive(:inform).once
+        cli.version
+      end
+      it "should inform the user of an error retrieving the version" do
+        Version.stub(:out_of_date?).and_raise Exception
+        cli.should_receive(:caution).once
+        cli.version
+      end
+    end
+
     describe CLI::Base, "github actions" do
       let(:opts) { Hash.new }
       let(:github) { OpenStruct.new(:name => "Repo") }
       before do
         cli.stub(:options).and_return opts
       end
-      describe CLI::Base, "#save" do
+      describe "#save" do
         it "should call Repo save and pass in the options" do
           CLI::Repo.should_receive(:new).with(opts).and_return github
           github.should_receive(:save)
           cli.save
         end
       end
-      describe CLI::Base, "#github" do
+      describe "#github" do
         it "should create a new instance of Repo with the right options and call pull with the right repo" do
           CLI::Repo.should_receive(:new).with(opts).and_return github
           github.should_receive(:pull).with("mattdbridges/repo")
           cli.github("mattdbridges/repo")
         end
+      end
+    end
+
+    describe "#install" do
+      before do
+        cli.stub(:say)
+        cli.stub(:inform)
+        cli.stub(:caution)
+      end
+      it "should attempt to setup Dotify is it not installed" do
+        Dotify.stub(:installed?).and_return false
+        cli.should_receive(:setup)
+        cli.install
+      end
+      it "should not attempt to setup Dotify is it installed" do
+        Dotify.stub(:installed?).and_return true
+        cli.should_not_receive(:setup)
+        cli.install
+      end
+      it "should begin to link files" do
+        cli.should_receive(:link).once
+        cli.install
       end
     end
 

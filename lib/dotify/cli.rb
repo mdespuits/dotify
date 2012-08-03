@@ -106,8 +106,8 @@ module Dotify
 
       desc :install, "Install files from your home directory into Dotify"
       def install
-        invoke :setup unless Dotify.installed?
-        invoke :link
+        setup unless Dotify.installed?
+        link
       end
 
       desc 'link [[FILENAME]]', "Link up one or all of your dotfiles (FILENAME is optional)"
