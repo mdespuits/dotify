@@ -22,7 +22,7 @@ module Dotify
     describe "Checker delegation" do
       it "should delegate to Checker#check_latest_release!" do
         Version::Checker.should_receive(:check_latest_release!).once
-        Version.build.current
+        Version.build.current?
       end
       it "should delegate to Checker#check_latest_release!" do
         Version::Checker.should_receive(:latest_version).once

@@ -16,18 +16,13 @@ module Dotify
     end
 
     def current?
-      !!current
+      !!Checker.check_latest_release!
     end
 
     def out_of_date?
-      !current
+      !current?
     end
     alias :old? :out_of_date?
-
-    # Delegates checking Rubygems.org to the Checker class
-    def current
-      Checker.check_latest_release!
-    end
 
     def latest
       Checker.latest_version
