@@ -50,7 +50,6 @@ module Dotify
         run_if_not_installed do
           puller = Pull.new(repo, Config.path, options)
           puller.clone
-          Dot.new(".dotrc").backup_and_link # Link the new .dotrc file before trying to link the new files
           Collection.dotify.each { |file| file.backup_and_link }
           puller.initialize_submodules
           puller.finish

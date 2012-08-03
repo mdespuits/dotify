@@ -80,28 +80,28 @@ module Dotify
       method_option "edit-config", :type => :boolean, :default => false, :desc => "Edit Dotify's configuration."
       method_options :verbose => true
       def setup
-        # Warn if Dotify is already setup
-        inform "Dotify is already setup" if Dotify.installed?
+        # Do not continue Dotify is already setup
+        run_if_not_installed do
+          # Create the Dotify directory unless it already exists
+          unless File.exists?(Config.path)
+            empty_directory(Config.path, :verbose => options[:verbose])
+          end
 
-        # Create the Dotify directory unless it already exists
-        unless File.exists?(Config.path)
-          empty_directory(Config.path, :verbose => options[:verbose])
+          # Create the Dotify config file unless it already exists
+          unless File.exists?(Config.file)
+            template '.dotrc', Config.file, :verbose => options[:verbose]
+          end
+
+          if options["edit-config"] == true
+            inform "Editing config file..."
+            sleep 0.5 # Give a little time for reading the message
+            invoke :edit, [Config.file]
+            inform "Config file updated."
+          end
+
+          # Run install task if specified
+          invoke :install if options[:install] == true
         end
-
-        # Create the Dotify config file unless it already exists
-        unless File.exists?(Config.file)
-          template '.dotrc', Config.file, :verbose => options[:verbose]
-        end
-
-        if options["edit-config"] == true
-          inform "Editing config file..."
-          sleep 0.5 # Give a little time for reading the message
-          invoke :edit, [Config.file]
-          inform "Config file updated."
-        end
-
-        # Run install task if specified
-        invoke :install if options[:install] == true
       end
 
       desc :install, "Install files from your home directory into Dotify"

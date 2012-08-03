@@ -7,12 +7,12 @@ Feature: Linking Files
   @long_process
   Scenario: Linking files with ignored definitions
     Given a directory named ".dotify"
-      And an empty file named ".dotrc"
+      And an empty file named ".dotify/.dotrc"
       And an empty file named ".bash_profile"
       And an empty file named ".gemrc"
       And an empty file named ".vimrc"
       And an empty file named ".zshrc"
-    And I write to ".dotrc" with:
+    And I write to ".dotify/.dotrc" with:
       """
       ignore:
         dotfiles:

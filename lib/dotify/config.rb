@@ -10,7 +10,7 @@ module Dotify
     DEFAULTS = {
       :editor => 'vim',
       :ignore => {
-        :dotify => %w[.DS_Store .git .gitmodule],
+        :dotify => %w[.DS_Store .git .gitmodule .dotrc],
         :dotfiles => %w[.DS_Store .Trash .dropbox .dotify]
       }
     }.freeze
@@ -46,7 +46,7 @@ module Dotify
     end
 
     def file
-      File.join(home, '.dotrc')
+      File.join(path, '.dotrc')
     end
 
     private

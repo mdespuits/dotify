@@ -11,8 +11,6 @@ Feature: Linking Files
       | .gitconfig    |
       | .vimrc        |
       | .zshrc        |
-    And the following files should not exist:
-      | .fakefile     |
       And ".gitconfig" should be linked to Dotify
       And ".vimrc" should be linked to Dotify
       And ".zshrc" should be linked to Dotify
@@ -30,3 +28,5 @@ Feature: Linking Files
       And ".vimrc" should be linked to Dotify
       And ".gitmodules" should not be linked to Dotify
       And ".zshrc" should be linked to Dotify
+      And the following files should exist:
+        | .dotify/.dotrc |

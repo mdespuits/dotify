@@ -1,6 +1,6 @@
 Then /^Dotify should have default configuration$/ do
   Dotify::Config.editor.should == 'vim'
-  Dotify::Config.ignore(:dotify).should == %w[.DS_Store .git .gitmodule]
+  Dotify::Config.ignore(:dotify).should == %w[.DS_Store .git .gitmodule .dotrc]
   Dotify::Config.ignore(:dotfiles).should == %w[.DS_Store .Trash .dropbox .dotify]
 end
 

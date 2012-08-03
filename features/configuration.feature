@@ -5,7 +5,7 @@ Feature: Configuration Setup
   Scenario: Deafult setup when running `dotify setup`
     Given Dotify is not setup
     And I run `dotify setup`
-    Then a file named ".dotrc" should exist
+    Then a file named ".dotify/.dotrc" should exist
     And Dotify should have default configuration
 
   Scenario: Default setup with empty .dotrc file
@@ -15,7 +15,7 @@ Feature: Configuration Setup
   Scenario: Setup with non-empty .dotrc file
     Given Dotify is not setup
     And I run `dotify setup`
-    And I write to ".dotrc" with:
+    And I write to ".dotify/.dotrc" with:
     """
     editor: 'vi'
     """

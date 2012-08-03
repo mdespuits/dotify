@@ -6,17 +6,17 @@ module Dotify
     describe "defaults" do
       before { subject.stub(:get).and_return({}) }
       its(:home) { should == Thor::Util.user_home }
-      its(:file) { should == '/tmp/home/.dotrc' }
       its(:path) { should == '/tmp/home/.dotify' }
+      its(:file) { should == '/tmp/home/.dotify/.dotrc' }
       its(:editor) { should == Config::DEFAULTS[:editor] }
     end
 
     describe "#load_config!" do
       it "should not raise a TypeError if the .dotrc file is empty (this is a problem with Psych not liking loading empty files)" do
         c = Config.dup
-        def c.file; Config.home(".fake-dotrc"); end
-        system "mkdir -p #{c.home}"
-        system "touch #{c.home(".fake-dotrc")}"
+        def c.file; Config.path(".fake-dotrc"); end
+        system "mkdir -p #{c.path}"
+        system "touch #{c.path(".fake-dotrc")}"
         expect { c.get }.not_to raise_error TypeError
       end
       context "dot tests" do
