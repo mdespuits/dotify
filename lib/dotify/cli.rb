@@ -49,7 +49,7 @@ module Dotify
       method_option :save, :aliases => '-s', :default => false, :type => :boolean, :require => true, :desc => "Save Dotify files and push to Repo"
       def edit(file)
         file = Dot.new(file)
-        if file.linked?
+        if file.linked? || file.filename == '.dotrc'
           exec "#{Config.editor} #{file.dotify}"
           save if options[:save] == true
         else

@@ -8,7 +8,6 @@ module Dotify
     extend self
 
     DEFAULTS = {
-      :editor => 'vim',
       :ignore => {
         :dotify => %w[.DS_Store .git .gitmodule .dotrc],
         :dotfiles => %w[.DS_Store .Trash .dropbox .dotify]
@@ -34,7 +33,7 @@ module Dotify
     end
 
     def editor
-      get.fetch(:editor, DEFAULTS[:editor])
+      get.fetch(:editor, 'vim')
     end
 
     def ignore(what)

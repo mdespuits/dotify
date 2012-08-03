@@ -17,6 +17,6 @@ Feature: Configuration Setup
     And I run `dotify setup`
     And I write to ".dotify/.dotrc" with:
     """
-    editor: 'vi'
+    editor: 'subl -w'
     """
-    Then Dotify's editor should be "vi"
+    Then Dotify's editor should be "subl -w"

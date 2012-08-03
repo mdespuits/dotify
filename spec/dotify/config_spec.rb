@@ -8,7 +8,7 @@ module Dotify
       its(:home) { should == Thor::Util.user_home }
       its(:path) { should == '/tmp/home/.dotify' }
       its(:file) { should == '/tmp/home/.dotify/.dotrc' }
-      its(:editor) { should == Config::DEFAULTS[:editor] }
+      its(:editor) { should == 'vim' }
     end
 
     describe "#load_config!" do
