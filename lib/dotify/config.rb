@@ -48,17 +48,18 @@ module Dotify
       File.join(path, '.dotrc')
     end
 
+    def loader(f)
+      return {} unless File.exists? f
+      loaded = YAML.load_file(f)
+      loaded == false ? {} : loaded
+    rescue TypeError
+      {}
+    end
+
     private
 
       def load!
-        hash = {}
-        if File.exists? file
-          result = YAML.load_file file
-          hash = (result == false ? {} : result)
-        end
-        symbolize_keys! hash
-      rescue TypeError
-        {}
+        symbolize_keys! loader(self.file)
       end
 
       def user_home

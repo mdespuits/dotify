@@ -21,11 +21,16 @@ module Dotify
       end
       context "dot tests" do
         before do
-          subject.instance_variable_set("@hash", nil)
+          subject.instance_variable_set('@hash', nil)
           File.stub(:exists?).with(Config.file).and_return true
         end
+        it "#loader should not return false" do
+          File.stub(:exists?).and_return true
+          YAML.stub(:load_file).and_return false
+          Config.loader(Config.file).should == {}
+        end
         it "should return an empty hash" do
-          YAML.stub(:load_file).with(Config.file).and_return({})
+          Config.stub(:loader).with(Config.file).and_return({})
           Config.get.should == {}
         end
         it "should catch the TypeError and return an empty hash" do
@@ -34,22 +39,19 @@ module Dotify
         end
         it "should return an empty hash if the config file does not exist" do
           File.stub(:exists?).with(Config.file).and_return false
+          YAML.stub(:load_file).with(Config.file).and_raise({})
           Config.get.should == {}
         end
         it "should return an the hash returned by YAML#load_file" do
-          YAML.stub(:load_file).and_return({ :test => 'example' })
+          Config.stub(:loader).with(Config.file).and_return({:test => 'example'})
           Config.get.should == { :test => 'example' }
         end
         it "should symbolize the keys returned" do
-          YAML.stub(:load_file).and_return({ 'test' => 'example' })
+          Config.stub(:loader).with(Config.file).and_return({'test' => 'example'})
           Config.get.should == { :test => 'example' }
         end
-        it "should return an empty hash if YAML#load_file returns false (commented out config in .dotrc)" do
-          YAML.stub(:load_file).with(Config.file).and_return false
-          Config.get.should == {}
-        end
         it "should only try to set config from the config file once" do
-          YAML.should_receive(:load_file).with(Config.file).once.and_return({ 'test' => 'example' })
+          Config.stub(:loader).with(Config.file).and_return({})
           5.times { Config.get }
         end
       end
