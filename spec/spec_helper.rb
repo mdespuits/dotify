@@ -14,7 +14,7 @@ def macruby?
   defined?(RUBY_ENGINE) && RUBY_ENGINE == 'macruby'
 end
 
-unless ENV["CI"] || macruby?
+unless ENV["CI"] || macruby? || jruby?
   require 'simplecov'
   SimpleCov.start 'test_frameworks'
 end
