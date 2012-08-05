@@ -26,7 +26,7 @@ module Dotify
         Version.build.current?
       end
       it "should delegate to Checker#check_latest_release!" do
-        Version::Checker.should_receive(:latest_version).once
+        Version::Checker.should_receive(:latest).once
         Version.build.latest
       end
     end
@@ -50,28 +50,32 @@ module Dotify
     describe Checker do
       subject { Checker }
       it { should respond_to :check_latest_release! }
+      it { should respond_to :latest }
 
-      describe "#latest_version" do
+      describe "#latest" do
         subject { Checker }
         use_vcr_cassette "check latest version"
-        its(:latest_version) { should == '0.6.6' }
+        its(:latest) { should == '0.6.6' }
       end
 
       describe "#check_latest_release" do
         use_vcr_cassette "check latest version"
+        subject { Checker }
         context "out of date" do
-          it "should prove that the latest version is newer than the current one" do
+          before {
             Version.build.stub(:level).and_return '1.0.0'
             Checker.check_latest_release!
+          }
+          it "should prove that the latest version is newer than the current one" do
             Checker.result.should == false
           end
         end
         context "out of date" do
-          it "should prove that the latest version is newer than the current one" do
+          before {
             Version.build.stub(:level).and_return '0.6.6'
             Checker.check_latest_release!
-            Checker.result.should == true
-          end
+          }
+          its(:result) { should == true }
         end
       end
     end

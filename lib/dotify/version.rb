@@ -25,7 +25,7 @@ module Dotify
     alias :old? :out_of_date?
 
     def latest
-      Checker.latest_version
+      Checker.latest
     end
 
     # The Checkup class is responsible for
@@ -38,10 +38,10 @@ module Dotify
       end
 
       def self.check_latest_release!
-        @result = latest_version == Version.build.level
+        @result = latest == Version.build.level
       end
 
-      def self.latest_version
+      def self.latest
         fetch.map { |v| v['number'] }.max
       end
 
