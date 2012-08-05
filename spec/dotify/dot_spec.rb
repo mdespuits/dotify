@@ -36,8 +36,6 @@ module Dotify
       it "should simply remove the file from the home and relink it" do
         subject.stub(:in_dotify?) { false }
         FileUtils.should_receive(:cp_r).with(subject.dotfile, subject.dotify, :verbose => false)
-        FileUtils.stub(:rm_rf)
-        FileUtils.stub(:ln_sf)
         subject.link
       end
     end
