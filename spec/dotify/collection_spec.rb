@@ -22,26 +22,17 @@ module Dotify
     describe "#home and #dotify methods" do
       it "#home should return the right home Dot objects" do
         Config.stub(:ignore).with(:dotfiles).and_return %w[.vimrc]
-        Collection.should_receive(:dotfiles).with("/tmp/home/.*").and_return(
-          [LinkedDot.new(".."), UnlinkedDot.new("."), LinkedDot.new(".bash_profile"), UnlinkedDot.new(".vimrc"), LinkedDot.new(".zshrc")]
+        Collection::Dir.should_receive(:dots).with("/tmp/home/.*").and_return(
+          [LinkedDot.new(".bash_profile"), UnlinkedDot.new(".vimrc"), LinkedDot.new(".zshrc")]
         )
         Collection.home.filenames.should == %w[.bash_profile .zshrc]
       end
       it "#dotify should return the right home Dot objects" do
         Config.stub(:ignore).with(:dotify).and_return %w[.vimrc]
-        Collection.should_receive(:dotfiles).with("/tmp/home/.dotify/.*").and_return(
-          [LinkedDot.new(".."), UnlinkedDot.new("."), LinkedDot.new(".bash_profile"), UnlinkedDot.new(".vimrc"), LinkedDot.new(".zshrc")]
+        Collection::Dir.should_receive(:dots).with("/tmp/home/.dotify/.*").and_return(
+          [LinkedDot.new(".bash_profile"), UnlinkedDot.new(".vimrc"), LinkedDot.new(".zshrc")]
         )
         Collection.dotify.filenames.should == %w[.bash_profile .zshrc]
-      end
-    end
-
-    describe Collection, "#filter_only_dots" do
-      it 'should not return and . or .. directories' do
-        dots = [LinkedDot.new('.'), LinkedDot.new('..'), LinkedDot.new('.vimrc')]
-        Collection.stub(:dots).and_return dots
-        collection = Collection.new(Collection.dots)
-        collection.filter_only_dots.dots.should == Array(dots.last)
       end
     end
 
