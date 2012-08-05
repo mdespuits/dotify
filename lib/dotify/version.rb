@@ -2,7 +2,7 @@ module Dotify
   MAJOR = 0
   MINOR = 6
   PATCH = 6
-  RCPRE = nil
+  PRE   = nil
 
   class Version
 
@@ -12,7 +12,7 @@ module Dotify
 
     # Build Dotify's the Semantic Version for Rubygems and Bundler
     def level
-      [MAJOR, MINOR, PATCH, RCPRE].compact.join(".")
+      [MAJOR, MINOR, PATCH, PRE].compact.join(".")
     end
 
     def current?

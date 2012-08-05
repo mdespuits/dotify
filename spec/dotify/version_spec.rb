@@ -13,6 +13,14 @@ module Dotify
       its(:level) { should =~ /#{MAJOR}\./ }
       its(:level) { should =~ /\.#{MINOR}/ }
       its(:level) { should =~ /\.#{PATCH}/ }
+      context "without a prerelease" do
+        before { stub_const("Dotify::Version::PRE", nil) }
+        its(:level) { should_not =~ /\.#{Dotify::Version::PRE}\Z/ }
+      end
+      context "with prerelease" do
+        before { stub_const("Dotify::Version::PRE", 'rc1') }
+        its(:level) { should =~ /\.#{Dotify::Version::PRE}\Z/ }
+      end
     end
 
     describe "#build" do
