@@ -3,8 +3,6 @@ require 'dotify/errors'
 
 module Dotify
 
-  class NoSymlink; end
-
   module Actions
 
     # Link the file from the home directory into Dotify
