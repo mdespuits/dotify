@@ -37,6 +37,11 @@ module Dotify
           YAML.stub(:load_file).with(Config.file).and_raise(TypeError)
           Config.get.should == {}
         end
+        it "should catch the Psych::SyntaxError and return an empty hash" do
+          null = double.as_null_object
+          YAML.stub(:load_file).with(Config.file) { raise Psych::SyntaxError.new(null, null, null, null, null, null) }
+          Config.get.should == {}
+        end
         it "should return an empty hash if the config file does not exist" do
           File.stub(:exists?).with(Config.file).and_return false
           YAML.stub(:load_file).with(Config.file).and_raise({})

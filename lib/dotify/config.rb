@@ -54,6 +54,8 @@ module Dotify
       loaded == false ? {} : loaded
     rescue TypeError
       {}
+    rescue Psych::SyntaxError
+      {}
     end
 
     private
