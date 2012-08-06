@@ -16,17 +16,18 @@ end
 
 require 'dotify'
 
+Before('@interactive') do
+  @aruba_io_wait_seconds = 5
+end
+
 Before('@long_process') do
+  @aruba_io_wait_seconds = 15
   @aruba_timeout_seconds = 15
 end
 
-Before('@interactive') do
-  @aruba_io_wait_seconds = 2
-end
-
 Before('@really_long_process') do
-  @aruba_io_wait_seconds = 20
-  @aruba_timeout_seconds = 40
+  @aruba_io_wait_seconds = 15
+  @aruba_timeout_seconds = 15
 end
 
 Before do
