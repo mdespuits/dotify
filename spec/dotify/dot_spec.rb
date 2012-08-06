@@ -79,7 +79,6 @@ module Dotify
       it { should respond_to :filename }
       it { should respond_to :dotify }
       it { should respond_to :dotfile }
-      it { should respond_to :dotfile }
       it { should respond_to :linked? }
       it { should respond_to :linked }
 
@@ -149,9 +148,7 @@ module Dotify
     describe "inspecting dot" do
       it "should display properly" do
         UnlinkedDot.new(".zshrc").inspect.should == "#<Dotify::Dot filename: '.zshrc' linked: false>"
-        bash = LinkedDot.new(".bashrc")
-        bash.inspect.should == "#<Dotify::Dot filename: '.bashrc' linked: true>"
-
+        LinkedDot.new(".bashrc").inspect.should == "#<Dotify::Dot filename: '.bashrc' linked: true>"
       end
     end
 

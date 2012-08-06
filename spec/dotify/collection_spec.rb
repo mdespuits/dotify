@@ -2,7 +2,18 @@ require 'spec_helper'
 
 module Dotify
 
+  module Config
+    def reset!
+      @hash = nil
+    end
+    def stub_config(hash)
+      @hash = hash
+    end
+  end
+
   describe Collection do
+
+    before { Config.reset! }
 
     let(:collection) { Collection.new(home_files) }
     subject { collection }
@@ -63,14 +74,12 @@ module Dotify
 
     describe Collection, "#filenames" do
       it "should only return the filename strings" do
-        Collection.new([LinkedDot.new('.vimrc'), UnlinkedDot.new(".zshrc")]).filenames.should == %w[.vimrc .zshrc]
+        Collection.new([Dot.new('.vimrc'), Dot.new(".zshrc")]).filenames.should == %w[.vimrc .zshrc]
       end
     end
 
     describe Collection, "#linked" do
-      before do
-        collection.stub(:dots).and_return home_files
-      end
+      let!(:collection) { Collection.new(home_files) }
       let(:linked) { collection.linked }
       subject { linked }
       it { should include @vimrc }
@@ -82,9 +91,7 @@ module Dotify
     end
 
     describe Collection, "#unlinked" do
-      before do
-        collection.stub(:dots).and_return home_files
-      end
+      let!(:collection) { Collection.new(home_files) }
       let(:unlinked) { collection.unlinked }
       subject { unlinked }
       it { should include @gitconfig }
