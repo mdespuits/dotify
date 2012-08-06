@@ -13,7 +13,7 @@ Feature: Linking Files
       And I type "n"
       And I type "y"
     Then a file named ".dotify/.github" should not exist
-    Then a file named ".dotify/.vimrc" should exist
+      And a file named ".dotify/.vimrc" should exist
 
   @linking
   Scenario: Linking files with force
