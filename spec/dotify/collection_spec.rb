@@ -15,101 +15,52 @@ module Dotify
 
     before { Config.reset! }
 
-    let(:collection) { Collection.new(home_files) }
-    subject { collection }
-    let(:home_files) {
-      [
-        @bashrc = UnlinkedDot.new(".bashrc"),
-        @gitconfig = UnlinkedDot.new(".gitconfig"),
-        @vimrc = LinkedDot.new(".vimrc")
-      ]
-    }
-    describe "methods" do
-      %w[each linked unlinked].each do |name|
-        it { should respond_to name }
-      end
+    let(:ldot) { LinkedDot.new(".gitconfig") }
+    let(:udot) { UnlinkedDot.new(".zshrc") }
+
+    subject { Collection.new([ldot, ldot, ldot, ldot, udot, udot]) }
+
+    it { should respond_to :filenames }
+    it { should respond_to :linked }
+    it { should respond_to :unlinked }
+    it { should respond_to :to_s }
+    it { should respond_to :inspect }
+
+    it { should have(6).dots }
+
+    its(:filenames) { should include ".gitconfig" }
+    its(:filenames) { should include ".zshrc" }
+
+    its(:linked) { should include ldot }
+    its(:linked) { should have(4).dots }
+
+    its(:unlinked) { should include udot }
+    its(:unlinked) { should have(2).dots }
+
+    describe "class methods" do
+      subject { Collection }
+      it { should respond_to :dotfiles }
+      it { should respond_to :home }
+      it { should respond_to :dotify }
     end
 
-    describe "#home and #dotify methods" do
-      it "#home should return the right home Dot objects" do
-        Config.stub(:ignore).with(:dotfiles).and_return %w[.vimrc]
-        Collection::Dir.should_receive(:dots).with("/tmp/home/.*").and_return(
-          [LinkedDot.new(".bash_profile"), UnlinkedDot.new(".vimrc"), LinkedDot.new(".zshrc")]
-        )
-        Collection.home.filenames.should == %w[.bash_profile .zshrc]
-      end
-      it "#dotify should return the right home Dot objects" do
-        Config.stub(:ignore).with(:dotify).and_return %w[.vimrc]
-        Collection::Dir.should_receive(:dots).with("/tmp/home/.dotify/.*").and_return(
-          [LinkedDot.new(".bash_profile"), UnlinkedDot.new(".vimrc"), LinkedDot.new(".zshrc")]
-        )
-        Collection.dotify.filenames.should == %w[.bash_profile .zshrc]
-      end
-    end
+  end
 
-    describe Collection, "#ignore" do
-      let(:dots) { [LinkedDot.new('.bash_profile'), LinkedDot.new('.zshrc'), LinkedDot.new('.vimrc')] }
-      it "should only return files that are not ignored" do
-        Collection.stub(:dots).and_return dots
-        Config.stub(:ignore).with(:dotfiles).and_return [".zshrc", ".bash_profile"]
-        Collection.new(Collection.dots).ignore(:dotfiles).dots.should == Array(dots.last)
-      end
-    end
+  describe Collection::Dir do
 
-    describe Collection, ".dotfiles" do
-      let!(:dirfiles) { %w[.vimrc .zshrc .vim] }
-      it "should pass the glob to Dir[]" do
-        Dir.should_receive(:[]).with(".*").and_return dirfiles
-        Collection.dotfiles(".*")
-      end
-      it "should return an array of Dotify::Dot objects" do
-        Dir.stub(:[]).with(".*").and_return dirfiles
-        dotfiles = Collection.dotfiles(".*")
-        dotfiles.each { |d| d.should be_instance_of Dot }
-        dotfiles.first.filename.should == ".vimrc"
-        dotfiles[1].filename.should == ".zshrc"
-        dotfiles.last.filename.should == ".vim"
-      end
-    end
+    subject { Collection::Dir }
 
-    describe Collection, "#filenames" do
-      it "should only return the filename strings" do
-        Collection.new([Dot.new('.vimrc'), Dot.new(".zshrc")]).filenames.should == %w[.vimrc .zshrc]
+    it { should respond_to :[] }
+
+    describe "#[]" do
+      before do
+        ::Dir.stub(:[]).with("some-path").and_return %w[. .. .bashrc /path/to/another/file]
       end
-    end
-
-    describe Collection, "#linked" do
-      let!(:collection) { Collection.new(home_files) }
-      let(:linked) { collection.linked }
-      subject { linked }
-      it { should include @vimrc }
-      it { should_not include @gitconfig }
-      it { should_not include @bashrc }
-      it "should yield the correct Dots" do
-        expect { |b| subject.each(&b) }.to yield_successive_args(*linked)
-      end
-    end
-
-    describe Collection, "#unlinked" do
-      let!(:collection) { Collection.new(home_files) }
-      let(:unlinked) { collection.unlinked }
-      subject { unlinked }
-      it { should include @gitconfig }
-      it { should include @bashrc }
-      it { should_not include @vimrc }
-      it "should yield the correct Dots" do
-        expect { |b| subject.each(&b) }.to yield_successive_args(*unlinked)
-      end
-    end
-
-    it "should call #to_s on the dots" do
-      collection.dots.should_receive(:to_s)
-      collection.to_s
-    end
-
-    it "should call #inspect on the dots" do
-      collection.dots.each { |u| u.should_receive(:inspect) }
-      collection.inspect
+      subject { Collection::Dir["some-path"] }
+      it { should include '.bashrc' }
+      it { should include '/path/to/another/file' }
+      it { should_not include '.' }
+      it { should_not include '..' }
     end
 
   end

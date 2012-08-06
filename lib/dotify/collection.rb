@@ -9,27 +9,23 @@ module Dotify
       def self.[](*args)
         super(*args).reject{|f| %w[. ..].include? File.basename(f) }
       end
-
-      def self.dots(*args)
-        self[*args].map { |f| Dot.new(f) }
-      end
     end
 
-    attr_accessor :dots
-
     def self.home
-      Collection.new(Dir.dots(Config.home(".*"))).ignore(:dotfiles)
+      Collection.new(dotfiles(Config.home(".*"))).ignore(:dotfiles)
     end
 
     def self.dotify
-      Collection.new(Dir.dots(Config.path(".*"))).ignore(:dotify)
+      Collection.new(dotfiles(Config.path(".*"))).ignore(:dotify)
     end
 
     # Passes a Dir glob into Dir#[] and returns
     # an array of Dot objects.
     def self.dotfiles(glob)
-      Collection::Dir.dots(glob)
+      Collection::Dir[glob].map { |f| Dot.new(f) }
     end
+
+    attr_accessor :dots
 
     # Pulls an array of Dots from the home
     # directory.
