@@ -17,8 +17,8 @@ end
 require 'dotify'
 
 Before('@interactive') do
-  @aruba_io_wait_seconds = 15
-  @aruba_timeout_seconds = 15
+  @aruba_io_wait_seconds = 35
+  @aruba_timeout_seconds = 35
 end
 
 Before('@long_process') do

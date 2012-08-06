@@ -6,7 +6,6 @@ Feature: Linking Files
 
   @linking
   @interactive
-  @longer
   Scenario: Linking files
     Given Dotify is setup
       And an empty file named ".github"
@@ -18,7 +17,6 @@ Feature: Linking Files
       And a file named ".dotify/.vimrc" should exist
 
   @linking
-  @interactive
   Scenario: Linking files with force
     Given a directory named ".dotify"
       And an empty file named ".bash_profile"
