@@ -1,5 +1,12 @@
 require 'spec_helper'
 
+if !defined?(Psych)
+  module Psych
+    class SyntaxError < Struct.new(:file, :line, :column, :offset, :problem, :context)
+    end
+  end
+end
+
 module Dotify
   describe Config do
     subject { Config }
@@ -39,7 +46,7 @@ module Dotify
         end
         it "should catch the Psych::SyntaxError and return an empty hash" do
           null = double.as_null_object
-          YAML.stub(:load_file).with(Config.file) { raise Psych::SyntaxError.new(null, null, null, null, null, null) }
+          YAML.stub(:load_file).with(Config.file) { raise ::Psych::SyntaxError.new(null, null, null, null, null, null) }
           Config.get.should == {}
         end
         it "should return an empty hash if the config file does not exist" do
