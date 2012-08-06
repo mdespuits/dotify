@@ -9,8 +9,14 @@ matrix:
   - rvm: 1.9.2
   - rvm: jruby-18mode
     jdk: openjdk7
+    env:
+      - "JRUBY_OPTS=-X-C"
+      - "JAVA_OPTS=-d32"
   - rvm: jruby-19mode
     jdk: openjdk7
+    env:
+      - "JRUBY_OPTS=-X-C"
+      - "JAVA_OPTS=-d32"
   - rvm: rbx-18mode
   - rvm: rbx-19mode
   allow_failures:
