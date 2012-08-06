@@ -20,6 +20,10 @@ Before('@long_process') do
   @aruba_timeout_seconds = 15
 end
 
+Before('@slow_process') do
+  @aruba_io_seconds = 4
+end
+
 Before('@really_long_process') do
   @aruba_io_wait_seconds = 20
   @aruba_timeout_seconds = 40
