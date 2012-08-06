@@ -5,6 +5,7 @@ Feature: Unlinking files
   In order to stop Dotify from managing files
 
   @unlinking
+  @interactive
   Scenario: Unlinking
     Given Dotify is setup
       And an empty file named ".gitconfig"
@@ -18,6 +19,7 @@ Feature: Unlinking files
       And a file named ".vimrc" should exist
 
   @unlinking
+  @interactive
   Scenario: Unlinking with force
     Given Dotify is setup
       And an empty file named ".gitconfig"

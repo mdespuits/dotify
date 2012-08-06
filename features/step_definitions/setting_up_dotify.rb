@@ -6,5 +6,6 @@ Given /^Dotify is setup$/i do
   %x[
     mkdir -p #{Dotify::Config.path}
     touch #{Dotify::Config.path(".dotrc")}
+    echo "editor: vim" > #{Dotify::Config.path(".dotrc")}
   ]
 end
