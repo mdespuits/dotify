@@ -16,7 +16,7 @@ Feature: Linking Files
       And ".vimrc" should be linked to Dotify
       And ".zshrc" should be linked to Dotify
 
-  @really_long_process
+  @long_process
   @github
   Scenario: Pulling from Github
     When I successfully run `dotify github mattdbridges/dots`

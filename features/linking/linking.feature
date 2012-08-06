@@ -6,6 +6,7 @@ Feature: Linking Files
 
   @linking
   @interactive
+  @longer
   Scenario: Linking files
     Given Dotify is setup
       And an empty file named ".github"

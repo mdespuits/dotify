@@ -6,6 +6,7 @@ Feature: Unlinking files
 
   @unlinking
   @interactive
+  @longer
   Scenario: Unlinking
     Given Dotify is setup
       And an empty file named ".gitconfig"
