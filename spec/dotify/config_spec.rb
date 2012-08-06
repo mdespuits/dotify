@@ -1,11 +1,9 @@
 require 'spec_helper'
 
-if !defined?(Psych)
-  module Psych
-    class SyntaxError < ::SyntaxError
-      def initialize(*args)
-        # do nothing. This is for testing
-      end
+module Psych
+  class SyntaxError < ::SyntaxError
+    def initialize(*args)
+      # do nothing. This is for testing
     end
   end
 end
