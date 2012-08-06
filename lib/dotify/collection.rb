@@ -28,7 +28,7 @@ module Dotify
     # Passes a Dir glob into Dir#[] and returns
     # an array of Dot objects.
     def self.dotfiles(glob)
-      Collection::Dir[glob].map{ |f| Dot.new(f) }
+      Collection::Dir.dots(glob)
     end
 
     # Pulls an array of Dots from the home
