@@ -31,8 +31,8 @@ Before do
   @tmp_home = "/tmp/dotify-test"
 
   ## Aruba config ##
-  @aruba_io_wait_seconds = 1
-  @aruba_timeout_seconds = 5
+  @aruba_io_wait_seconds = 1 if @aruba_io_wait_seconds.nil?
+  @aruba_timeout_seconds = 5 if @aruba_timeout_seconds.nil?
   @dirs = [@tmp_home]
   ENV["PATH"] = "#{File.expand_path(File.dirname(__FILE__) + '/../../bin')}#{File::PATH_SEPARATOR}#{ENV['PATH']}"
 
