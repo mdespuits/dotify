@@ -1,11 +1,12 @@
 Feature: Linking Files
 
+  As a Dotify user
   I want to be able to pull down dotfiles
-  from a repo in Github. And set them up on
-  my system.
+  In order to set them up on my system
 
   @long_process
-  Scenario: Pulling from Github
+  @github
+  Scenario: Pulling from Github without submodules
     When I successfully run `dotify github mattdbridges/simple_dotfiles`
     Then the following files should exist:
       | .gitconfig    |
@@ -16,6 +17,7 @@ Feature: Linking Files
       And ".zshrc" should be linked to Dotify
 
   @really_long_process
+  @github
   Scenario: Pulling from Github
     When I successfully run `dotify github mattdbridges/dots`
     Then the following files should exist:

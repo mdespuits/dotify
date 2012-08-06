@@ -6,6 +6,17 @@ Feature: Linking Files
 
   @linking
   Scenario: Linking files
+    Given Dotify is setup
+      And an empty file named ".github"
+      And an empty file named ".vimrc"
+    When I run `dotify link` interactively
+      And I type "n"
+      And I type "y"
+    Then a file named ".dotify/.github" should not exist
+    Then a file named ".dotify/.vimrc" should exist
+
+  @linking
+  Scenario: Linking files with force
     Given a directory named ".dotify"
       And an empty file named ".bash_profile"
       And an empty file named ".gemrc"
@@ -20,14 +31,3 @@ Feature: Linking Files
       And ".gemrc" should be linked to Dotify
       And ".vimrc" should be linked to Dotify
       And ".zshrc" should be linked to Dotify
-
-  @linking
-  Scenario: Linking files without force
-    Given Dotify is setup
-      And an empty file named ".github"
-      And an empty file named ".vimrc"
-    When I run `dotify link` interactively
-      And I type "n"
-      And I type "y"
-    Then a file named ".dotify/.github" should not exist
-    Then a file named ".dotify/.vimrc" should exist
