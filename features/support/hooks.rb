@@ -1,6 +1,6 @@
 Before do
   @__orig_home = ENV["HOME"]
-  @tmp_home = "/private/tmp/dotify-test"
+  @tmp_home = "/tmp/dotify-test"
 
   ## Aruba config ##
   @dirs = [@tmp_home]
