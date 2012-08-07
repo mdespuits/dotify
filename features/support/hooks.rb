@@ -16,6 +16,10 @@ After do
 end
 
 Before('@long_process, @interactive') do
-  @aruba_io_wait_seconds = 10
-  @aruba_timeout_seconds = 10
+  def jruby?
+    defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby'
+  end
+
+  @aruba_io_wait_seconds = jruby? ? 6 : 2
+  @aruba_timeout_seconds = jruby? ? 25 : 5
 end
