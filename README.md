@@ -8,13 +8,13 @@ Dotify is a simple CLI tool to make managing dotfiles on your system easy. When 
 
 ## Ruby Version Support
 
-As this is a gem for use on your local system, I know there are still many Ruby developers still stuck with using Ruby 1.8. As such, Dotify supports the following Ruby versions definitively:
+As this is a gem for use on your local system, I know there are still many Ruby developers still stuck with using Ruby 1.8. As such, Dotify supports the following Ruby versions:
 
-* 1.8.7
-* 1.9.2
 * 1.9.3
-* JRuby
-* Rubinius
+* 1.9.2
+* 1.8.7
+
+*Note*: As of v0.7.0, **JRuby** and **Rubinius** are now only partially supported. Trying to support all of these versions is quite difficult with the nature of this gem, so I will be focusing on MRI.
 
 ## Installation
 

@@ -1,26 +1,8 @@
 language: ruby
 script:
   - bundle exec rspec spec
-  - bundle exec cucumber --no-profile --color --format progress --strict --tags ~@really_long_process
-rvm: 1.9.3
-matrix:
-  include:
-  - rvm: 1.8.7
-  - rvm: 1.9.2
-  - rvm: jruby-18mode
-    jdk: openjdk7
-    env:
-      - "JRUBY_OPTS=-X-C"
-      - "JAVA_OPTS=-d32"
-  - rvm: jruby-19mode
-    jdk: openjdk7
-    env:
-      - "JRUBY_OPTS=-X-C"
-      - "JAVA_OPTS=-d32"
-  - rvm: rbx-18mode
-  - rvm: rbx-19mode
-  allow_failures:
-  - rvm: jruby-18mode
-  - rvm: jruby-19mode
-  - rvm: rbx-18mode
-  - rvm: rbx-19mode
+  - bundle exec cucumber --no-profile --color --format progress --strict
+rvm:
+- 1.9.3
+- 1.9.2
+- 1.8.7
