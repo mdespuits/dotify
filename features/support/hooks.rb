@@ -15,12 +15,7 @@ After do
   ENV["HOME"] = @__orig_home
 end
 
-Before('@long_process', '@interactive') do
+Before('@long_process, @interactive') do
   @aruba_io_wait_seconds = 10
   @aruba_timeout_seconds = 10
-end
-
-AfterStep('@long_process', '@interactive') do
-  @aruba_io_wait_seconds = nil
-  @aruba_timeout_seconds = nil
 end
