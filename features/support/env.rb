@@ -15,32 +15,3 @@ unless ENV["CI"]
 end
 
 require 'dotify'
-
-Before('@interactive') do
-  @aruba_io_wait_seconds = 35
-  @aruba_timeout_seconds = 35
-end
-
-Before('@long_process') do
-  @aruba_io_wait_seconds = 15
-  @aruba_timeout_seconds = 15
-end
-
-Before do
-  @__orig_home = ENV["HOME"]
-  @tmp_home = "/tmp/dotify-test"
-
-  ## Aruba config ##
-  @aruba_io_wait_seconds = 1 if @aruba_io_wait_seconds.nil?
-  @aruba_timeout_seconds = 5 if @aruba_timeout_seconds.nil?
-  @dirs = [@tmp_home]
-  ENV["PATH"] = "#{File.expand_path(File.dirname(__FILE__) + '/../../bin')}#{File::PATH_SEPARATOR}#{ENV['PATH']}"
-
-  FileUtils.mkdir_p @tmp_home
-  ENV["HOME"] = @tmp_home
-end
-
-After do
-  FileUtils.rm_rf @tmp_home
-  ENV["HOME"] = @__orig_home
-end
