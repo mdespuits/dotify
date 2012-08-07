@@ -20,13 +20,13 @@ module Dotify
       it "should not do anything if the file is linked" do
         s = subject.dup
         def s.linked?; true; end
-        s.link.should == false
+        s.link.should be_false
       end
       it "should not do anything if the is not in the home directory" do
         s = subject.dup
         def s.linked?; true; end
         def s.in_home_dir?; false; end
-        s.link.should == false
+        s.link.should be_false
       end
       it "should copy the file from the home directory if it is not in Dotify" do
         FileUtils.should_receive(:rm_rf).with(subject.dotfile, :verbose => false)
@@ -62,7 +62,7 @@ module Dotify
         FileUtils.should_not_receive(:rm_rf)
         FileUtils.should_not_receive(:cp_r)
         FileUtils.should_not_receive(:rm_rf)
-        subject.unlink.should == false
+        subject.unlink.should be_false
       end
       it "should call the right FileUtils methods" do
         subject.stub(:linked?) { true }
@@ -94,13 +94,13 @@ module Dotify
       subject { dot }
       context "when dotfile exists" do
         let(:dot) { LinkedDot.new(".bashrc") }
-        its(:in_home_dir?) { should == true }
-        its(:in_dotify?) { should == true }
+        its(:in_home_dir?) { should be_true }
+        its(:in_dotify?) { should be_true }
       end
       context "when dotfile does not exist" do
         let(:dot) { UnlinkedDot.new(".bashrc") }
-        its(:in_home_dir?) { should_not == true }
-        its(:in_dotify?) { should_not == true }
+        its(:in_home_dir?) { should_not be_true }
+        its(:in_dotify?) { should_not be_true }
       end
     end
 
@@ -125,11 +125,11 @@ module Dotify
       let(:dot) { LinkedDot.new(".bashrc") }
       it "should return true if all checks work" do
         dot.stub(:linked_to_dotify?).and_return true # stub dotify file exist check
-        dot.linked?.should == true
+        dot.linked?.should be_true
       end
       it "should return false if one or more checks fail" do
         dot.stub(:linked_to_dotify?).and_return false # stub dotify file exist check
-        dot.linked?.should == false
+        dot.linked?.should be_false
       end
     end
 
@@ -143,7 +143,7 @@ module Dotify
       it "should return false if error or no symlink" do
         File.stub(:symlink?).with(dot.dotfile).and_return false
         expect { dot.symlink }.not_to raise_error
-        dot.symlink.should == false
+        dot.symlink.should be_false
       end
     end
 

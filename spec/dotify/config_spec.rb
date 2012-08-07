@@ -76,14 +76,14 @@ module Dotify
           File.should_receive(:exists?).with(Config.path).and_return(true)
           File.should_receive(:directory?).with(Config.path).and_return(true)
         end
-        its(:installed?) { should == true }
+        its(:installed?) { should be_true }
       end
       context "when Dotify has not been setup" do
         before do
           File.should_receive(:exists?).with(Config.path).and_return(true)
           File.should_receive(:directory?).with(Config.path).and_return(false)
         end
-        its(:installed?) { should == false }
+        its(:installed?) { should be_false }
       end
     end
 

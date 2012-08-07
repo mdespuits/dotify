@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'dotify/version'
 
 module Dotify
   describe Version do
@@ -43,13 +42,13 @@ module Dotify
       subject { Version.build }
       context "when out of date" do
         before { Version::Checker.stub(:check_latest_release!).and_return(true) }
-        its(:current?) { should == true }
-        its(:out_of_date?) { should == false }
+        its(:current?) { should be_true }
+        its(:out_of_date?) { should be_false }
       end
       context "when up to date" do
         before { Version::Checker.stub(:check_latest_release!).and_return(false) }
-        its(:out_of_date?) { should == true }
-        its(:current?) { should == false }
+        its(:out_of_date?) { should be_true }
+        its(:current?) { should be_false }
       end
     end
   end
@@ -75,7 +74,7 @@ module Dotify
             Checker.check_latest_release!
           }
           it "should prove that the latest version is newer than the current one" do
-            Checker.result.should == false
+            Checker.result.should be_false
           end
         end
         context "out of date" do
@@ -83,7 +82,7 @@ module Dotify
             Version.build.stub(:level).and_return '0.6.6'
             Checker.check_latest_release!
           }
-          its(:result) { should == true }
+          its(:result) { should be_true }
         end
       end
     end
