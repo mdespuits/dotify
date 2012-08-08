@@ -9,8 +9,12 @@ module Dotify
       subject { repo }
 
       it { should respond_to :repo }
-      it { should respond_to :save }
       it { should respond_to :pull }
+
+      describe "class methods" do
+        subject { described_class }
+        it { should respond_to :save }
+      end
 
       describe "initialization" do
         subject { Repo.new("mattdbridges/dots", { :verbose => true }) }

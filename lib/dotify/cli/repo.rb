@@ -14,7 +14,7 @@ module Dotify
         @repo, @options = repo, options
       end
 
-      def save
+      def self.save(options)
         self.class.run_if_repo do
           repo = ::Git.open(Dotify::Config.path)
           changed = repo.status.changed
