@@ -8,10 +8,10 @@ module Dotify
 
       include Utilities
 
-      attr_reader :options
+      attr_accessor :repo, :options
 
-      def initialize(options = {})
-        @options = options
+      def initialize(repo, options = {})
+        @repo, @options = repo, options
       end
 
       def save
@@ -46,7 +46,7 @@ module Dotify
         end
       end
 
-      def pull(repo)
+      def pull
         run_if_not_installed do
           puller = Pull.new(repo, Config.path, options)
           puller.clone

@@ -31,13 +31,13 @@ module Dotify
       method_option :verbose, :aliases => '-v', :type => :boolean, :default => true,  :desc => "Display file creation and status updates."
       method_option :push,    :aliases => '-p', :type => :boolean, :default => false, :desc => "Force the push to the remote repository."
       def save
-        Repo.new(options).save
+        Repo.save(options)
       end
 
       desc 'github [USERNAME]/[REPO]', "Install the dotfiles from a Repo repo into Dotify. (Backs up any files that would be overwritten)"
       method_option :debug, :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
       def github(repo)
-        Repo.new(options).pull(repo)
+        Repo.new(repo, options).pull
       end
 
       desc :list, "List the installed dotfiles"

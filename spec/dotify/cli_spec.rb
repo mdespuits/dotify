@@ -52,15 +52,14 @@ module Dotify
       end
       describe "#save" do
         it "should call Repo save and pass in the options" do
-          CLI::Repo.should_receive(:new).with(opts).and_return github
-          github.should_receive(:save)
+          CLI::Repo.should_receive(:save).with(opts)
           cli.save
         end
       end
       describe "#github" do
         it "should create a new instance of Repo with the right options and call pull with the right repo" do
-          CLI::Repo.should_receive(:new).with(opts).and_return github
-          github.should_receive(:pull).with("mattdbridges/repo")
+          CLI::Repo.should_receive(:new).with("mattdbridges/repo", opts).and_return github
+          github.should_receive(:pull)
           cli.github("mattdbridges/repo")
         end
       end
