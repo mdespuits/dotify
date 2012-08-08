@@ -8,20 +8,20 @@ module Dotify
       it { should respond_to :save }
       it { should respond_to :pull }
 
-      describe Repo, "#run_if_git_repo" do
+      describe Repo, "#run_if_repo" do
         before { Repo.stub(:inform) }
         it "should yield the block if a .git directory exists in Dotify" do
           File.stub(:exists?).with(Config.path('.git')).and_return true
-          expect { |b| Repo.run_if_git_repo(&b) }.to yield_control
+          expect { |b| Repo.run_if_repo(&b) }.to yield_control
         end
         it "should yield the block if a .git directory exists in Dotify" do
           File.stub(:exists?).with(Config.path('.git')).and_return false
-          expect { |b| Repo.run_if_git_repo(&b) }.not_to yield_control
+          expect { |b| Repo.run_if_repo(&b) }.not_to yield_control
         end
         it "should call inform if a .git directory is missing" do
           File.stub(:exists?).with(Config.path('.git')).and_return false
           Repo.should_receive(:inform).once
-          Repo.run_if_git_repo { }
+          Repo.run_if_repo { }
         end
       end
 

@@ -15,7 +15,7 @@ module Dotify
       end
 
       def save
-        self.class.run_if_git_repo do
+        self.class.run_if_repo do
           repo = ::Git.open(Dotify::Config.path)
           changed = repo.status.changed
           if changed.size > 0
@@ -133,7 +133,7 @@ module Dotify
 
       end
 
-      def self.run_if_git_repo
+      def self.run_if_repo
         return yield if File.exists? Config.path('.git')
         inform "You need to make ~/.dotify a Git repo to run this task."
       end
