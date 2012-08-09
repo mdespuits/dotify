@@ -23,7 +23,7 @@ module Dotify
     end
 
     describe "#build" do
-      subject { Version }
+      subject { described_class }
       its(:build) { should be_instance_of described_class }
     end
 
@@ -55,19 +55,17 @@ module Dotify
 
   class Version
     describe Checker do
-      subject { Checker }
+      subject { described_class }
       it { should respond_to :check_latest_release! }
       it { should respond_to :latest }
 
       describe "#latest" do
-        subject { Checker }
         use_vcr_cassette "check latest version"
         its(:latest) { should == '0.6.6' }
       end
 
       describe "#check_latest_release" do
         use_vcr_cassette "check latest version"
-        subject { Checker }
         context "out of date" do
           before {
             Version.build.stub(:level).and_return '1.0.0'

@@ -38,7 +38,7 @@ module Dotify
     its(:unlinked) { should have(2).dots }
 
     describe "class methods" do
-      subject { Collection }
+      subject { described_class }
       it { should respond_to :dotfiles }
       it { should respond_to :home }
       it { should respond_to :dotify }
@@ -48,7 +48,7 @@ module Dotify
 
   describe Collection::Dir do
 
-    subject { Collection::Dir }
+    subject { described_class }
 
     it { should respond_to :[] }
 
@@ -56,7 +56,7 @@ module Dotify
       before do
         ::Dir.stub(:[]).with("some-path").and_return %w[. .. .bashrc /path/to/another/file]
       end
-      subject { Collection::Dir["some-path"] }
+      subject { described_class["some-path"] }
       it { should include '.bashrc' }
       it { should include '/path/to/another/file' }
       it { should_not include '.' }
