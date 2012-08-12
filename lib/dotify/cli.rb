@@ -34,11 +34,18 @@ module Dotify
         Repo.save(options)
       end
 
-      desc 'github [USERNAME]/[REPO]', "Install the dotfiles from a Repo repo into Dotify. (Backs up any files that would be overwritten)"
+      desc 'github [USERNAME]/[REPO]', "Install the dotfiles from a GitHub repo into Dotify. (Backs up any files that would be overwritten)"
       method_option :debug, :aliases => '-d', :type => :boolean, :default => false, :desc => "Show error messages if there is a Git failure."
+      method_option :verbose, :type => :boolean, :default => true, :desc => "Show what is going on during Git commands."
       method_option :ssh, :type => :boolean, :default => false, :desc => "Use Github's ssh repo URL by default."
       def github(repo)
         Repo.new(repo, options).pull
+      end
+
+      desc 'repo [URL]', "Install the dotfiles from a repo into Dotify. (Backs up any files that would be overwritten)"
+      method_option :verbose, :type => :boolean, :default => true, :desc => "Show what is going on during Git commands."
+      def repo(repo)
+        Repo.new(repo, options.dup.merge!(:github => false)).pull
       end
 
       desc :list, "List the installed dotfiles"

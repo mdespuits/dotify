@@ -47,15 +47,16 @@ module Dotify
       end
 
       def pull
+        puller = Pull.new(repo, Config.path, options)
         run_if_not_installed do
-          puller = Pull.new(repo, Config.path, options)
+          inform "Backing up dotfile and installing Dotify files..."
           puller.clone
           Collection.dotify.each { |file| file.backup_and_link }
           puller.initialize_submodules
           puller.finish
         end
       rescue Git::GitExecuteError => e
-        caution "[ERROR]: There was an problem pulling from #{git_repo_name}.\nPlease make sure that the specified repo exists and you have access to it."
+        caution "[ERROR]: There was an problem pulling from #{puller.repo}.\nPlease make sure that the specified repo exists and you have access to it."
         caution "Git Error: #{e.message}" if options[:debug]
       end
 
@@ -88,12 +89,11 @@ module Dotify
         #
         def initialize(repo, path, options = {})
           @repo, @path, @options = repo, path, options
-          inform "Backing up dotfile and installing Dotify files..."
         end
 
         # Clone the repo from the url into the specified path.
         def clone
-          inform "Pulling #{repo} from Repo into #{path}..."
+          inform "Pulling #{repo} from Git repo into #{path}..."
           Git.clone(url, path)
         end
 
@@ -102,7 +102,7 @@ module Dotify
         end
 
         def finish #:nodoc:
-          inform "Dotify successfully installed #{repo} from Repo!"
+          inform "Dotify successfully installed #{repo} from Github!"
         end
 
         # The URL of the Repo repo to pull.
