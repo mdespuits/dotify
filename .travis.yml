@@ -1,6 +1,6 @@
 language: ruby
 script:
-  - bundle exec rspec spec
+  # - bundle exec rspec spec
   - bundle exec cucumber --no-profile --color --format progress --strict
 rvm:
 - 1.9.3
