@@ -38,19 +38,25 @@ module Dotify
           Repo.run_if_repo { }
         end
       end
-
     end
     describe Repo::Pull do
-      let(:puller) { Repo::Pull.new(OpenStruct.new, { :verbose => false }) }
+      let(:puller) { Repo::Pull.new('mattdbridges/dots', '/tmp/home/.dotify', { :verbose => false }) }
 
       describe "#github_repo_url" do
         it "should return a public repo url when env is public" do
           puller.stub(:use_ssh_repo?).and_return(false)
-          puller.url == "git://github.com/mattdbridges/dots.git"
+          expect(puller.url).to eq "git://github.com/mattdbridges/dots.git"
         end
         it "should return a SSH repo url when env is not public" do
           puller.stub(:use_ssh_repo?).and_return(true)
-          puller.url == "git@github.com:mattdbridges/dots.git"
+          expect(puller.url).to eq "git@github.com:mattdbridges/dots.git"
+        end
+      end
+
+      describe "with :github => false option" do
+        let(:puller) { Repo::Pull.new('git@example.com/some/path.git', '/tmp/home/.dotify', { :github => false, :verbose => false }) }
+        it "should return the straight string without manipulation" do
+          expect(puller.url).to eq 'git@example.com/some/path.git'
         end
       end
 

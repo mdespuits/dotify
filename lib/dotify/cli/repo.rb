@@ -111,6 +111,7 @@ module Dotify
         # The URL will be in the SSH format. By default, the `:ssh` is `false`,
         # so it will return the Git URL format.
         def url
+          return repo if options[:github] == false
           "git#{github_url}#{repo}.git"
         end
 
