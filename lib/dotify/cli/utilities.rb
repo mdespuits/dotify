@@ -74,7 +74,7 @@ module Dotify
           say "You can't run the action :#{action} on a file."
         end
 
-        if options[:force] == true || yes?("Do you want to #{action} #{file} #{action.to_sym == :link ? :to : :from} Dotify? [Yn]", :blue)
+        if options[:force] == true || yes?("Do you want to #{action} #{file} #{action.to_sym == :link ? :to : :from} Dotify? [y/n]", :blue)
           file.send(action) if file.respond_to? action
           say_status "#{action}ed", file.dotfile
         end

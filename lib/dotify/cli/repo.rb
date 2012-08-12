@@ -21,7 +21,7 @@ module Dotify
           if changed.size > 0
             changed.each_pair do |file, status|
               say_status :changed, status.path, :verbose => options[:verbose]
-              if options[:force] || yes?("Do you want to add '#{status.path}' to the Git index? [Yn]", :blue)
+              if options[:force] || yes?("Do you want to add '#{status.path}' to the Git index? [y/n]", :blue)
                 repo.add status.path
                 say_status :added, status.path, :verbose => options[:verbose]
               end
@@ -32,7 +32,7 @@ module Dotify
           else
             inform "No files have been changed in Dotify."
           end
-          if options[:push] || yes?("Would you like to push these changed to Repo? [Yn]", :blue)
+          if options[:push] || yes?("Would you like to push these changed to Repo? [y/n]", :blue)
             inform 'Pushing up to Repo...'
             begin
               repo.push
