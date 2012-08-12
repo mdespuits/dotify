@@ -19,7 +19,7 @@ Feature: Linking Files
   @long_process
   @github
   Scenario: Pulling from Github via the repo task
-    When I successfully run `dotify repo git@github.com:mattdbridges/simple_dotfiles.git`
+    When I successfully run `dotify repo git://github.com/mattdbridges/simple_dotfiles.git`
     Then the following files should exist:
       | .gitconfig    |
       | .vimrc        |
