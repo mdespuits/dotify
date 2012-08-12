@@ -55,9 +55,18 @@ For example:
     $ dotify github mattdbridges/dots
     Pulling mattdbridges/dots from Github into /Users/computer-user/.dotify...
     Backing up dotfile and installing Dotify files...
-    Successfully installed mattdbridges/dots from Dotify!
+    Successfully installed mattdbridges/dots from Github!
 
 This command will pull the repo from Github into the ~/.dotify path if it does not already exist. It will then backup any existing dotfiles matching those in the new ~/.dotify directory and link all the files you just pulled down from Github. If Dotify detects that you have submodules (inside of your Vim configuration for example), it will automatically initialize and update them (*not* pull them from the original repos).
+
+# Install from any remote repository
+
+You may not actually be using Github. Easy. Just use the `repo` task and give it the full git url.
+
+    $ dotify repo git://github.com/mattdbridges/dots.git
+    Pulling git://github.com/mattdbridges/dots.git from Github into /Users/computer-user/.dotify...
+    Backing up dotfile and installing Dotify files...
+    Successfully installed git://github.com/mattdbridges/dots.git from Github!
 
 ## Link single files
 
