@@ -88,7 +88,9 @@ module Dotify
         #   pull = Pull.new("mattdbridges/dots", "/Users/mattbridges//.dotify", { :force => true, :ssh => true })
         #
         def initialize(repo, path, options = {})
-          @repo, @path, @options = repo, path, options
+          @repo = repo
+          @path = path
+          @options = options
         end
 
         # Clone the repo from the url into the specified path.
