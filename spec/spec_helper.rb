@@ -6,15 +6,7 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 $:.unshift File.expand_path("../../lib", __FILE__)
 
-def jruby?
-  defined?(RUBY_ENGINE) && RUBY_ENGINE == 'jruby'
-end
-
-def macruby?
-  defined?(RUBY_ENGINE) && RUBY_ENGINE == 'macruby'
-end
-
-unless ENV["CI"] || macruby? || jruby?
+if ENV["COVERAGE"] == 'true'
   require 'simplecov'
   SimpleCov.start 'test_frameworks'
 end

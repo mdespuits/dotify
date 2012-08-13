@@ -7,3 +7,8 @@ RSpec::Core::RakeTask.new(:spec)
 
 task :default => :spec
 task :test => :spec
+
+task :cover do
+  ENV["COVERAGE"] = 'true'
+  Rake::Task["spec"].execute
+end
