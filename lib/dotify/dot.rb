@@ -47,11 +47,11 @@ module Dotify
     end
 
     def dotify
-      @dotify ||= Config.path(@filename)
+      @dotify ||= Config.path(filename)
     end
 
     def dotfile
-      @dotfile ||= Config.home(@filename)
+      @dotfile ||= Config.home(filename)
     end
 
     def linked?
