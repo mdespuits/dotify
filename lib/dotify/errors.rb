@@ -1,4 +1,4 @@
 module Dotify
-  class DotifyError < StandardError;
+  class DotifyError < StandardError; end
   class DotDoesNotExist < DotifyError; end
 end
