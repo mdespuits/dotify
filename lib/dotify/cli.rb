@@ -5,6 +5,7 @@ require 'net/http'
 
 require 'dotify'
 require 'dotify/cli/listing'
+require 'dotify/version/checker'
 
 module Dotify
   module CLI
