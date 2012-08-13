@@ -5,5 +5,9 @@ module Dotify
       @source = source
       @destination = destination
     end
+
+    def to_s
+      "{ \"#{source}\" => \"#{destination}\" }"
+    end
   end
 end

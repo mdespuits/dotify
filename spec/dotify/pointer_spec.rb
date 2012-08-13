@@ -4,8 +4,8 @@ module Dotify
   describe Pointer do
     subject { pointer }
     describe "default behavior" do
-      let(:source) { "stub" }
-      let(:destination) { "stub" }
+      let(:source) { "/tmp/home/.dotify/.file" }
+      let(:destination) { "/tmp/home/.file" }
       let(:pointer) { Pointer.new(source, destination) }
       its(:source) { should == source }
       its(:destination) { should == destination }
