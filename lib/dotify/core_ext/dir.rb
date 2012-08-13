@@ -2,6 +2,6 @@
 class Dir
   # Drop all . and .. directories
   def self.[](*args)
-    self.glob(*args, 0).reject{|f| %w[. ..].include? File.basename(f) }
+    self.glob(*args).reject{|f| %w[. ..].include? File.basename(f) }
   end
 end

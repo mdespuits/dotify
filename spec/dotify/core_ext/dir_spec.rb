@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Dir do
   before do
-    Dir.should_receive(:glob).with("some-path", 0).and_return %w[. .. .bashrc /path/to/another/file]
+    Dir.should_receive(:glob).with("some-path").and_return %w[. .. .bashrc /path/to/another/file]
   end
   describe "#[]" do
     subject { Dir["some-path"] }
