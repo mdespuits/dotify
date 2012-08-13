@@ -1,6 +1,6 @@
 module Dotify
   class Pointer
-    attr_accessor
+    attr_accessor :source, :destination
     def initialize(source, destination)
       @source = source
       @destination = destination
