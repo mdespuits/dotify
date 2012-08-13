@@ -4,6 +4,7 @@ require 'fileutils'
 require 'dotify/config'
 require 'dotify/version'
 require 'dotify/cli'
+require 'dotify/version/checker'
 
 
 module Dotify

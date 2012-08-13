@@ -12,8 +12,4 @@ describe Dotify do
     Dotify::Version.build.should_receive(:level)
     Dotify.version
   end
-
-  it "version is a shortcut method to Dotify::VERSION" do
-    Dotify.collection.should be_instance_of Dotify::Collection
-  end
 end
