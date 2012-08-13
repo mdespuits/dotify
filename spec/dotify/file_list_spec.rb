@@ -8,8 +8,8 @@ end
 
 module Dotify
   describe FileList do
-    before { FileList.reset! }
-    subject { FileList }
+    before { described_class.reset! }
+    subject { described_class }
     it { should respond_to :pointers }
     it { should respond_to :destinations }
     it { should respond_to :complete }
@@ -17,7 +17,7 @@ module Dotify
     describe "#add" do
       it { should respond_to :add }
       describe "adding sources" do
-        let(:pointer) { double("pointer") }
+        let(:pointer) { mock("pointer") }
         before { FileList.add pointer }
         its(:pointers) { should include pointer }
       end
