@@ -1,5 +1,7 @@
 require 'fileutils'
 
+require 'dotify/core_ext/dir'
+
 # Everything else
 require 'dotify/config'
 require 'dotify/pointer'
