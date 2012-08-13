@@ -45,23 +45,4 @@ module Dotify
     end
 
   end
-
-  describe Collection::Dir do
-
-    subject { described_class }
-
-    it { should respond_to :[] }
-
-    describe "#[]" do
-      before do
-        ::Dir.stub(:[]).with("some-path").and_return %w[. .. .bashrc /path/to/another/file]
-      end
-      subject { described_class["some-path"] }
-      it { should include '.bashrc' }
-      it { should include '/path/to/another/file' }
-      it { should_not include '.' }
-      it { should_not include '..' }
-    end
-
-  end
 end

@@ -16,8 +16,8 @@ After do
 end
 
 Before('@long_process, @interactive') do
-  @aruba_io_wait_seconds = 2
-  @aruba_timeout_seconds = 4
+  @aruba_io_wait_seconds = 0.5
+  @aruba_timeout_seconds = 1
 end
 
 Before('@abnoxiously_long') do

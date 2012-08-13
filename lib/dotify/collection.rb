@@ -3,14 +3,6 @@ module Dotify
 
     include Enumerable
 
-    # Override the Dir.[] method for Collection's use
-    class Dir < ::Dir
-      # Drop all . and .. directories
-      def self.[](*args)
-        super(*args).reject{|f| %w[. ..].include? File.basename(f) }
-      end
-    end
-
     def self.home
       Collection.new(dotfiles(Config.home(".*"))).ignore(:dotfiles)
     end
@@ -22,7 +14,7 @@ module Dotify
     # Passes a Dir glob into Dir#[] and returns
     # an array of Dot objects.
     def self.dotfiles(glob)
-      Collection::Dir[glob].map { |f| Dot.new(f) }
+      Dir[glob].map { |f| Dot.new(f) }
     end
 
     attr_accessor :dots
