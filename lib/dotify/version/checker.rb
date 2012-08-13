@@ -10,7 +10,7 @@ module Dotify
       end
 
       def self.check_latest_release!
-        @result = latest == Version.build.level
+        @result = (latest == Version.build.level)
       end
 
       def self.latest
