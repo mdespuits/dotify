@@ -2,6 +2,7 @@ require 'fileutils'
 
 # Everything else
 require 'dotify/config'
+require 'dotify/file_list'
 require 'dotify/version'
 require 'dotify/cli'
 require 'dotify/version/checker'
