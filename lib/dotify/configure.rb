@@ -68,12 +68,12 @@ module Dotify
         end
       end
 
-      def editor editor
-        @options[:editor] = editor
+      def editor e
+        @options[:editor] = e
       end
 
-      def repo repo
-        @options[:repo] = repo
+      def repo name
+        @options[:repo] = name
       end
 
       def github gh
