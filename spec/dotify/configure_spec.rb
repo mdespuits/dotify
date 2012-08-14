@@ -22,6 +22,10 @@ module Dotify
       its(:dir) { should == "/tmp/home/.dotify" }
       its(:file) { should == "/tmp/home/.dotify/.dotrc" }
       its(:root) { should == '/tmp/home' }
+      it "should build the right path" do
+        expect(subject.path(".example-file")).to eql '/tmp/home/.dotify/.example-file'
+        expect(subject.path("some/nested/.example-file")).to eql '/tmp/home/.dotify/some/nested/.example-file'
+      end
     end
 
     describe "#guess_host_os" do
