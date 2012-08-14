@@ -15,7 +15,7 @@ module Dotify
   describe Configure do
     let(:klass) { Configure.new }
     subject { klass }
-    before { Configure.reset! }
+    before { Configure.reset!; Configure.any_instance.stub(:load!) }
 
     describe "class methods" do
       subject { described_class }
@@ -25,6 +25,16 @@ module Dotify
       it "should build the right path" do
         expect(subject.path(".example-file")).to eql '/tmp/home/.dotify/.example-file'
         expect(subject.path("some/nested/.example-file")).to eql '/tmp/home/.dotify/some/nested/.example-file'
+      end
+    end
+
+    describe "defined options" do
+      describe "getting defined editor" do
+        before { subject.options = { :editor => 'vi' } }
+        its(:editor) { should == 'vi'}
+      end
+      describe "getting undefined editor" do
+        its(:editor) { should be_instance_of NullObject }
       end
     end
 
