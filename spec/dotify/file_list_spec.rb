@@ -6,7 +6,6 @@ module Dotify
     subject { described_class }
     it { should respond_to :pointers }
     it { should respond_to :destinations }
-    it { should respond_to :complete }
 
     describe "#dotfile_pointers" do
       it { should respond_to :dotfile_pointers }
@@ -17,7 +16,7 @@ module Dotify
         end
         subject { FileList.pointers }
         its(:first) { should be_instance_of Pointer }
-        it { should have(2).items }
+        it { should have(2).pointers }
         context "first item" do
           subject { FileList.pointers.first }
           its(:source) { should == "/tmp/home/.dotify/.vimrc" }

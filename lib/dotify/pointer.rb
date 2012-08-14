@@ -7,7 +7,7 @@ module Dotify
     end
 
     def to_s
-      "{ \"#{source}\" => \"#{destination}\" }"
+      "Pointer#<source: #{source} destination: #{desination}"
     end
   end
 end

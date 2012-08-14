@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Dotify do
   it "#installed? should be a shortcut method to Config#installed?" do
-    Dotify::Config.stub(:installed?).and_return true
+    Dotify::Configure.stub(:installed?).and_return true
     Dotify.installed?.should be_true
-    Dotify::Config.stub(:installed?).and_return false
+    Dotify::Configure.stub(:installed?).and_return false
     Dotify.installed?.should be_false
   end
 
