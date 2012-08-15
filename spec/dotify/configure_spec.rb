@@ -28,6 +28,15 @@ module Dotify
       end
     end
 
+    describe "#setup_default_configuration" do
+      before { klass.setup_default_configuration }
+      its(:editor) { should == 'vim' }
+      its(:shared_ignore) { should include '.DS_Store' }
+      its(:shared_ignore) { should include '.Trash' }
+      its(:shared_ignore) { should include '.git' }
+      its(:shared_ignore) { should include '.svn' }
+    end
+
     describe "defined options" do
       describe "getting defined editor" do
         before { subject.options = { :editor => 'vi' } }

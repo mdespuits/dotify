@@ -3,4 +3,8 @@
 
 $:.unshift File.expand_path("../../lib", __FILE__)
 require 'dotify/cli'
+
+Dotify.config.setup_default_configuration
+
+Dotify.config.load!
 Dotify::CLI::Base.start

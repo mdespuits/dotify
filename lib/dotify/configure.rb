@@ -19,6 +19,11 @@ module Dotify
       end
     end
 
+    def setup_default_configuration
+      options[:editor] = 'vim'
+      options[:shared_ignore] = %w[.DS_Store .Trash .git .svn]
+    end
+
     def method_missing name, *args, &blk
       if @options[name.to_sym]
         @options[name.to_sym]
