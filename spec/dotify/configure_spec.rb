@@ -15,7 +15,7 @@ module Dotify
   describe Configure do
     let(:klass) { Configure.new }
     subject { klass }
-    before { Configure.reset!; Configure.any_instance.stub(:load!) }
+    before { Configure.reset! }
 
     describe "class methods" do
       subject { described_class }

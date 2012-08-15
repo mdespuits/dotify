@@ -29,7 +29,6 @@ module Dotify
 
     def initialize options = {}
       @options = options
-      load!
     end
 
     attr_accessor :options

@@ -14,7 +14,11 @@ require 'dotify/version/checker'
 module Dotify
 
   def self.installed?
-    Configure.installed?
+    File.exists?(Configure.dir)
+  end
+
+  def self.config
+    @config ||= Configure.new
   end
 
   def self.version

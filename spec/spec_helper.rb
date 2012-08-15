@@ -21,8 +21,13 @@ RSpec.configure do |c|
   c.filter_run :focus
   c.extend VCR::RSpec::Macros
 
-  c.before(:each) do
-    Thor::Util.stub(:user_home) { '/tmp/home' }
+  c.before(:all) do
+    FileUtils.mkdir_p '/tmp/home'
+    ENV['HOME'] = '/tmp/home'
+  end
+
+  c.after(:all) do
+    FileUtils.mkdir_p '/tmp/home'
   end
 end
 
