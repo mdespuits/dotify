@@ -1,7 +1,7 @@
 language: ruby
 script:
   - bundle exec rspec spec
-  - bundle exec cucumber features/configuration.feature --no-profile --color --format progress --strict
+  - bundle exec cucumber --tags ~@linking --no-profile --color --format progress --strict
 rvm:
 - 1.9.3
 - 1.9.2

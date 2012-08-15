@@ -4,11 +4,13 @@ Feature: Dotify configuraiton
   I want to be able to control my settings
   In order to increase my own productivity
 
+  @config
   Scenario: Default configuration
     Given Dotify is setup
     When Dotify attempts to load configuration
     Then Dotify's editor should be "vim"
 
+  @config
   Scenario: Custom configuration
     Given Dotify is setup
     And an empty file named ".dotify/.dotrc"
@@ -19,6 +21,7 @@ Feature: Dotify configuraiton
     When Dotify attempts to load configuration
     Then Dotify's editor should be "subl -w"
 
+  @config
   @reset_configuration
   Scenario: Custom per-platform configuration without overwrite
     Given Dotify is setup
@@ -34,6 +37,7 @@ Feature: Dotify configuraiton
     When Dotify attempts to load configuration
     Then Dotify's editor should be "vi"
 
+  @config
   Scenario: Custom per-platform configuration
     Given Dotify is setup
     And an empty file named ".dotify/.dotrc"
