@@ -1,11 +1,11 @@
 Given /^the following files are in home:$/i do |table|
   @files_to_link = table.raw.flatten
-  @files_to_link.each { |file| `touch #{Dotify::Config.home(file)}` }
+  @files_to_link.each { |file| %x{touch #{@__root}/#{file}} }
 end
 
-Given /^(.*) does not exist in (home|dotify)$/i do |file, location|
-  location = location == 'home' ? :home : :path
-  %x[rm -rf #{Dotify::Config.send(location, file)}]
+Given /^the following directories are in home:$/i do |table|
+  @directories_to_link = table.raw.flatten
+  @directories_to_link.each { |file| %x{mkdir -p #{@__root}/#{file}} }
 end
 
 Then /^"(.*?)" should be linked to Dotify$/ do |file|

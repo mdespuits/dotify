@@ -68,10 +68,13 @@ module Dotify
         end
       end
 
+      # Which editor to use when editing dotfiles and
+      # folders.
       def editor e
         @options[:editor] = e
       end
 
+      # Default repo to pull/push from
       def repo name
         @options[:repo] = name
       end

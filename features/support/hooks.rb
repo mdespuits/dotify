@@ -1,17 +1,17 @@
 Before do
   @__orig_home = ENV["HOME"]
-  @tmp_home = "/tmp/dotify-test"
+  @__root = "/tmp/dotify-test"
 
   ## Aruba config ##
-  @dirs = [@tmp_home]
+  @dirs = [@__root]
   ENV["PATH"] = "#{File.expand_path(File.dirname(__FILE__) + '/../../bin')}#{File::PATH_SEPARATOR}#{ENV['PATH']}"
 
-  FileUtils.mkdir_p @tmp_home
-  ENV["HOME"] = @tmp_home
+  FileUtils.mkdir_p @__root
+  ENV["HOME"] = @__root
 end
 
 After do
-  FileUtils.rm_rf @tmp_home
+  FileUtils.rm_rf @__root
   ENV["HOME"] = @__orig_home
 end
 

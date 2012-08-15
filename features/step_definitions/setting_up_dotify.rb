@@ -1,11 +1,10 @@
 Given /^Dotify is not setup$/ do
-  %x[rm -rf #{Dotify::Config.path}]
+  %x[rm -rf #{Dotify::Configure.path}]
 end
 
 Given /^Dotify is setup$/i do
   %x[
-    mkdir -p #{Dotify::Config.path}
-    touch #{Dotify::Config.path(".dotrc")}
-    echo "editor: vim" > #{Dotify::Config.path(".dotrc")}
+    mkdir -p #{Dotify::Configure.dir}
+    touch #{Dotify::Configure.path(".dotrc")}
   ]
 end
