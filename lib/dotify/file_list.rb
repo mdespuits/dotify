@@ -19,9 +19,11 @@ module Dotify
     end
 
     def self.destinations
+      pointers.map(&:destination)
     end
 
     def self.sources
+      pointers.map(&:source)
     end
 
   end

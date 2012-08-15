@@ -39,5 +39,18 @@ module Dotify
         its(:pointers) { should include pointer }
       end
     end
+
+    describe "sources and destinations" do
+      let(:pointers) { [Pointer.new(".source1", ".destination1"), Pointer.new(".remote-desination-source", "/Application/distant/source")] }
+      before { pointers.each { |p| FileList.add p } }
+      describe "#sources" do
+        its(:sources) { should include ".source1" }
+        its(:sources) { should include ".source1" }
+      end
+      describe "#destinations" do
+        its(:destinations) { should include ".destination1" }
+        its(:destinations) { should include "/Application/distant/source" }
+      end
+    end
   end
 end
