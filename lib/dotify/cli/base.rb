@@ -16,7 +16,6 @@ module Dotify
       def self.start
         Dotify.config.setup_default_configuration
         Dotify.config.load!
-        puts Dotify.config.options
         super
       end
 
