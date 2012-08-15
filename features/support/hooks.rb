@@ -1,3 +1,15 @@
+module Dotify
+  class Configure
+    def self.reset!
+      @options = {}
+      @host = nil
+    end
+    def reset!
+      @options = {}
+    end
+  end
+end
+
 Before do
   @__orig_home = ENV["HOME"]
   @__root = "/tmp/dotify-test"
@@ -8,6 +20,11 @@ Before do
 
   FileUtils.mkdir_p @__root
   ENV["HOME"] = @__root
+end
+
+Before('@reset_configuration') do
+  Dotify::Configure.reset!
+  Dotify.config.reset!
 end
 
 After do
