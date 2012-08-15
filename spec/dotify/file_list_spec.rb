@@ -45,7 +45,7 @@ module Dotify
       before { pointers.each { |p| FileList.add p } }
       describe "#sources" do
         its(:sources) { should include ".source1" }
-        its(:sources) { should include ".source1" }
+        its(:sources) { should include ".remote-desination-source" }
       end
       describe "#destinations" do
         its(:destinations) { should include ".destination1" }
