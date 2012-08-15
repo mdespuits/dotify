@@ -21,5 +21,8 @@ module Dotify
     def self.destinations
     end
 
+    def self.sources
+    end
+
   end
 end

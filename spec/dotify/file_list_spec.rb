@@ -6,6 +6,7 @@ module Dotify
     subject { described_class }
     it { should respond_to :pointers }
     it { should respond_to :destinations }
+    it { should respond_to :sources }
 
     describe "#dotfile_pointers" do
       it { should respond_to :dotfile_pointers }
