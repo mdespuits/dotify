@@ -1,5 +1,5 @@
 Given /^Dotify is not setup$/ do
-  %x[rm -rf #{Dotify::Configure.path}]
+  %x[rm -rf #{Dotify::Configure.dir}]
 end
 
 Given /^Dotify is setup$/i do

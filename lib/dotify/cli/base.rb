@@ -13,6 +13,12 @@ module Dotify
 
       default_task :help
 
+      def self.start
+        Dotify.config.setup_default_configuration
+        Dotify.config.load!
+        super
+      end
+
       map %w[-v --version] => :version
       map "-s" => :setup
       map "-l" => :link

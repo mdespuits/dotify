@@ -14,4 +14,13 @@ unless ENV["CI"]
   end
 end
 
+module Dotify
+  class Configure
+    def reset!
+      @options = {}
+      @host = nil
+    end
+  end
+end
+
 require 'dotify'
