@@ -42,7 +42,7 @@ module Dotify
     end
 
     def load!
-      DSL.new(@options).__evaluate File.expand_path("~/.dotify/.dotrc")
+      DSL.new(@options).__evaluate Configure.file
     end
 
     def ignoring what
