@@ -1,5 +1,9 @@
+require 'fileutils'
+
 module Dotify
   class PointerActor
+
+    include FileUtils
 
     def link_from_source
     end
