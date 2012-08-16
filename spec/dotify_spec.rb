@@ -16,7 +16,5 @@ describe Dotify do
     end
   end
 
-  describe "#version" do
-    its(:version) { should == Dotify::Version.new.level }
-  end
+  its(:version) { should == Dotify::Version.new.level }
 end
