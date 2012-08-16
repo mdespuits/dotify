@@ -27,9 +27,11 @@ module Dotify
     end
 
     def remove_source
+      rm_rf source
     end
 
     def remove_destination
+      rm_rf destination
     end
 
   end

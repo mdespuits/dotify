@@ -40,5 +40,6 @@ module Dotify
       it { should respond_to :remove_source }
       it { should respond_to :remove_destination }
     end
+
   end
 end
