@@ -5,6 +5,7 @@ require 'dotify/null_object'
 
 # Everything else
 require 'dotify/configure'
+require 'dotify/pointer_actor'
 require 'dotify/pointer'
 require 'dotify/file_list'
 require 'dotify/version'
