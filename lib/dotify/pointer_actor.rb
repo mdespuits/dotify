@@ -5,6 +5,13 @@ module Dotify
 
     include FileUtils
 
+    attr_accessor :pointer, :source, :destination
+    def initialize(pointer)
+      @pointer = pointer
+      @source = pointer.source
+      @destination = pointer.destination
+    end
+
     def link_from_source
     end
     alias :link_to_destination :link_from_source
