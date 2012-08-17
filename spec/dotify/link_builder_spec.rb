@@ -41,14 +41,14 @@ module Dotify
 
     describe "#remove_source" do
       before do
-        subject.should_receive(:rm_rf).with(subject.source, :secure => true).once
+        subject.should_receive(:rm_rf).with(subject.source).once
       end
       it { subject.remove_source }
     end
 
     describe "#remove_destination" do
       before do
-        subject.should_receive(:rm_rf).with(subject.destination, :secure => true).once
+        subject.should_receive(:rm_rf).with(subject.destination).once
       end
       it { subject.remove_destination }
     end

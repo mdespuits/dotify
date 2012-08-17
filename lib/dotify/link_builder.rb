@@ -39,6 +39,10 @@ module Dotify
       end
     end
 
+    def rm_rf(files)
+      super(files, :secure => true)
+    end
+
     def move_to_destination
       touch source
       move source, destination
@@ -46,12 +50,12 @@ module Dotify
 
     def remove_source
       touch source
-      rm_rf source, :secure => true
+      rm_rf source
     end
 
     def remove_destination
       touch destination
-      rm_rf destination, :secure => true
+      rm_rf destination
     end
 
     def link!
