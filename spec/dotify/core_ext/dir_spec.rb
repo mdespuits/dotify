@@ -4,7 +4,7 @@ describe Dir do
   before do
     Dir.should_receive(:glob).with("some-path").and_return %w[. .. .bashrc /path/to/another/file]
   end
-  describe "#[]" do
+  describe ".[]" do
     subject { Dir["some-path"] }
     it { should include '.bashrc' }
     it { should include '/path/to/another/file' }
