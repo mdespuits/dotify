@@ -5,24 +5,6 @@ module Dotify
     let(:pointer) { Pointer.new("~/.dotify/.source", "~/.destination") }
     let(:builder) { LinkBuilder.new(pointer) }
     subject { builder }
-    describe "ensure FileUtils methods are available" do
-      around do |example|
-        # FileUtils methods are included privately,
-        # so we expose them long enough to test they
-        # are indeed there.
-        LinkBuilder.class_eval do
-          public :rm_rf
-          public :touch
-        end
-        example.run
-        LinkBuilder.class_eval do
-          private :rm_rf
-          private :touch
-        end
-      end
-      it { should respond_to :touch}
-      it { should respond_to :rm_rf }
-    end
     describe "receives the Pointer's attributes" do
       it { should respond_to :pointer }
       it { should respond_to :source }
