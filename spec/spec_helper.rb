@@ -13,8 +13,6 @@ end
 
 require 'fileutils'
 
-FileUtils = FileUtils::NoWrite
-
 require 'dotify'
 require 'ostruct'
 load './spec/support/vcr.rb'
@@ -27,6 +25,7 @@ RSpec.configure do |c|
 
   c.before(:all) do
     FileUtils.mkdir_p '/tmp/home'
+    Dir.chdir('/tmp/home')
     ENV['HOME'] = '/tmp/home'
   end
 
