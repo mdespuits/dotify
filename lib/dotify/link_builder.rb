@@ -1,7 +1,7 @@
 require 'fileutils'
 
 module Dotify
-  class PointerActor
+  class LinkBuilder
 
     include FileUtils
 
