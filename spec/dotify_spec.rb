@@ -7,8 +7,11 @@ describe Dotify do
       Dir.chdir(Thor::Util.user_home) { example.run }
     end
     describe "when .dotify directory exists" do
-      before(:each) { %x{mkdir -p #{File.expand_path('.dotify')}} }
-      after(:each) { %x{rm -rf #{File.expand_path(".dotify")}} }
+      around { |example|
+        %x{mkdir -p #{File.expand_path('.dotify')}}
+        example.run
+        %x{rm -rf #{File.expand_path(".dotify")}}
+      }
       its(:installed?) { should be_true }
     end
     describe "when .dotify directory does not exist" do
