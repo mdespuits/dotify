@@ -20,14 +20,12 @@ module Dotify
       remove_destination
       link!
     end
-    alias :link_to_destination :link_from_source
 
     def link_to_source
       remove_source
       move_to_source
       link!
     end
-    alias :link_from_destination :link_to_source
 
     def move_to_source
       touch destination

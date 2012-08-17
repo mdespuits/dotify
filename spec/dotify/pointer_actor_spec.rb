@@ -32,9 +32,7 @@ module Dotify
     end
     describe "methods enforced" do
       it { should respond_to :link_from_source }
-      it { should respond_to :link_to_destination }
       it { should respond_to :link_to_source }
-      it { should respond_to :link_from_destination }
       it { should respond_to :move_to_source }
       it { should respond_to :move_to_destination }
       it { should respond_to :remove_source }
@@ -69,7 +67,7 @@ module Dotify
         subject.should_receive(:move_to_source)
         subject.should_receive(:link!).once
       end
-      it { subject.link_from_destination }
+      it { subject.link_to_source }
     end
 
     describe "#move_to_source" do
