@@ -40,7 +40,7 @@ module Dotify
     end
 
     def rm_rf(*files)
-      super(*files, :secure => true)
+      files.each { |f| super(f, :secure => true)}
     end
 
     def move_to_destination
