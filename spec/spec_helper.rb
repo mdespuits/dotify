@@ -11,6 +11,10 @@ if ENV["COVERAGE"] == 'true'
   SimpleCov.start 'test_frameworks'
 end
 
+require 'fileutils'
+
+FileUtils = FileUtils::NoWrite
+
 require 'dotify'
 require 'ostruct'
 load './spec/support/vcr.rb'
