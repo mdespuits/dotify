@@ -9,8 +9,8 @@ module Dotify
       it { should respond_to :pointer }
       it { should respond_to :source }
       it { should respond_to :destination }
-      its(:source) { should == '~/.dotify/.source' }
-      its(:destination) { should == '~/.destination' }
+      its(:source) { should == pointer.source }
+      its(:destination) { should == pointer.destination }
     end
     describe "methods enforced" do
       it { should respond_to :link_from_source }
