@@ -39,8 +39,8 @@ module Dotify
       end
     end
 
-    def rm_rf(files)
-      super(files, :secure => true)
+    def rm_rf(*files)
+      super(*files, :secure => true)
     end
 
     def move_to_destination
