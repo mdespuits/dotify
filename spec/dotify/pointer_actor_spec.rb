@@ -88,6 +88,7 @@ module Dotify
 
     describe "#link!" do
       before do
+        subject.should_receive(:touch).with(subject.source, subject.destination)
         subject.should_receive(:ln_sf).with(subject.source, subject.destination)
       end
       it { subject.link! }

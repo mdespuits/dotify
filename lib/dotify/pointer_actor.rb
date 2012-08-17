@@ -32,9 +32,11 @@ module Dotify
       move destination, source
     end
 
-    def touch(what)
-      mkdir_p File.dirname(what)
-      super what
+    def touch(*files)
+      files.each do |f|
+        mkdir_p File.dirname(f)
+        super f
+      end
     end
 
     def move_to_destination
@@ -53,6 +55,7 @@ module Dotify
     end
 
     def link!
+      touch source, destination
       ln_sf source, destination
     end
 
