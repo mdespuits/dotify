@@ -17,7 +17,6 @@ module Dotify
     # given the source file is in existence and the destination
     # is or is being overwritten.
     def link_from_source
-      touch source
       remove_destination
       link!
     end
@@ -46,10 +45,12 @@ module Dotify
     end
 
     def remove_source
+      touch source
       rm_rf source, :secure => true
     end
 
     def remove_destination
+      touch destination
       rm_rf destination, :secure => true
     end
 
