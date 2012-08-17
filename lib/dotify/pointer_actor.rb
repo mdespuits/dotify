@@ -35,6 +35,11 @@ module Dotify
       move destination, source
     end
 
+    def touch(what)
+      mkdir_p File.dirname(what)
+      super what
+    end
+
     def move_to_destination
       touch source
       move source, destination
