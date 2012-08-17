@@ -3,6 +3,6 @@ script:
   - bundle exec rspec spec
   - bundle exec cucumber --tags ~@linking --no-profile --color --format progress --strict
 rvm:
-- 1.9.3
-- 1.9.2
-- 1.8.7
+  - 1.9.3
+  - 1.9.2
+  - 1.8.7
