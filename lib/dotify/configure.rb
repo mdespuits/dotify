@@ -11,7 +11,7 @@ module Dotify
       options[:shared_ignore] = %w[.DS_Store .Trash .git .svn]
     end
 
-    def method_missing name, *args, &blk
+    def method_missing(name, *args, &blk)
       if @options[name.to_sym]
         @options[name.to_sym]
       else
@@ -19,7 +19,7 @@ module Dotify
       end
     end
 
-    def initialize options = {}
+    def initialize(options = {})
       @options = options
     end
 
@@ -32,7 +32,7 @@ module Dotify
       DSL.new(@options).__evaluate Path.dotify_path(ConfigFile)
     end
 
-    def ignoring what
+    def ignoring(what)
       @ignoring[:shared] | @ignoring[what]
     end
 
@@ -53,7 +53,7 @@ module Dotify
         end
       end
 
-      def platform which, &blk
+      def platform(which, &blk)
         if which == Configure.guess_host_os
           instance_eval &blk
         end
@@ -61,20 +61,20 @@ module Dotify
 
       # Which editor to use when editing dotfiles and
       # folders.
-      def editor e
+      def editor(e)
         @options[:editor] = e
       end
 
       # Default repo to pull/push from
-      def repo name
+      def repo(name)
         @options[:repo] = name
       end
 
-      def github gh
+      def github(gh)
         @options[:github] = gh
       end
 
-      def ignore where, what
+      def ignore(where, what)
         @options[:ignore] ||= {}
         @options[:ignore][where] = (@options[:ignore][where] || []) | what
       end

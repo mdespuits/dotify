@@ -14,7 +14,7 @@ module Dotify
       end
     end
 
-    def self.add pointer
+    def self.add(pointer)
       pointers << pointer
     end
 
