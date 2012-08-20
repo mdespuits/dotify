@@ -19,7 +19,7 @@ module Dotify
       subject { Path.dotify_path("example_path") }
       it { should == "#{@__HOME}/.dotify/example_path" }
     end
-    describe "#dotify_path" do
+    describe "#home_path" do
       subject { Path.home_path("example_path") }
       it { should == "#{@__HOME}/example_path" }
     end
