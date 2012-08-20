@@ -17,17 +17,6 @@ module Dotify
     subject { klass }
     before { Configure.reset! }
 
-    describe "class methods" do
-      subject { described_class }
-      its(:dir) { should == "/tmp/home/.dotify" }
-      its(:file) { should == "/tmp/home/.dotify/.dotrc" }
-      its(:root) { should == '/tmp/home' }
-      it "should build the right path" do
-        expect(subject.path(".example-file")).to eql '/tmp/home/.dotify/.example-file'
-        expect(subject.path("some/nested/.example-file")).to eql '/tmp/home/.dotify/some/nested/.example-file'
-      end
-    end
-
     describe "#setup_default_configuration" do
       before { klass.setup_default_configuration }
       its(:editor) { should == 'vim' }

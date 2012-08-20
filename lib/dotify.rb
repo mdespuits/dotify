@@ -4,6 +4,7 @@ require 'dotify/core_ext/dir'
 require 'dotify/null_object'
 
 # Everything else
+require 'dotify/path'
 require 'dotify/configure'
 require 'dotify/link_builder'
 require 'dotify/pointer'
@@ -15,7 +16,7 @@ require 'dotify/version/checker'
 module Dotify
 
   def self.installed?
-    File.exists?(Configure.dir)
+    File.exists?(Path.dotify)
   end
 
   def self.config

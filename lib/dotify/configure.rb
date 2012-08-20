@@ -4,20 +4,7 @@ require 'thor/util'
 module Dotify
   class Configure
 
-    class << self
-      def dir
-        File.join(self.root, '.dotify')
-      end
-      def file
-        File.join(self.dir, '.dotrc')
-      end
-      def root
-        Thor::Util.user_home
-      end
-      def path name
-        File.join(dir, name)
-      end
-    end
+    ConfigFile = ".dotrc"
 
     def setup_default_configuration
       options[:editor] = 'vim'
@@ -42,7 +29,7 @@ module Dotify
     end
 
     def load!
-      DSL.new(@options).__evaluate Configure.file
+      DSL.new(@options).__evaluate Path.dotify_path(ConfigFile)
     end
 
     def ignoring what

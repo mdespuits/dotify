@@ -1,10 +1,10 @@
 Given /^Dotify is not setup$/ do
-  %x[rm -rf #{Dotify::Configure.dir}]
+  %x[rm -rf #{Dotify::Path.dotify}]
 end
 
 Given /^Dotify is setup$/i do
   %x[
-    mkdir -p #{Dotify::Configure.dir}
-    touch #{Dotify::Configure.path(".dotrc")}
+    mkdir -p #{Dotify::Path.dotify}
+    touch #{Dotify::Path.home_path(".dotrc")}
   ]
 end

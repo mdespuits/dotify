@@ -9,8 +9,8 @@ module Dotify
     # Whether they are linked or not initially makes no
     # difference.
     def self.dotfile_pointers
-      Dir["#{Configure.root}/.*"].each do |file|
-        self.add Pointer.new(Configure.path(File.basename(file)), file)
+      Dir["#{Path.home}/.*"].each do |file|
+        self.add Pointer.new(Path.dotify_path(File.basename(file)), file)
       end
     end
 
