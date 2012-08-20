@@ -43,11 +43,11 @@ module Dotify
         undef_method m unless m[Protected]
       end
 
-      def initialize options = {}
+      def initialize(options = {})
         @options = options
       end
 
-      def __evaluate path
+      def __evaluate(path)
         if File.exists? path
           instance_eval File.read(path), path, 1
         end
