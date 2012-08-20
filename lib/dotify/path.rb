@@ -2,7 +2,7 @@ require 'thor/util'
 module Dotify
   module Path
 
-    Dir = ".dotify"
+    DOTIFY_DIR = ".dotify"
 
     extend self
 
@@ -11,11 +11,11 @@ module Dotify
     end
 
     def dotify
-      File.join(home, Dir)
+      File.join(home, DOTIFY_DIR)
     end
 
     def dotify_path(path)
-      File.join(home, Dir, path)
+      File.join(dotify, path)
     end
 
     def home_path(path)

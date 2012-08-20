@@ -24,8 +24,8 @@ module Dotify
       it { should == "#{@__HOME}/example_path" }
     end
   end
-  describe Path::Dir do
-    subject { Path::Dir }
+  describe Path::DOTIFY_DIR do
+    subject { Path::DOTIFY_DIR }
     it { should == '.dotify' }
   end
 end

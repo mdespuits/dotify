@@ -4,7 +4,7 @@ require 'thor/util'
 module Dotify
   class Configure
 
-    ConfigFile = ".dotrc"
+    CONFIG_FILE = ".dotrc"
 
     def setup_default_configuration
       options[:editor] = 'vim'
@@ -29,7 +29,7 @@ module Dotify
     end
 
     def load!
-      DSL.new(@options).__evaluate Path.dotify_path(ConfigFile)
+      DSL.new(@options).__evaluate Path.dotify_path(CONFIG_FILE)
     end
 
     def ignoring(what)
