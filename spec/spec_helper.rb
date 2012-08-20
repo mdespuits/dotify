@@ -24,13 +24,14 @@ RSpec.configure do |c|
   c.extend VCR::RSpec::Macros
 
   c.before(:all) do
-    FileUtils.mkdir_p '/tmp/home'
-    Dir.chdir('/tmp/home')
-    ENV['HOME'] = '/tmp/home'
+    @__HOME = '/tmp/home'
+    FileUtils.mkdir_p @__HOME
+    Dir.chdir(@__HOME)
+    ENV['HOME'] = @__HOME
   end
 
   c.after(:all) do
-    FileUtils.mkdir_p '/tmp/home'
+    FileUtils.rm_rf @__HOME
   end
 end
 
