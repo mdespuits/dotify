@@ -7,25 +7,26 @@ module Dotify
     extend self
 
     def home
-      user_home
+      Thor::Util.user_home
     end
 
     def dotify
-      File.join(home, DOTIFY_DIR)
+      build_path home, DOTIFY_DIR
     end
 
     def dotify_path(path)
-      File.join(dotify, path)
+      build_path dotify, path
     end
 
     def home_path(path)
-      File.join(home, path)
+      build_path home, path
     end
 
     private
 
-      def user_home
-        Thor::Util.user_home
+      def build_path(*args)
+        File.join *args
       end
+
   end
 end

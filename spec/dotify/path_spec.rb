@@ -3,12 +3,14 @@ require 'spec_helper'
 module Dotify
   describe Path do
     subject { Path }
+    it { should respond_to :dotify }
+    it { should respond_to :home }
     it { should respond_to :dotify_path }
     it { should respond_to :home_path }
 
     describe "#home" do
-      before { Path.should_receive(:user_home) }
-      it "should call #user_home" do
+      before { Thor::Util.should_receive(:user_home) }
+      it "Thor::Util should_receive :user_home" do
         subject.home
       end
     end
