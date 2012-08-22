@@ -4,10 +4,10 @@ require 'dotify/core_ext/dir'
 require 'dotify/null_object'
 
 # Everything else
+require 'dotify/pointer'
 require 'dotify/path'
 require 'dotify/configure'
 require 'dotify/link_builder'
-require 'dotify/pointer'
 require 'dotify/file_list'
 require 'dotify/version'
 require 'dotify/cli'

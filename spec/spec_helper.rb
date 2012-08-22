@@ -12,10 +12,10 @@ if ENV["COVERAGE"] == 'true'
 end
 
 require 'fileutils'
+# FileUtils = FileUtils::Verbose
 
 require 'dotify'
-require 'ostruct'
-load './spec/support/vcr.rb'
+require './spec/support/vcr.rb'
 
 RSpec.configure do |c|
   c.treat_symbols_as_metadata_keys_with_true_values = true
@@ -24,13 +24,14 @@ RSpec.configure do |c|
   c.extend VCR::RSpec::Macros
 
   c.before(:all) do
+    @__ORIG_HOME = File.expand_path('~/')
     @__HOME = '/tmp/home'
     FileUtils.mkdir_p @__HOME
-    Dir.chdir(@__HOME)
     ENV['HOME'] = @__HOME
   end
 
   c.after(:all) do
+    ENV['HOME'] = @__ORIG_HOME
     FileUtils.rm_rf @__HOME
   end
 end

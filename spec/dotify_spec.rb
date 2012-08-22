@@ -4,13 +4,13 @@ describe Dotify do
   subject { described_class }
   describe "#installed?" do
     around do |example|
-      Dir.chdir(Thor::Util.user_home) { example.run }
+      Dir.chdir(@__HOME) { example.run }
     end
     describe "when .dotify directory exists" do
       around { |example|
-        %x{mkdir -p #{File.expand_path('.dotify')}}
+        FileUtils.mkdir_p(Dotify::Path.dotify)
         example.run
-        %x{rm -rf #{File.expand_path(".dotify")}}
+        FileUtils.rm_rf(Dotify::Path.dotify)
       }
       its(:installed?) { should be_true }
     end

@@ -29,6 +29,7 @@ module Dotify
     end
 
     def load!
+      FileList.dotfile_pointers
       DSL.new(@options).__evaluate Path.dotify_path(CONFIG_FILE)
     end
 
@@ -77,6 +78,11 @@ module Dotify
       def ignore(where, what)
         @options[:ignore] ||= {}
         @options[:ignore][where] = (@options[:ignore][where] || []) | what
+      end
+
+      def manage(filepath, dotify_name = nil)
+        name = !dotify_name.nil? ? dotify_name : File.basename(filepath)
+        FileList.add ::Dotify::Pointer.new(File.expand_path(filepath), Path.dotify_path(name))
       end
 
     end
