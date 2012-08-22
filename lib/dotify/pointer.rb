@@ -1,11 +1,5 @@
 module Dotify
-  class Pointer
-    attr_accessor :source, :destination
-    def initialize(source, destination)
-      @source = source
-      @destination = destination
-    end
-
+  class Pointer < Struct.new(:source, :destination)
     def to_s
       "#<Dotify::Pointer source: #{source} destination: #{desination}>"
     end
