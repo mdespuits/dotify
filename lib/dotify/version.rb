@@ -22,7 +22,6 @@ module Dotify
     def out_of_date?
       !current?
     end
-    alias :old? :out_of_date?
 
     def latest
       Checker.latest

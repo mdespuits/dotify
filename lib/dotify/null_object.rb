@@ -17,11 +17,11 @@ class NullObject
   def nil?
     true
   end
-  alias :blank? :nil?
-  alias :empty? :nil?
+  alias_method :blank?, :nil?
+  alias_method :empty?, :nil?
 
   def present?
     false
   end
-  alias :any? :present?
+  alias_method :any?, :present?
 end
