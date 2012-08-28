@@ -2,7 +2,7 @@ require 'thor/util'
 module Dotify
   module Path
 
-    DOTIFY_DIR = ".dotify"
+    DOTIFY_DIR = '.dotify'
 
     extend self
 

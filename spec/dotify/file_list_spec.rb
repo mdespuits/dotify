@@ -8,7 +8,7 @@ module Dotify
     it { should respond_to :destinations }
     it { should respond_to :sources }
 
-    describe "#dotfile_pointers" do
+    describe ".dotfile_pointers" do
       it { should respond_to :dotfile_pointers }
       describe "behavior" do
         before do
@@ -31,12 +31,29 @@ module Dotify
       end
     end
 
-    describe "#add" do
+    describe ".add" do
       it { should respond_to :add }
-      describe "adding sources" do
-        let(:pointer) { mock("pointer") }
+      describe "adding single Pointer" do
+        let(:pointer) { Pointer.new("sourse", "destination") }
         before { FileList.add pointer }
+        it { should have(1).pointers }
         its(:pointers) { should include pointer }
+      end
+      describe "adding multiple Pointers" do
+        let(:pointer1) { Pointer.new("source", "destination") }
+        let(:pointer2) { Pointer.new("source2", "destination2") }
+        before { FileList.add pointer1, pointer2 }
+        it { should have(2).pointers }
+        its(:pointers) { should include pointer1 }
+        its(:pointers) { should include pointer2 }
+      end
+      describe "adding identical Pointers with different destinations" do
+        let(:source1) { Pointer.new("source", "destination") }
+        let(:source2) { Pointer.new("source", "destination2") }
+        before { FileList.add source1, source2 }
+        it { should have(1).pointers }
+        its(:pointers) { should include source1 }
+        its(:pointers) { should_not include source2 }
       end
     end
 
@@ -44,10 +61,12 @@ module Dotify
       let(:pointers) { [Pointer.new(".source1", ".destination1"), Pointer.new(".remote-desination-source", "/Application/distant/source")] }
       before { pointers.each { |p| FileList.add p } }
       describe "#sources" do
+        it { should have(2).sources }
         its(:sources) { should include ".source1" }
         its(:sources) { should include ".remote-desination-source" }
       end
       describe "#destinations" do
+        it { should have(2).destinations }
         its(:destinations) { should include ".destination1" }
         its(:destinations) { should include "/Application/distant/source" }
       end

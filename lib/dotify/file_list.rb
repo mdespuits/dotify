@@ -14,8 +14,11 @@ module Dotify
       end
     end
 
-    def self.add(pointer)
-      pointers << pointer
+    def self.add(*new_pointers)
+      new_pointers.each do |p|
+        # Only add the new pointer if the source has not already been taken to avoid conflicts
+        pointers << p unless sources.include? p.source
+      end
     end
 
     def self.destinations
