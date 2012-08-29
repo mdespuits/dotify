@@ -59,7 +59,7 @@ module Dotify
 
     describe "sources and destinations" do
       let(:pointers) { [Pointer.new(".source1", ".destination1"), Pointer.new(".remote-desination-source", "/Application/distant/source")] }
-      before { pointers.each { |p| FileList.add p } }
+      before { FileList.add *pointers }
       describe "#sources" do
         it { should have(2).sources }
         its(:sources) { should include ".source1" }
