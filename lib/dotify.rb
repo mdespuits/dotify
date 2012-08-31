@@ -15,6 +15,17 @@ require 'dotify/version/checker'
 
 module Dotify
 
+  def self.in_instance(instance)
+    @instance = instance
+    result = yield
+    @instance = nil
+    result
+  end
+
+  def self.setup(&blk)
+    @instance.instance_eval &blk
+  end
+
   def self.installed?
     File.exists?(Path.dotify)
   end
