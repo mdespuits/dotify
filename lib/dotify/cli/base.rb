@@ -15,6 +15,7 @@ module Dotify
 
       def self.start
         Dotify.config.setup_default_configuration
+        FileList.dotfile_pointers
         Dotify.config.load!
         super
       end

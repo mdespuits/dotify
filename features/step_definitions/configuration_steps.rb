@@ -8,6 +8,7 @@ end
 
 When /^Dotify attempts to load configuration$/ do
   Dotify.config.setup_default_configuration
+  FileList.dotfile_pointers
   Dotify.config.load!
 end
 

@@ -29,7 +29,6 @@ module Dotify
     end
 
     def load!
-      FileList.dotfile_pointers
       DSL.new(@options).__evaluate Path.dotify_path(CONFIG_FILE)
     end
 
