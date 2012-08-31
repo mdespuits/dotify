@@ -13,7 +13,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "dotify"
   gem.require_paths = ["lib"]
-  gem.version       = Dotify::Version.build.level
+  gem.version       = Dotify::VERSION
 
   gem.add_runtime_dependency "thor", "~> 0.15.4"
   gem.add_runtime_dependency "multi_json", "~> 1.3.6"
@@ -23,7 +23,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'cucumber'
   gem.add_development_dependency 'aruba'
   gem.add_development_dependency 'webmock'
-  gem.add_development_dependency 'vcr'
   gem.add_development_dependency 'guard-rspec'
   gem.add_development_dependency 'guard-cucumber'
 end

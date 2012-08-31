@@ -1,5 +1,0 @@
-ignore:
-  dotfiles:
-  - '.gemrc'
-  dotify:
-  - '.gitmodule'

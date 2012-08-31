@@ -37,5 +37,4 @@ describe Dotify do
     end
   end
 
-  its(:version) { should == Dotify::Version.new.level }
 end

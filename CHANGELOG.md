@@ -1,6 +1,6 @@
 # Changelog
 
-(Next release after that. Likely v0.8.0)
+(Next release after that. Likely v1.0.0)
 
 * Drop YAML configuration. Use DSL-style for more powerful control over what can be configured. (see issue #14)
 * Setup configurable (templates) configuration. (see issue #14)

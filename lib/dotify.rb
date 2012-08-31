@@ -11,7 +11,6 @@ require 'dotify/link_builder'
 require 'dotify/file_list'
 require 'dotify/version'
 require 'dotify/cli'
-require 'dotify/version/checker'
 
 module Dotify
 
@@ -33,10 +32,6 @@ module Dotify
 
     def config
       @config ||= Configure.new
-    end
-
-    def version
-      @version ||= Version.build.level
     end
 
     def collection
