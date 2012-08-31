@@ -86,7 +86,26 @@ If you are the oddball and do anything else (no offense), just pass the reposito
 
 ## Configuration
 
-The `.dotrc` file in `~/.dotify` serves as the configuration file for Dotify.
+Dotify provides a simple and straightforward DSL for managing your configuration files. Here's a sample of what you can do:
+
+```ruby
+Dotify.setup do
+  editor :vi
+
+  platform :osx do
+    editor "subl -w"
+    link "~/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings", to "sublime/user.preferences"
+  end
+
+  platform :linux do
+    editor :emacs
+  end
+
+  # This allows you to have files like `~/.dotify/vimrc` and `~/.dotify/zshrc` as your links
+  link "~/.vimrc", to: "vimrc"
+  link "~/.zshrc", to: "zshrc"
+end
+```
 
 **Editor**
 
