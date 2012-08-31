@@ -15,30 +15,33 @@ require 'dotify/version/checker'
 
 module Dotify
 
-  def self.in_instance(instance)
-    @instance = instance
-    result = yield
-    @instance = nil
-    result
+  class << self
+    def in_instance(instance)
+      @instance = instance
+      result = yield
+      @instance = nil
+      result
+    end
+
+    def setup(&blk)
+      @instance.instance_eval &blk
+    end
+
+    def installed?
+      File.exists?(Path.dotify)
+    end
+
+    def config
+      @config ||= Configure.new
+    end
+
+    def version
+      @version ||= Version.build.level
+    end
+
+    def collection
+      @collection ||= Collection.home
+    end
   end
 
-  def self.setup(&blk)
-    @instance.instance_eval &blk
-  end
-
-  def self.installed?
-    File.exists?(Path.dotify)
-  end
-
-  def self.config
-    @config ||= Configure.new
-  end
-
-  def self.version
-    @version ||= Version.build.level
-  end
-
-  def self.collection
-    @collection ||= Collection.home
-  end
 end
