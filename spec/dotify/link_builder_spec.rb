@@ -5,6 +5,9 @@ module Dotify
     let(:pointer) { Pointer.new("#{@__HOME}/.dotify/.source", "#{@__HOME}/.destination") }
     let(:builder) { LinkBuilder.new(pointer) }
     subject { builder }
+    before(:all) do
+      FileUtils.mkdir_p "~/.dotify"
+    end
     describe "receives the Pointer's attributes" do
       it { should respond_to :pointer }
       it { should respond_to :source }
@@ -23,6 +26,7 @@ module Dotify
 
     describe "#remove_source" do
       before do
+        subject.should_receive(:touch).with(subject.source).once
         subject.should_receive(:rm_rf).with(subject.source).once
       end
       it { subject.remove_source }
@@ -30,6 +34,7 @@ module Dotify
 
     describe "#remove_destination" do
       before do
+        subject.should_receive(:touch).with(subject.destination).once
         subject.should_receive(:rm_rf).with(subject.destination).once
       end
       it { subject.remove_destination }
@@ -54,6 +59,7 @@ module Dotify
 
     describe "#move_to_source" do
       before do
+        FileUtils.touch subject.source, subject.destination
         subject.should_receive(:touch).with(subject.destination).once
         subject.should_receive(:move).with(subject.destination, subject.source)
       end

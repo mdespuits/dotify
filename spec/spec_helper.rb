@@ -11,10 +11,17 @@ if ENV["COVERAGE"] == 'true'
   SimpleCov.start 'test_frameworks'
 end
 
-require 'fileutils'
-# FileUtils = FileUtils::Verbose
+Dir["./spec/support/**/*"].each { |f| require f }
 
+require 'pp'
+require 'fakefs'
 require 'dotify'
+
+module FakeFS
+  module FileUtils
+    alias_method :move, :mv
+  end
+end
 
 RSpec.configure do |c|
   c.treat_symbols_as_metadata_keys_with_true_values = true
@@ -23,9 +30,9 @@ RSpec.configure do |c|
 
   c.before(:all) do
     @__ORIG_HOME = File.expand_path('~/')
-    @__HOME = '/tmp/home'
-    FileUtils.mkdir_p @__HOME
+    @__HOME = '/home'
     ENV['HOME'] = @__HOME
+    FileUtils.mkdir_p @__HOME
   end
 
   c.after(:all) do
@@ -34,4 +41,3 @@ RSpec.configure do |c|
   end
 end
 
-Dir["./spec/support/**/*.rb"].each { |f| require f }
