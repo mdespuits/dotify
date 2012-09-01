@@ -24,8 +24,8 @@ In order for Dotify to initially manage your dotfiles, it boils down to the `ins
 
     $ dotify install
     Creating '~/.dotify' directory.
-    Would you like to create Dotify's configuration file (~/.dotify/.dotrc)? [y/n] y
-    Creating '~/.dotify/.dotrc' configuration file.
+    Would you like to create Dotify's configuration file (~/.dotify/dotify.rb)? [y/n] y
+    Creating '~/.dotify/dotify.rb' configuration file.
     Would you like Dotify to manage '~/.bashrc'? [y/n] y
     Would you like Dotify to manage '~/.gitconfig'? [y/n] n
     ...

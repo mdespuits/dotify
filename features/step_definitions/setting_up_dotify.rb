@@ -5,6 +5,6 @@ end
 Given /^Dotify is setup$/i do
   %x[
     mkdir -p #{Dotify::Path.dotify}
-    touch #{Dotify::Path.home_path(".dotrc")}
+    touch #{Dotify::Path.home_path("dotify.rb")}
   ]
 end

@@ -4,7 +4,7 @@ require 'thor/util'
 module Dotify
   class Configure
 
-    CONFIG_FILE = ".dotrc"
+    CONFIG_FILE = "dotify.rb"
 
     def setup_default_configuration
       options[:editor] = 'vim'

@@ -8,7 +8,7 @@
 
 (Next release. Likely v0.7.0)
 
-* `.dotrc` configuration file is **not linked to home directory**. Functionality does not change yet.
+* `dotify.rb` configuration file is **not linked to home directory**. Functionality does not change yet.
 * Complete refactor of the entire codebase.
 * Clone any repo rather than limiting to Github. (see issue #10)
 
