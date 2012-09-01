@@ -6,7 +6,7 @@ require 'net/http'
 require 'dotify'
 
 module Dotify
-  module CLI
+  module App
     class Base < Thor
 
       include Thor::Actions

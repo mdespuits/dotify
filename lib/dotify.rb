@@ -10,7 +10,7 @@ require 'dotify/configure'
 require 'dotify/link_builder'
 require 'dotify/file_list'
 require 'dotify/version'
-require 'dotify/cli'
+require 'dotify/app'
 
 module Dotify
 

@@ -1,0 +1,1 @@
+require 'dotify/app/base'

@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'dotify/cli'
+require 'dotify/app'
 require 'thor'
 
 module Dotify
-  describe CLI::Base do
+  describe App::Base do
     describe "essential tasks existence tests" do
       it { should respond_to :install }
       it { should respond_to :setup } # remove and merge with install?

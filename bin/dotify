@@ -2,6 +2,6 @@
 # -*- mode: ruby -*-
 
 $:.unshift File.expand_path("../../lib", __FILE__)
-require 'dotify/cli'
+require 'dotify/app'
 
-Dotify::CLI::Base.start
+Dotify::App::Base.start
