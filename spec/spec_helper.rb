@@ -13,31 +13,25 @@ end
 
 Dir["./spec/support/**/*"].each { |f| require f }
 
-require 'pp'
-require 'fakefs'
-require 'dotify'
+# FileUtils = FileUtils::DryRun
+require 'fileutils'
+$HOME = '/tmp/home'
+FileUtils.mkdir_p $HOME
 
-module FakeFS
-  module FileUtils
-    alias_method :move, :mv
-  end
-end
+require 'dotify'
+require 'thor/util'
 
 RSpec.configure do |c|
   c.treat_symbols_as_metadata_keys_with_true_values = true
   c.run_all_when_everything_filtered = true
   c.filter_run :focus
 
-  c.before(:all) do
-    @__ORIG_HOME = File.expand_path('~/')
-    @__HOME = '/home'
-    ENV['HOME'] = @__HOME
-    FileUtils.mkdir_p @__HOME
+  c.before(:each) do
+    FileUtils.mkdir_p $HOME
+    ENV['HOME'] = $HOME
+    Thor::Util.stub(:user_home) { $HOME }
   end
-
-  c.after(:all) do
-    ENV['HOME'] = @__ORIG_HOME
-    FileUtils.rm_rf @__HOME
+  c.after(:each) do
+    FileUtils.rm_rf $HOME
   end
 end
-

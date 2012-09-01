@@ -26,10 +26,6 @@ module Dotify
       @instance.instance_eval &blk
     end
 
-    def installed?
-      File.exists?(Path.dotify)
-    end
-
     def config
       @config ||= Configure.new
     end

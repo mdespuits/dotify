@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Dotify
   describe LinkBuilder do
-    let(:pointer) { Pointer.new("#{@__HOME}/.dotify/.source", "#{@__HOME}/.destination") }
+    let(:pointer) { Pointer.new("#{$HOME}/.dotify/.source", "#{$HOME}/.destination") }
     let(:builder) { LinkBuilder.new(pointer) }
     subject { builder }
     before(:all) do
@@ -59,7 +59,6 @@ module Dotify
 
     describe "#move_to_source" do
       before do
-        FileUtils.touch subject.source, subject.destination
         subject.should_receive(:touch).with(subject.destination).once
         subject.should_receive(:move).with(subject.destination, subject.source)
       end
