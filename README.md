@@ -42,7 +42,7 @@ To install Dotify, you must first run `dotify install` in your terminal.
 
 This will first create a `.dotify` directory in your home directory as well as a `.dotrc` file for Dotify configuration (yes, it is more dotfiles, but this is a good thing!).
 
-During the installation process, a Vim instance will open with a sample `.dotrc` file for you to edit and configure if you desire. This will allow your configuration to be used prior to Dotify's full installation. See more about the `.dotrc` file in the [Configuration](https://github.com/mattdbridges/dotify/tree/cli-rewrite#configuration) section.
+During the installation process, a Vim instance will open with a sample `.dotrc` file for you to edit and configure if you desire. This will allow your configuration to be used prior to Dotify's full installation. See more about the `.dotrc` file in the [Configuration](#configuration) section.
 
 Alternatively, you could run `dotify setup` to setup Dotify's configuration, followed by `dotify install` to add the initial files into Dotify.
 
