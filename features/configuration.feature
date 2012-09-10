@@ -13,8 +13,8 @@ Feature: Dotify configuraiton
   @config
   Scenario: Custom configuration
     Given Dotify is setup
-    And an empty file named ".dotify/dotify.rb"
-    And I overwrite ".dotify/dotify.rb" with:
+    And an empty file named ".dotify/config.rb"
+    And I overwrite ".dotify/config.rb" with:
     """
     editor 'subl -w'
     """
@@ -25,9 +25,9 @@ Feature: Dotify configuraiton
   @reset_configuration
   Scenario: Custom per-platform configuration without overwrite
     Given Dotify is setup
-    And an empty file named ".dotify/dotify.rb"
+    And an empty file named ".dotify/config.rb"
     And the host platform is "mac"
-    And I overwrite ".dotify/dotify.rb" with:
+    And I overwrite ".dotify/config.rb" with:
     """
     editor 'vi'
     platform :linux do
@@ -40,9 +40,9 @@ Feature: Dotify configuraiton
   @config
   Scenario: Custom per-platform configuration
     Given Dotify is setup
-    And an empty file named ".dotify/dotify.rb"
+    And an empty file named ".dotify/config.rb"
     And the host platform is "mac"
-    And I overwrite ".dotify/dotify.rb" with:
+    And I overwrite ".dotify/config.rb" with:
     """
     editor 'subl -w'
     platform :mac do
