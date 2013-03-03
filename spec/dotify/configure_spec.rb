@@ -37,34 +37,34 @@ module Dotify
     end
 
     describe "#guess_host_os" do
-      subject { conf.guess_host_os }
-      let(:conf) { described_class }
+      subject { Configure.guess_host_os }
+      before { Configure.stub(:host_os) { os_name } }
       context "darwin" do
-        before { conf.stub(:host_os).and_return("darwin") }
+        let(:os_name) { "darwin" }
         it { should == :mac }
       end
       context "mswin" do
-        before { conf.stub(:host_os).and_return("mswin") }
+        let(:os_name) { "mswin" }
         it { should == :windows }
       end
       context "windows" do
-        before { conf.stub(:host_os).and_return("windows") }
+        let(:os_name) { "windows" }
         it { should == :windows }
       end
       context "linux" do
-        before { conf.stub(:host_os).and_return("linux") }
+        let(:os_name) { "linux" }
         it { should == :linux }
       end
       context "solaris" do
-        before { conf.stub(:host_os).and_return("sunos") }
+        let(:os_name) { "sunos" }
         it { should == :solaris }
       end
       context "solaris" do
-        before { conf.stub(:host_os).and_return("solaris") }
+        let(:os_name) { "solaris" }
         it { should == :solaris }
       end
       context "other" do
-        before { conf.stub(:host_os).and_return("other") }
+        let(:os_name) { "other" }
         it { should == :unknown }
       end
     end
