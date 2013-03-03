@@ -4,6 +4,7 @@ require 'dotify/core_ext/dir'
 require 'dotify/null_object'
 
 # Everything else
+require 'dotify/operating_system'
 require 'dotify/pointer'
 require 'dotify/path'
 require 'dotify/configure'

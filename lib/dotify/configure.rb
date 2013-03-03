@@ -1,4 +1,3 @@
-require 'rbconfig'
 require 'thor/util'
 
 module Dotify
