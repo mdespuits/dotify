@@ -3,12 +3,8 @@ require 'spec_helper'
 module Dotify
 
   class Configure
-    class << self
-      public :guess_host_os
-    end
     def self.reset!
       @options = {}
-      @host = nil
     end
   end
 
@@ -33,39 +29,6 @@ module Dotify
       end
       describe "getting undefined editor" do
         its(:editor) { should be_instance_of NullObject }
-      end
-    end
-
-    describe "#guess_host_os" do
-      subject { Configure.guess_host_os }
-      before { Configure.stub(:host_os) { os_name } }
-      context "darwin" do
-        let(:os_name) { "darwin" }
-        it { should == :mac }
-      end
-      context "mswin" do
-        let(:os_name) { "mswin" }
-        it { should == :windows }
-      end
-      context "windows" do
-        let(:os_name) { "windows" }
-        it { should == :windows }
-      end
-      context "linux" do
-        let(:os_name) { "linux" }
-        it { should == :linux }
-      end
-      context "solaris" do
-        let(:os_name) { "sunos" }
-        it { should == :solaris }
-      end
-      context "solaris" do
-        let(:os_name) { "solaris" }
-        it { should == :solaris }
-      end
-      context "other" do
-        let(:os_name) { "other" }
-        it { should == :unknown }
       end
     end
 

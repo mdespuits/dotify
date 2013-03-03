@@ -53,7 +53,7 @@ module Dotify
       end
 
       def platform(which, &blk)
-        if which == Configure.guess_host_os
+        if which == OperatingSystem.guess
           instance_eval &blk
         end
       end
@@ -94,20 +94,6 @@ module Dotify
           @ignoring[:root] = %w[.rbenv .rvm]
           @ignoring[:path] = %w[.git .gitignore .gitmodules]
         end
-      end
-
-      def self.guess_host_os
-        case host_os
-        when /darwin/i        then :mac
-        when /mswin|windows/i then :windows
-        when /linux/i         then :linux
-        when /sunos|solaris/i then :solaris
-        else :unknown
-        end
-      end
-
-      def self.host_os
-        RbConfig::CONFIG['host_os']
       end
 
   end

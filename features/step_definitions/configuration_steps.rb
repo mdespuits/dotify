@@ -1,8 +1,8 @@
 Given /^the host platform is "([^\"]*)"$/ do |platform|
   if platform == "mac"
-    Dotify::Configure.stub(:guess_host_os).and_return :mac
+    Dotify::OperatingSystem.stub(:guess).and_return :mac
   elsif platform == "linux"
-    Dotify::Configure.stub(:guess_host_os).and_return :linux
+    Dotify::OperatingSystem.stub(:guess).and_return :linux
   end
 end
 
