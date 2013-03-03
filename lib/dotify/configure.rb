@@ -98,13 +98,13 @@ module Dotify
       end
 
       def self.guess_host_os
-        return case host_os
-               when /darwin/i        then :mac
-               when /mswin|windows/i then :windows
-               when /linux/i         then :linux
-               when /sunos|solaris/i then :solaris
-               else :unknown
-               end
+        case host_os
+        when /darwin/i        then :mac
+        when /mswin|windows/i then :windows
+        when /linux/i         then :linux
+        when /sunos|solaris/i then :solaris
+        else :unknown
+        end
       end
 
       def self.host_os
