@@ -17,6 +17,13 @@ module Dotify
       @ignore.uniq
     end
 
+    def platform(name = nil)
+      raise "You must define an operating system name when using the `platform` option in configuration" unless name
+      if name.to_s == OperatingSystem.guess.to_s
+        yield self if block_given?
+      end
+    end
+
     def self.start
       @instance = new
       yield @instance

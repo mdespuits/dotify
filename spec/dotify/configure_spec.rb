@@ -21,6 +21,24 @@ describe Configure do
       its(:editor) { should == 'emacs' }
     end
 
+    context "with a particular platform set" do
+      subject do
+        Configure.start do |d|
+          d.platform :osx do |d|
+            d.editor { "emacs" }
+          end
+        end
+      end
+      context "when on OSX" do
+        before { OperatingSystem.stub(:guess) { 'osx' }}
+        its(:editor) { should == 'emacs' }
+      end
+      context "when on OSX" do
+        before { OperatingSystem.stub(:guess) { 'linux' }}
+        its(:editor) { should == 'vim' }
+      end
+    end
+
     context "with an editor name set as a symbol" do
       subject do
         Configure.start do |d|
