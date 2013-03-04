@@ -37,6 +37,16 @@ describe Configure do
         before { OperatingSystem.stub(:guess) { 'linux' }}
         its(:editor) { should == 'vim' }
       end
+      context "when no platform is defined by accident" do
+        let(:config) do
+          Configure.start do |d|
+            d.platform do |d|
+              d.editor { "emacs" }
+            end
+          end
+        end
+        it { expect { config }.to raise_error(ArgumentError) }
+      end
     end
 
     context "with an editor name set as a symbol" do

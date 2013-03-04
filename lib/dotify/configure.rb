@@ -18,7 +18,7 @@ module Dotify
     end
 
     def platform(name = nil)
-      raise "You must define an operating system name when using the `platform` option in configuration" unless name
+      raise ArgumentError, "You must define an operating system name when using the `platform` option in configuration" unless name
       if name.to_s == OperatingSystem.guess.to_s
         yield self if block_given?
       end
