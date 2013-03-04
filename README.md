@@ -1,12 +1,13 @@
+[![Gem Version](https://badge.fury.io/rb/thor.png)](https://rubygems.org/gems/thor)
+[![Build Status](https://secure.travis-ci.org/mattdbridges/dotify.png?branch=master)](http://travis-ci.org/mattdbridges/dotify)
+[![Dependency Status](https://gemnasium.com/mattdbridges/dotify.png?travis)](https://gemnasium.com/mattdbridges/dotify)
+[![Code Climate](https://codeclimate.com/github/mattdbridges/dotify.png)](https://codeclimate.com/github/mattdbridges/dotify)
+
 # Dotify
 
 ### **This is the documentation for Dotify 1.0.0.**
 
 Much of the functionality is similar to earlier versions of Dotify, but I am re-writing everything from the ground up to make things more robust. Very little of the command-line interface has been written for this version because I am approaching this as a ["Readme-Driven Development"](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html) project.
-
-[![Build Status](https://secure.travis-ci.org/mattdbridges/dotify.png)](http://travis-ci.org/mattdbridges/dotify) [![Dependency Status](https://gemnasium.com/mattdbridges/dotify.png)](https://gemnasium.com/mattdbridges/dotify)
-
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/mattdbridges/dotify)
 
 Dotify is a simple CLI tool to make managing dotfiles and other file-based configuration on your computer easy. When developing on a Linux/Unix-based system, keeping track of all of those configuration files in the home directory (and everywhere else for that matter) can be pain. Some developers do not even bother managing them and many have come up with their own static or even dynamic way of managing them.
 
