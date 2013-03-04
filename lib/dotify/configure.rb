@@ -7,7 +7,7 @@ module Dotify
 
     def editor(&blk)
       @editor ||= 'vim'
-      @editor = blk.call if block_given?
+      @editor = blk.call.to_s if block_given?
       @editor
     end
 

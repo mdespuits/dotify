@@ -21,6 +21,15 @@ describe Configure do
       its(:editor) { should == 'emacs' }
     end
 
+    context "with an editor name set as a symbol" do
+      subject do
+        Configure.start do |d|
+          d.editor { :emacs }
+        end
+      end
+      its(:editor) { should == 'emacs' }
+    end
+
     context "with ignore settings with defaults" do
       subject do
         Configure.start do |d|
