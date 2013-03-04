@@ -29,7 +29,6 @@ RSpec.configure do |c|
   c.before(:each) do
     FileUtils.mkdir_p $HOME
     ENV['HOME'] = $HOME
-    Thor::Util.stub(:user_home) { $HOME }
   end
   c.after(:each) do
     FileUtils.rm_rf $HOME
