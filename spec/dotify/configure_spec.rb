@@ -58,6 +58,18 @@ describe Configure do
       its(:editor) { should == 'emacs' }
     end
 
+    context "calling ignore multiple times with same value" do
+      subject do
+        Configure.start do |d|
+          d.ignore { '.example' }
+          d.ignore { '.example' }
+          d.ignore { '.example' }
+        end
+      end
+      its(:ignore) { should have(3).items }
+      its(:ignore) { should include '.example' }
+    end
+
     context "with ignore settings with defaults" do
       subject do
         Configure.start do |d|
