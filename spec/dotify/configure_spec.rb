@@ -1,28 +1,37 @@
 require 'spec_helper'
 
-module Dotify
+include Dotify
 
-  describe Configure do
-    let(:klass) { Configure.new }
-    subject { klass }
+describe Configure do
+  describe "#start" do
 
-    describe "#setup_default_configuration" do
-      before { klass.setup_default_configuration }
+    context "without any settings" do
+      subject do
+        Configure.start { |d| }
+      end
       its(:editor) { should == 'vim' }
-      its(:shared_ignore) { should include '.DS_Store' }
-      its(:shared_ignore) { should include '.Trash' }
-      its(:shared_ignore) { should include '.git' }
-      its(:shared_ignore) { should include '.svn' }
     end
 
-    describe "defined options" do
-      describe "getting defined editor" do
-        before { subject.options = { :editor => 'vi' } }
-        its(:editor) { should == 'vi'}
+    context "with and editor set" do
+      subject do
+        Configure.start do |d|
+          d.editor { "emacs" }
+        end
       end
-      describe "getting undefined editor" do
-        its(:editor) { should be_instance_of NullObject }
+      its(:editor) { should == 'emacs' }
+    end
+
+    context "with ignore settings with defaults" do
+      subject do
+        Configure.start do |d|
+          d.ignore { '.sublime' }
+        end
       end
+      its(:editor) { should == 'vim' }
+      its(:ignore) { should have(3).items }
+      its(:ignore) { should include '.DS_Store' }
+      its(:ignore) { should include '.git' }
+      its(:ignore) { should include '.sublime' }
     end
 
   end
