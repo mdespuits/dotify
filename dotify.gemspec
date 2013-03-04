@@ -15,11 +15,11 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Dotify::VERSION
 
-  gem.add_runtime_dependency "thor", "~> 0.15.4"
-  gem.add_runtime_dependency "multi_json", "~> 1.3.6"
+  gem.add_runtime_dependency "thor", "~> 0.17.0"
+  gem.add_runtime_dependency "multi_json", "~> 1.6.1"
   gem.add_runtime_dependency "git", "~> 1.2.5"
 
-  gem.add_development_dependency 'rspec', '~> 2.11.0'
+  gem.add_development_dependency 'rspec', '~> 2.13.0'
   gem.add_development_dependency 'webmock'
   # gem.add_development_dependency 'cucumber'
   # gem.add_development_dependency 'aruba'
