@@ -78,7 +78,7 @@ If you use Github, just give Dotify your name and repo and you are good to go. (
 
     $ dotify github mattdbridges/dots
 
-If you are the oddball and do anything else (no offense), just pass the repository's URL.
+If you are not using Github for any reason, you can pass the full repository path into the `repo` command.
 
     $ dotify repo git://github.com/mattdbridges/dots.git
 
@@ -89,21 +89,21 @@ If you are the oddball and do anything else (no offense), just pass the reposito
 Dotify provides a simple and straightforward DSL for managing your configuration files. Here's a sample of what you can do:
 
 ```ruby
-Dotify.setup do
-  editor :vi
+Dotify.setup do |d|
+  d.editor { "vim" }
 
-  platform :osx do
-    editor "subl -w"
-    link "~/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings", to "sublime/user.preferences"
+  d.platform :osx do |d|
+    d.editor { "subl -w" }
+    d.link "~/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings", to "sublime/user.preferences"
   end
 
-  platform :linux do
-    editor :emacs
+  d.platform :linux do |d|
+    d.editor { :emacs }
   end
 
   # This allows you to have files like `~/.dotify/vimrc` and `~/.dotify/zshrc` as your links
-  link "~/.vimrc", to: "vimrc"
-  link "~/.zshrc", to: "zshrc"
+  d.link "~/.vimrc", to: "vimrc"
+  d.link "~/.zshrc", to: "zshrc"
 end
 ```
 
@@ -123,12 +123,9 @@ Since Ruby 1.8 is seriously on the way out, upgrade to Ruby 1.9. It's all this g
 
 * 1.9.2
 * 1.9.3
-
-*Note*: As of v0.7.0, **JRuby** and **Rubinius** are now only partially supported. Trying to support all of these versions is quite difficult with the nature of this gem, so I will be focusing on MRI.
+* 2.0.0
 
 ## Contributing
-
-This tool is developed with much influence from *37singals*' fantastic idea of **Do Less**. This is meant to be a *simple* tool.
 
 Contributions are welcome and encouraged. The contrubution process is the typical Github one.
 
