@@ -1,6 +1,5 @@
 require 'fileutils'
 
-require 'dotify/core_ext/dir'
 require 'dotify/null_object'
 
 # Everything else

@@ -10,8 +10,8 @@ module Dotify
       # Whether they are linked or not initially makes no
       # difference.
       def dotfile_pointers
-        Dir["#{Path.home}/.*"].each do |file|
-          self.add Pointer.new(Path.dotify_path(File.basename(file)), file)
+        home_dotfiles.each do |file|
+          add(Pointer.new(Path.dotify_path(File.basename(file)), file))
         end
       end
 
@@ -28,6 +28,10 @@ module Dotify
 
       def sources
         pointers.map(&:source)
+      end
+
+      def home_dotfiles
+        Dir["#{Path.home}/.*"].reject { |file| /\.{1,2}\z/ =~ File.basename(file) }
       end
 
     end
