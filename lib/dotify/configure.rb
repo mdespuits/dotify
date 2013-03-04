@@ -25,9 +25,8 @@ module Dotify
     end
 
     def self.start
-      @instance = new
-      yield @instance
-      @instance
+      yield instance = new
+      instance
     end
 
   end
