@@ -2,16 +2,9 @@ require 'spec_helper'
 
 module Dotify
 
-  class Configure
-    def self.reset!
-      @options = {}
-    end
-  end
-
   describe Configure do
     let(:klass) { Configure.new }
     subject { klass }
-    before { Configure.reset! }
 
     describe "#setup_default_configuration" do
       before { klass.setup_default_configuration }

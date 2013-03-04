@@ -5,6 +5,24 @@ module Dotify
 
     CONFIG_FILE = "config.rb"
 
+    attr_accessor :options
+
+    def initialize(options = {})
+      @options = options
+    end
+
+    def options
+      @options ||= {}
+    end
+
+    def load!
+      DSL.new(@options).__evaluate Path.dotify_path(CONFIG_FILE)
+    end
+
+    def ignoring(what)
+      @ignoring[:shared] | @ignoring[what]
+    end
+
     def setup_default_configuration
       options[:editor] = 'vim'
       options[:shared_ignore] = %w[.DS_Store .Trash .git .svn]
@@ -16,23 +34,6 @@ module Dotify
       else
         NullObject.new
       end
-    end
-
-    def initialize(options = {})
-      @options = options
-    end
-
-    attr_accessor :options
-    def options
-      @options ||= {}
-    end
-
-    def load!
-      DSL.new(@options).__evaluate Path.dotify_path(CONFIG_FILE)
-    end
-
-    def ignoring(what)
-      @ignoring[:shared] | @ignoring[what]
     end
 
     class DSL
