@@ -1,8 +1,5 @@
 require 'fileutils'
 
-require 'dotify/null_object'
-
-# Everything else
 require 'dotify/operating_system'
 require 'dotify/pointer'
 require 'dotify/path'
