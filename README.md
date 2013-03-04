@@ -1,4 +1,3 @@
-[![Gem Version](https://badge.fury.io/rb/thor.png)](https://rubygems.org/gems/thor)
 [![Build Status](https://secure.travis-ci.org/mattdbridges/dotify.png?branch=master)](http://travis-ci.org/mattdbridges/dotify)
 [![Dependency Status](https://gemnasium.com/mattdbridges/dotify.png?travis)](https://gemnasium.com/mattdbridges/dotify)
 [![Code Climate](https://codeclimate.com/github/mattdbridges/dotify.png)](https://codeclimate.com/github/mattdbridges/dotify)
