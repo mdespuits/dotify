@@ -6,7 +6,10 @@ module Dotify
     let(:builder) { LinkBuilder.new(pointer) }
     subject { builder }
     before(:all) do
-      FileUtils.mkdir_p "~/.dotify"
+      FileUtils.mkdir_p File.expand_path("~/.dotify")
+    end
+    after(:all) do
+      FileUtils.rm_rf File.expand_path("~/.dotify")
     end
     describe "receives the Pointer's attributes" do
       it { should respond_to :pointer }
