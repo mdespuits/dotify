@@ -4,7 +4,7 @@ describe Dotify do
   subject { described_class }
 
   describe ".in_instance" do
-    let(:inst) { mock('instance') }
+    let(:inst) { double('instance') }
     it "should temporarily set the instance to the given argument and execute the block" do
       Dotify.in_instance(inst) { 0 }.should == 0
       Dotify.instance_eval { @instance }.should be_nil
@@ -13,7 +13,7 @@ describe Dotify do
 
   describe ".setup" do
     it 'should run in the context of the Maid::Maid instance' do
-      instance = mock('instance')
+      instance = double('instance')
       instance.should_receive(:foo)
       Dotify.in_instance(instance) do
         Dotify.setup { foo }
