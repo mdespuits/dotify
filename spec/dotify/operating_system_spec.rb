@@ -6,43 +6,29 @@ describe OperatingSystem do
 
   subject { described_class }
 
+  def self.spec_operating_system(config_name, pretty_name)
+    context "when the OS is #{config_name}" do
+      let(:os_name) { config_name }
+      its(:guess) { should == pretty_name }
+    end
+  end
+
   describe "#guess" do
+
+    GUESSES = {
+      "darwin" => :mac,
+      "mswin" => :windows,
+      "windows" => :windows,
+      "linux" => :linux,
+      "solaris" => :solaris,
+      "sunos" => :solaris,
+      "other" => :unknown
+    }
 
     before { OperatingSystem.stub(:host_os) { os_name } }
 
-    context "darwin" do
-      let(:os_name) { "darwin" }
-      its(:guess) { should == :mac }
-    end
-
-    context "mswin" do
-      let(:os_name) { "mswin" }
-      its(:guess) { should == :windows }
-    end
-
-    context "windows" do
-      let(:os_name) { "windows" }
-      its(:guess) { should == :windows }
-    end
-
-    context "linux" do
-      let(:os_name) { "linux" }
-      its(:guess) { should == :linux }
-    end
-
-    context "solaris" do
-      let(:os_name) { "sunos" }
-      its(:guess) { should == :solaris }
-    end
-
-    context "solaris" do
-      let(:os_name) { "solaris" }
-      its(:guess) { should == :solaris }
-    end
-
-    context "other" do
-      let(:os_name) { "other" }
-      its(:guess) { should == :unknown }
+    GUESSES.each do |key, value|
+      self.spec_operating_system(key, value)
     end
 
   end
