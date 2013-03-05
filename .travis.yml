@@ -4,7 +4,7 @@ rvm:
   - 1.9.3
   - 2.0.0
 script:
-  - bundle exec rspec spec
+  - bundle exec rspec spec --order rand --color
   # - bundle exec cucumber --tags ~@linking --no-profile --color --format progress --strict
 notifications:
   email: false
