@@ -15,22 +15,22 @@ Dir["./spec/support/**/*"].each { |f| require f }
 
 # FileUtils = FileUtils::DryRun
 require 'fileutils'
-$HOME = '/tmp/home'
-FileUtils.mkdir_p $HOME
 
 require 'dotify'
 require 'thor/util'
+require 'tmpdir'
 
 RSpec.configure do |c|
   c.treat_symbols_as_metadata_keys_with_true_values = true
   c.run_all_when_everything_filtered = true
   c.filter_run :focus
 
-  c.before(:each) do
-    FileUtils.mkdir_p $HOME
-    ENV['HOME'] = $HOME
+  c.around do |example|
+    Dir.mktmpdir do |dir|
+      $HOME = dir
+      ENV["HOME"] = $HOME
+      example.run
+    end
   end
-  c.after(:each) do
-    FileUtils.rm_rf $HOME
-  end
+
 end
