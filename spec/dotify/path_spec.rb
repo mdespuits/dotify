@@ -15,15 +15,15 @@ module Dotify
       end
     end
     describe "#dotify" do
-      its(:dotify) { should == "#{$HOME}/.dotify" }
+      its(:dotify) { should == "#{Dir.home}/.dotify" }
     end
     describe "#dotify_path" do
       subject { Path.dotify_path("example_path") }
-      it { should == "#{$HOME}/.dotify/example_path" }
+      it { should == "#{Dir.home}/.dotify/example_path" }
     end
     describe "#home_path" do
       subject { Path.home_path("example_path") }
-      it { should == "#{$HOME}/example_path" }
+      it { should == "#{Dir.home}/example_path" }
     end
   end
   describe Path::DOTIFY_DIR do

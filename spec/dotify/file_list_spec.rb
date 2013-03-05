@@ -20,7 +20,7 @@ module Dotify
       it { should respond_to :dotfile_pointers }
       describe "behavior" do
         before do
-          Dir.stub(:[]).with("#{$HOME}/.*").and_return(["#{$HOME}/.vimrc", "#{$HOME}/.zshrc"])
+          Dir.stub(:[]).with("#{Dir.home}/.*").and_return(["#{Dir.home}/.vimrc", "#{Dir.home}/.zshrc"])
           FileList.dotfile_pointers
         end
         subject { FileList.pointers }
@@ -28,13 +28,13 @@ module Dotify
         it { should have(2).pointers }
         context "first item" do
           subject { FileList.pointers.first }
-          its(:source) { should == "#{$HOME}/.dotify/.vimrc" }
-          its(:destination) { should == "#{$HOME}/.vimrc" }
+          its(:source) { should == "#{Dir.home}/.dotify/.vimrc" }
+          its(:destination) { should == "#{Dir.home}/.vimrc" }
         end
         context "second item" do
           subject { FileList.pointers.last }
-          its(:source) { should == "#{$HOME}/.dotify/.zshrc" }
-          its(:destination) { should == "#{$HOME}/.zshrc" }
+          its(:source) { should == "#{Dir.home}/.dotify/.zshrc" }
+          its(:destination) { should == "#{Dir.home}/.zshrc" }
         end
       end
     end

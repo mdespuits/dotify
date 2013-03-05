@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Dotify
   describe LinkBuilder do
-    let(:pointer) { Pointer.new("#{$HOME}/.dotify/.source", "#{$HOME}/.destination") }
+    let(:pointer) { Pointer.new("#{Dir.home}/.dotify/.source", "#{Dir.home}/.destination") }
     let(:builder) { LinkBuilder.new(pointer) }
     subject { builder }
     before(:all) do

@@ -25,13 +25,12 @@ RSpec.configure do |c|
   c.filter_run :focus
 
   c.before do
-    Dir.stub(:home) { $HOME }
+    Dir.stub(:home) { ENV['HOME'] }
   end
 
   c.around do |example|
     Dir.mktmpdir do |dir|
-      $HOME = dir
-      ENV["HOME"] = $HOME
+      ENV["HOME"] = dir
       example.run
     end
   end
