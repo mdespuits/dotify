@@ -9,8 +9,8 @@ module Dotify
     it { should respond_to :home_path }
 
     describe "#home" do
-      before { Thor::Util.should_receive(:user_home) }
-      it "Thor::Util should_receive :user_home" do
+      before { Dir.should_receive(:home) }
+      it "Dir.should_receive(:home)" do
         subject.home
       end
     end

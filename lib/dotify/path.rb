@@ -7,7 +7,7 @@ module Dotify
     extend self
 
     def home
-      Thor::Util.user_home
+      Dir.home
     end
 
     def dotify

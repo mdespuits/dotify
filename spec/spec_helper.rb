@@ -17,13 +17,16 @@ Dir["./spec/support/**/*"].each { |f| require f }
 require 'fileutils'
 
 require 'dotify'
-require 'thor/util'
 require 'tmpdir'
 
 RSpec.configure do |c|
   c.treat_symbols_as_metadata_keys_with_true_values = true
   c.run_all_when_everything_filtered = true
   c.filter_run :focus
+
+  c.before do
+    Dir.stub(:home) { $HOME }
+  end
 
   c.around do |example|
     Dir.mktmpdir do |dir|
