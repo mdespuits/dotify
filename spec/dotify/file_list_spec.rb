@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 module Dotify
+  class FileList
+    def self.reset!
+      @pointers = []
+    end
+  end
+end
+
+module Dotify
   describe FileList do
     before { described_class.reset! }
     subject { described_class }
