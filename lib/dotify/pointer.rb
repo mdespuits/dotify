@@ -5,8 +5,5 @@ module Dotify
       self.source == other.source
     end
 
-    def to_s
-      %{#<Dotify::Pointer source: "#{source}" destination: "#{destination}">}
-    end
   end
 end
