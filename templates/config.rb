@@ -1,11 +1,11 @@
-Dotify.configure do
+Dotify.configure do |d|
   #----------------------------
   # Setup the Editor
   #----------------------------
   # This is the command used to edit the configuration files
   # via `dotify edit {filename}`
   #
-  # editor 'vi -w'
+  # d.editor { 'vi -w' }
 
   #----------------------------
   # Limit to a platform
@@ -13,19 +13,18 @@ Dotify.configure do
   # Sometimes you are running different platforms and need different configuration
   # per platform.
   # Options: :osx, :linux, :solaris, :windows (not supported)
-  # platform :osx do
-  #   ...
+  # d.platform :osx do |d|
+  #   # ...
   # end
 
   #----------------------------
   # Link custom files to custom path
   #----------------------------
-  # There are times where you may need a custom config file and point
-  # it to a custom configuration path. For example, you may want to
+  # There are times where you may need a custom config file or directory
+  # and point it to a custom configuration path. For example, you may want to
   # do something like this:
   #
-  # '/Users/username/directory/configuration.file' => `~/.dotify/some/configuration`
-  #
-  # link '/Users/username/directory/configuration.file', :to => `~/.dotify/some/configuration`
+  # d.include { '/Users/username/deeply/nested/directory' }
+  # d.include { '/Users/username/path/to/file.ext' }
 
 end
