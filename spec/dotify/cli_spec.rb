@@ -11,7 +11,6 @@ module Dotify
       it { should respond_to :unlink }
       it { should respond_to :github }
       it { should respond_to :repo }
-      it { should respond_to :edit }
       it { should respond_to :version }
     end
   end

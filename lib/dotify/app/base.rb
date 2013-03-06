@@ -13,13 +13,6 @@ module Dotify
 
       default_task :help
 
-      def self.start
-        Dotify.config.setup_default_configuration
-        FileList.dotfile_pointers
-        Dotify.config.load!
-        super
-      end
-
       map %w[-v --version] => :version
       map "-s" => :setup
       map "-l" => :link
@@ -43,10 +36,6 @@ module Dotify
 
       desc :list, "List the installed dotfiles"
       def list
-      end
-
-      desc 'edit [FILE]', "Edit a dotify file"
-      def edit(file)
       end
 
       desc :version, "Check your Dotify version"
