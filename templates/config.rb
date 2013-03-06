@@ -1,13 +1,5 @@
 Dotify.configure do |d|
   #----------------------------
-  # Setup the Editor
-  #----------------------------
-  # This is the command used to edit the configuration files
-  # via `dotify edit {filename}`
-  #
-  # d.editor { 'vi -w' }
-
-  #----------------------------
   # Limit to a platform
   #----------------------------
   # Sometimes you are running different platforms and need different configuration
