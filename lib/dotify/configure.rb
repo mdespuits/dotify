@@ -1,4 +1,4 @@
-require 'thor/util'
+require 'dotify/pointer'
 
 module Dotify
   class Configure < Object
@@ -16,6 +16,14 @@ module Dotify
       @ignore += Array(blk.call) if block_given?
       @ignore.uniq!
       @ignore
+    end
+
+    def symlink(source, destination)
+      symlinks << Pointer.new(source, Path.dotify_path(destination))
+    end
+
+    def symlinks
+      @symlinks ||= []
     end
 
     def platform(name = nil)
