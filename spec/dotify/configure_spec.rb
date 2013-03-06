@@ -85,12 +85,10 @@ describe Configure do
           d.symlink("another-source", "another-destination")
         end
       end
-      context "links" do
-        subject { config.symlinks }
-        it { should have(2).items }
-        it { subject.first.source.should =~ /source\z/i }
-        it { subject.first.destination.should =~ /destination\z/i }
-      end
+      subject { config.symlinks }
+      it { should have(2).items }
+      it { subject.first.source.should =~ /source\z/i }
+      it { subject.first.destination.should =~ /destination\z/i }
     end
 
     context "with ignore settings with defaults" do
