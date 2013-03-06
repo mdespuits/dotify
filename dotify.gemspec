@@ -6,8 +6,8 @@ Gem::Specification.new do |gem|
   gem.version       = Dotify::VERSION
   gem.authors       = ["Matt Bridges"]
   gem.email         = ["mbridges.91@gmail.com"]
-  gem.description   = %q{A App Tool for managing your dotfiles}
-  gem.summary       = %q{A App Tool for managing your dotfiles}
+  gem.description   = %q{A tool for managing your dotfiles}
+  gem.summary       = %q{A tool for managing your dotfiles}
   gem.homepage      = "https://github.com/mattdbridges/dotify"
 
   gem.files         = %w[README.md Rakefile LICENSE CHANGELOG.md dotify.gemspec]
