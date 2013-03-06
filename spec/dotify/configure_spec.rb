@@ -20,6 +20,17 @@ module Dotify
         its(:ignore) { should be_empty }
       end
 
+      context "should allow an array of ignores in a single definition" do
+        subject do 
+          Configure.start do |d|
+            d.ignore { %w[another set of .things] }
+          end
+        end
+        its(:ignore) { should have(4).items }
+        its(:ignore) { should include 'another' }
+        its(:ignore) { should include '.things' }
+      end
+
       context "with a particular platform set" do
         subject do
           Configure.start do |d|
