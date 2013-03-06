@@ -6,7 +6,7 @@ module Dotify
     CONFIG_FILE = "config.rb"
 
     def ignore(&blk)
-      @ignore ||= ['.DS_Store', '.git']
+      @ignore ||= []
       @ignore += Array(blk.call) if block_given?
       @ignore.uniq!
       @ignore

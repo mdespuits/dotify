@@ -17,7 +17,7 @@ module Dotify
         subject do
           Configure.start { |d| }
         end
-        its(:ignore) { should include ".DS_Store" }
+        its(:ignore) { should be_empty }
       end
 
       context "with a particular platform set" do
@@ -56,7 +56,7 @@ module Dotify
             d.ignore { '.example' }
           end
         end
-        its(:ignore) { should have(3).items }
+        its(:ignore) { should have(1).items }
         its(:ignore) { should include '.example' }
       end
 
@@ -79,9 +79,7 @@ module Dotify
             d.ignore { '.sublime' }
           end
         end
-        its(:ignore) { should have(3).items }
-        its(:ignore) { should include '.DS_Store' }
-        its(:ignore) { should include '.git' }
+        its(:ignore) { should have(1).items }
         its(:ignore) { should include '.sublime' }
       end
 
