@@ -28,8 +28,24 @@ module Dotify
     end
 
     def move_to_source
-      touch destination
-      move destination, source
+      transport(destination, source)
+    end
+
+    def move_to_destination
+      transport(source, destination)
+    end
+
+    def remove_source
+      remove(source)
+    end
+
+    def remove_destination
+      remove(destination)
+    end
+
+    def link!
+      touch source, destination
+      ln_sf source, destination
     end
 
     def touch(*files)
@@ -40,28 +56,26 @@ module Dotify
     end
 
     def rm_rf(*files)
-      files.each { |f| super(f, secure: true)}
+      files.each do |f|
+        begin
+          super(f)
+        rescue StandardError
+          puts "Unable to remove not remove #{f}"
+        end
+      end
     end
 
-    def move_to_destination
-      touch source
-      move source, destination
-    end
+    private
 
-    def remove_source
-      touch source
-      rm_rf source
-    end
+      def transport(beginning, ending)
+        touch beginning
+        move beginning, ending
+      end
 
-    def remove_destination
-      touch destination
-      rm_rf destination
-    end
-
-    def link!
-      touch source, destination
-      ln_sf source, destination
-    end
+      def remove(file)
+        touch file
+        rm_rf file
+      end
 
   end
 end
