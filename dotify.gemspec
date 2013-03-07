@@ -18,11 +18,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = Dir["spec/**/*"]
 
   gem.add_runtime_dependency "thor", "~> 0.17.0"
-  gem.add_runtime_dependency "multi_json", "~> 1.6.1"
-  gem.add_runtime_dependency "git", "~> 1.2.5"
 
   gem.add_development_dependency 'rspec', '~> 2.13.0'
-  gem.add_development_dependency 'webmock'
   # gem.add_development_dependency 'cucumber'
   # gem.add_development_dependency 'aruba'
 end
