@@ -2,15 +2,19 @@ require 'spec_helper'
 
 module Dotify
   describe LinkBuilder do
-    let(:pointer) { Pointer.new("#{Dir.home}/.dotify/.source", "#{Dir.home}/.destination") }
-    let(:builder) { LinkBuilder.new(pointer) }
-    subject { builder }
-    before(:all) do
+    let(:source) { Pathname.new("#{Dir.home}/.dotify/.source") }
+    let(:destination) { Pathname.new("#{Dir.home}/.dotify/.destination") }
+    let(:pointer) { Pointer.new(source, destination) }
+    subject(:builder) { LinkBuilder.new(pointer) }
+
+    before(:each) do
       FileUtils.mkdir_p File.expand_path("~/.dotify")
     end
-    after(:all) do
+
+    after(:each) do
       FileUtils.rm_rf File.expand_path("~/.dotify")
     end
+
     describe "receives the Pointer's attributes" do
       it { should respond_to :pointer }
       it { should respond_to :source }
@@ -29,59 +33,61 @@ module Dotify
 
     describe "#remove_source" do
       before do
-        subject.should_receive(:touch).with(subject.source).once
-        subject.should_receive(:rm_rf).with(subject.source).once
+        FileUtils.touch(source)
+        subject.remove_source
       end
-      it { subject.remove_source }
+      it { source.should_not exist }
     end
 
     describe "#remove_destination" do
       before do
-        subject.should_receive(:touch).with(subject.destination).once
-        subject.should_receive(:rm_rf).with(subject.destination).once
+        FileUtils.touch(destination)
+        subject.remove_destination
       end
-      it { subject.remove_destination }
+      it { destination.should_not exist }
     end
 
     describe "#link_from_source" do
       before do
-        subject.should_receive(:remove_destination).once
-        subject.should_receive(:link!).once
+        subject.link_from_source
       end
-      it { subject.link_from_source }
+      it { source.should exist }
+      it { destination.should exist }
+      it { destination.should be_symlink }
     end
 
     describe "#link_to_source" do
       before do
-        subject.should_receive(:remove_source).once
-        subject.should_receive(:move_to_source)
-        subject.should_receive(:link!).once
+        subject.link_to_source
       end
-      it { subject.link_to_source }
+      it { source.should exist }
+      it { destination.should exist }
+      it { destination.should be_symlink }
     end
 
     describe "#move_to_source" do
       before do
-        subject.should_receive(:touch).with(subject.destination).once
-        subject.should_receive(:move).with(subject.destination, subject.source)
+        subject.move_to_source
       end
-      it { subject.move_to_source }
+      it { source.should exist }
+      it { destination.should_not exist }
     end
 
     describe "#move_to_destination" do
       before do
-        subject.should_receive(:touch).with(subject.source).once
-        subject.should_receive(:move).with(subject.source, subject.destination)
+        subject.move_to_destination
       end
-      it { subject.move_to_destination }
+      it { destination.should exist }
+      it { source.should_not exist }
     end
 
     describe "#link!" do
       before do
-        subject.should_receive(:touch).with(subject.source, subject.destination)
-        subject.should_receive(:ln_sf).with(subject.source, subject.destination)
+        subject.link!
       end
-      it { subject.link! }
+      it { source.should exist }
+      it { destination.should exist }
+      it { destination.should be_symlink }
     end
   end
 end
