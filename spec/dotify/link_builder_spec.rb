@@ -2,16 +2,16 @@ require 'spec_helper'
 
 module Dotify
   describe LinkBuilder do
-    let(:source) { Pathname.new("#{Dir.home}/.dotify/.source") }
-    let(:destination) { Pathname.new("#{Dir.home}/.dotify/.destination") }
+
+    let(:source) { Pathname.new(Dir.home) + ".source" }
+    let(:destination) { Pathname.new(Dir.home) + ".dotify" + ".destination" }
     let(:pointer) { Pointer.new(source, destination) }
-    subject(:builder) { LinkBuilder.new(pointer) }
 
-    before(:each) do
+    subject { LinkBuilder.new(pointer) }
+
+    around do |example|
       FileUtils.mkdir_p File.expand_path("~/.dotify")
-    end
-
-    after(:each) do
+      example.run
       FileUtils.rm_rf File.expand_path("~/.dotify")
     end
 
