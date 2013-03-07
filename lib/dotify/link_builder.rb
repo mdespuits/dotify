@@ -49,20 +49,8 @@ module Dotify
     end
 
     def touch(*files)
-      files.each do |f|
-        mkdir_p File.dirname(f)
-        super f
-      end
-    end
-
-    def rm_rf(*files)
-      files.each do |f|
-        begin
-          super(f)
-        rescue StandardError
-          puts "Unable to remove not remove #{f}"
-        end
-      end
+      files.map { |f| mkdir_p File.dirname(f) }
+      super files
     end
 
     private
