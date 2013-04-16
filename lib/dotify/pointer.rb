@@ -5,5 +5,9 @@ module Dotify
       self.source == other.source
     end
 
+    def inspect
+      %Q{#<Dotify::Pointer @source=#{source}, @destination=#{destination}>}
+    end
+
   end
 end
