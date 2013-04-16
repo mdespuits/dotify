@@ -15,4 +15,7 @@ OPTIONS = OptionParser.new do |opts|
   opts.on "--init", "Initialize your Dotify setup" do
   end
 
+  opts.on "--upgrade", "Upgrade from an older version of Dotify" do
+  end
+
 end.parse!

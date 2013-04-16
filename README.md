@@ -6,11 +6,13 @@
 
 ### **This is the documentation for Dotify 1.0.0.**
 
-Much of the functionality is similar to earlier versions of Dotify, but I am re-writing everything from the ground up to make things more robust. Very little of the command-line interface has been written for this version because I am approaching this as a ["Readme-Driven Development"](http://tom.preston-werner.com/2010/08/23/readme-driven-development.html) project.
-
 Dotify is a simple CLI tool to make managing dotfiles and other file-based configuration on your computer easy. When developing on a Linux/Unix-based system, keeping track of all of those configuration files in the home directory (and everywhere else for that matter) can be pain. Some developers do not even bother managing them and many have come up with their own static or even dynamic way of managing them.
 
 This gem attempts solves that problem.
+
+### Upgrading!
+
+Version v1.0.0 is a complete rewrite from the ground up and is 100% incompatible with all previous versions. *If you are upgrading from `v0.6.6` or earlier, you will need to run `dotify --upgrade` before doing any more work.*
 
 ## Installation
 
