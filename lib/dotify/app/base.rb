@@ -12,4 +12,7 @@ OPTIONS = OptionParser.new do |opts|
     abort "Dotify v#{Dotify::VERSION}"
   end
 
+  opts.on "--init", "Initialize your Dotify setup" do
+  end
+
 end.parse!
