@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'thor/util'
 require 'fileutils'
 
 $:.unshift(File.dirname(__FILE__) + '/../../lib')

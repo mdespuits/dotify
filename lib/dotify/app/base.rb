@@ -1,63 +1,15 @@
-require 'rubygems'
-require 'thor'
-require 'fileutils'
-require 'net/http'
-
+require 'optparse'
 require 'dotify'
 
-module Dotify
-  module App
-    class Base < Thor
+OPTIONS = OptionParser.new do |opts|
 
-      include Thor::Actions
+  opts.banner = "Usage: dotify [options]"
 
-      default_task :help
-
-      map %w[-v --version] => :version
-      map "-s" => :setup
-      map "-l" => :link
-      map "-u" => :unlink
-
-      def self.source_root
-        File.expand_path("../../../templates", __FILE__)
-      end
-
-      desc :save, "Save Dotify files and push to Repo."
-      def save
-      end
-
-      desc 'github [USERNAME]/[REPO]', "Install the dotfiles from a GitHub repo into Dotify. (Backs up any files that would be overwritten)"
-      def github(repo)
-      end
-
-      desc 'repo [URL]', "Install the dotfiles from a repo into Dotify. (Backs up any files that would be overwritten)"
-      def repo(repo)
-      end
-
-      desc :list, "List the installed dotfiles"
-      def list
-      end
-
-      desc :version, "Check your Dotify version"
-      def version
-      end
-
-      desc :setup, "Setup your system for Dotify to manage your dotfiles"
-      def setup
-      end
-
-      desc :install, "Install files from your home directory into Dotify"
-      def install
-      end
-
-      desc 'link [[FILENAME]]', "Link up one or all of your dotfiles (FILENAME is optional)"
-      def link(file = nil)
-      end
-
-      desc 'unlink [[FILENAME]]', "Unlink one or all of your dotfiles (FILENAME is optional)"
-      def unlink(file = nil)
-      end
-
-    end
+  opts.on "-m", "--manage [FILES]", Array, "Common separates files/directories Dotify should manage" do |files|
   end
-end
+
+  opts.on "-v", "--version", "Dotify current version" do
+    abort "Dotify v#{Dotify::VERSION}"
+  end
+
+end.parse!

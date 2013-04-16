@@ -1,4 +1,3 @@
-require 'thor/util'
 module Dotify
   module Path
 

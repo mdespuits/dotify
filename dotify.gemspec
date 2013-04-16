@@ -17,8 +17,6 @@ Gem::Specification.new do |gem|
   gem.executables   = %w[dotify]
   gem.test_files    = Dir["spec/**/*"]
 
-  gem.add_runtime_dependency "thor", "~> 0.17.0"
-
   gem.add_development_dependency 'rspec', '~> 2.13.0'
   # gem.add_development_dependency 'cucumber'
   # gem.add_development_dependency 'aruba'

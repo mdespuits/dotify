@@ -3,5 +3,3 @@
 
 $:.unshift File.expand_path("../../lib", __FILE__)
 require 'dotify/app'
-
-Dotify::App::Base.start
