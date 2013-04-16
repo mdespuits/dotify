@@ -18,24 +18,23 @@ Run this command in the command line to install Dotify:
 
     $ gem install dotify
 
+Then, to bootstrap your setup:
+
+    $ dotify --init
+    Creating "~/.dotify" directory and config file.
+
 ## Start managing those buggers!
 
 In order for Dotify to initially manage your dotfiles, it boils down to the `install` method. This will create the necessary directory and optional configuration file for Dotify to manage your dotfiles in an interactive way.
-
-    $ dotify install
-    Creating '~/.dotify' directory.
-    Would you like to create Dotify's configuration file (~/.dotify/config.rb)? [y/n] y
-    Creating '~/.dotify/config.rb' configuration file.
-    Would you like Dotify to manage '~/.bashrc'? [y/n] y
-    Would you like Dotify to manage '~/.gitconfig'? [y/n] n
-    ...
 
 ## Micro manage your files
 
 Say you start using Vim as your editor and you want Dotify to start managing the `.vimrc` file and the `.vim` directory. Simple. Just run the following command.
 
-    $ dotify manage .vimrc .vim
-    Dotify is now managing '~/.vim' and '~/.vimrc'!
+    $ dotify --manage .vimrc, .vim
+    Dotify is now managing:
+    * ~/.vim
+    * ~/.vimrc
 
 ## Manage any file/directory
 
@@ -47,12 +46,12 @@ As of version 1.0.0, you can now tell Dotify which configuration files/directori
 
 Say (on OSX) you have your Sublime Text 2 User preferences located in `/Users/user/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings`. To manage this file, you can simply call
 
-    $ dotify manage /Users/user/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings
+    $ dotify --link ~/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings
     Dotify is now managing 'Preferences.sublime-settings'
 
 This is all well and good, but what if you also change the Defaults for a file with the same name? Dotify is based on the
 
-    $ dotify merge /Users/user/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings --file sublime/user.settings
+    $ dotify merge ~/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings --file sublime/user.settings
 
 There will now be a file `~/.dotify/sublime/user.settings` which `/Users/user/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings` is symlinked to.
 
@@ -90,15 +89,13 @@ Dotify provides a simple and straightforward DSL for managing your configuration
 
 ```ruby
 Dotify.setup do |d|
-  d.editor { "vim" }
 
   d.platform :osx do |d|
-    d.editor { "subl -w" }
     d.link "~/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings", to "sublime/user.preferences"
   end
 
   d.platform :linux do |d|
-    d.editor { :emacs }
+    # do something different on Linux systems
   end
 
   # This allows you to have files like `~/.dotify/vimrc` and `~/.dotify/zshrc` as your links
@@ -107,19 +104,15 @@ Dotify.setup do |d|
 end
 ```
 
-**Editor**
-
 **Ignoring Files**
 
 **Platform Differences**
 
 ## Not sure what to do?
 
-    $ dotify help
+    $ dotify --help
 
 ## Ruby Version Support
-
-Since Ruby 1.8 is seriously on the way out, upgrade to Ruby 1.9. It's all this gem supports.
 
 * 1.9.2
 * 1.9.3
