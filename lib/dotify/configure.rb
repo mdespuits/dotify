@@ -7,7 +7,7 @@ module Dotify
 
     def ignore(&blk)
       @ignore ||= []
-      @ignore += Array(blk.call) if block_given?
+      @ignore.concat Array(blk.call) if block_given?
       @ignore.uniq!
       @ignore
     end
