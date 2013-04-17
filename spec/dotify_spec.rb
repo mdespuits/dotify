@@ -11,14 +11,14 @@ describe Dotify do
       expect( Dotify.dotify_directory.exist? ).to be_true
     end
     it "should ensure the ~/.dotify/config.rb is created" do
-      FileUtils.rm_rf Dotify.configuration_file
+      FileUtils.rm_rf Dotify.config_file
       Dotify.should_receive(:copy_config_template).and_call_original
       Dotify.setup
-      expect( Dotify.configuration_file.exist? ).to be_true
+      expect( Dotify.config_file.exist? ).to be_true
     end
     it "should not try to create the config.rb file if it exists" do
       FileUtils.mkdir_p(Dotify.dotify_directory)
-      FileUtils.touch(Dotify.configuration_file)
+      FileUtils.touch(Dotify.config_file)
       Dotify.should_not_receive(:copy_config_template)
       Dotify.setup
     end

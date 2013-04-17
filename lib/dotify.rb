@@ -34,20 +34,20 @@ module Dotify
 
     def setup
       dotify_directory.mkpath
-      copy_config_template unless configuration_file.exist?
-      FileUtils.touch(configuration_file)
+      copy_config_template unless config_file.exist?
+      FileUtils.touch(config_file)
     end
 
     def dotify_directory
       home + ".dotify"
     end
 
-    def configuration_file
+    def config_file
       dotify_directory + "config.rb"
     end
 
     def copy_config_template
-      FileUtils.cp config_template, configuration_file
+      FileUtils.cp config_template, config_file
     end
 
     def config_template
