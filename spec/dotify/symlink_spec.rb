@@ -15,15 +15,15 @@ module Dotify
       subject(:pointer) { Symlink.new("example", "destination") }
       context "when they are equal" do
         let(:other) { Symlink.new("example", "destination") }
-        it { pointer.eql?(other).should be_true }
+        it { should eql other }
       end
       context "when they have same source but different destination" do
         let(:other) { Symlink.new("example", "other-destination")}
-        it { pointer.eql?(other).should be_true }
+        it { should eql other }
       end
       context "when they are not equal" do
         let(:other) { Symlink.new("examples", "destination") }
-        it { pointer.eql?(other).should be_false }
+        it { should_not eql other }
       end
     end
   end
