@@ -28,13 +28,13 @@ module Dotify
         it { should have(2).pointers }
         context "first item" do
           subject { FileList.pointers.first }
-          its(:source) { should == "#{Dir.home}/.dotify/.vimrc" }
-          its(:destination) { should == "#{Dir.home}/.vimrc" }
+          its(:source) { should == Path.home + ".dotify/.vimrc" }
+          its(:destination) { should == Path.home + ".vimrc" }
         end
         context "second item" do
           subject { FileList.pointers.last }
-          its(:source) { should == "#{Dir.home}/.dotify/.zshrc" }
-          its(:destination) { should == "#{Dir.home}/.zshrc" }
+          its(:source) { should == Path.home + ".dotify/.zshrc" }
+          its(:destination) { should == Path.home + ".zshrc" }
         end
       end
     end
@@ -70,13 +70,13 @@ module Dotify
       before { FileList.add *pointers }
       describe "#sources" do
         it { should have(2).sources }
-        its(:sources) { should include ".source1" }
-        its(:sources) { should include ".remote-desination-source" }
+        its(:sources) { should include Pathname.new(".source1") }
+        its(:sources) { should include Pathname.new(".remote-desination-source") }
       end
       describe "#destinations" do
         it { should have(2).destinations }
-        its(:destinations) { should include ".destination1" }
-        its(:destinations) { should include "/Application/distant/source" }
+        its(:destinations) { should include Pathname.new(".destination1") }
+        its(:destinations) { should include Pathname.new("/Application/distant/source") }
       end
     end
   end

@@ -4,8 +4,8 @@ module Dotify
   describe Symlink do
     subject { pointer }
     describe "default behavior" do
-      let(:source) { "#{Dir.home}/.dotify/.file" }
-      let(:destination) { "#{Dir.home}}/.file" }
+      let(:source) { Pathname.new(Dir.home) + ".dotify/.file" }
+      let(:destination) { Pathname.new(Dir.home) + ".file" }
       let(:pointer) { Symlink.new(source, destination) }
       its(:source) { should == source }
       its(:destination) { should == destination }

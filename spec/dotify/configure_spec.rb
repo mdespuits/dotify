@@ -80,8 +80,8 @@ module Dotify
         end
         subject { config.symlinks }
         it { should have(2).items }
-        it { subject.first.source.should =~ /source\z/i }
-        it { subject.first.destination.should =~ /destination\z/i }
+        it { subject.first.source.to_s.should =~ /source\z/i }
+        it { subject.first.destination.to_s.should =~ /destination\z/i }
       end
 
       context "with ignore settings with defaults" do

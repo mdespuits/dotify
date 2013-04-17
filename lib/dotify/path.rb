@@ -6,26 +6,20 @@ module Dotify
     extend self
 
     def home
-      Dir.home
+      Pathname.new(Dir.home)
     end
 
     def dotify
-      build_path home, DOTIFY_DIR
+      home + DOTIFY_DIR
     end
 
     def dotify_path(path)
-      build_path dotify, path
+      dotify + path
     end
 
     def home_path(path)
-      build_path home, path
+      home + path
     end
-
-    private
-
-      def build_path(*args)
-        File.join *args
-      end
 
   end
 end

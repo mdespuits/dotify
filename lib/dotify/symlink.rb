@@ -1,5 +1,11 @@
 module Dotify
-  class Symlink < Struct.new(:source, :destination)
+  class Symlink
+
+    attr_reader :source, :destination
+    def initialize(source, destination)
+      @source = Pathname.new(source)
+      @destination = Pathname.new(destination)
+    end
 
     def eql?(other)
       self.source == other.source
