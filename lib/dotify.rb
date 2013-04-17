@@ -2,7 +2,7 @@ require 'fileutils'
 require 'pathname'
 
 require 'dotify/operating_system'
-require 'dotify/pointer'
+require 'dotify/symlink'
 require 'dotify/path'
 require 'dotify/configure'
 require 'dotify/link_builder'

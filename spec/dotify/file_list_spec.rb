@@ -24,7 +24,7 @@ module Dotify
           FileList.dotfile_pointers
         end
         subject { FileList.pointers }
-        its(:first) { should be_instance_of Pointer }
+        its(:first) { should be_instance_of Symlink }
         it { should have(2).pointers }
         context "first item" do
           subject { FileList.pointers.first }
@@ -41,23 +41,23 @@ module Dotify
 
     describe ".add" do
       it { should respond_to :add }
-      describe "adding single Pointer" do
-        let(:pointer) { Pointer.new("sourse", "destination") }
+      describe "adding single Symlink" do
+        let(:pointer) { Symlink.new("sourse", "destination") }
         before { FileList.add pointer }
         it { should have(1).pointers }
         its(:pointers) { should include pointer }
       end
-      describe "adding multiple Pointers" do
-        let(:pointer1) { Pointer.new("source", "destination") }
-        let(:pointer2) { Pointer.new("source2", "destination2") }
+      describe "adding multiple Symlinks" do
+        let(:pointer1) { Symlink.new("source", "destination") }
+        let(:pointer2) { Symlink.new("source2", "destination2") }
         before { FileList.add pointer1, pointer2 }
         it { should have(2).pointers }
         its(:pointers) { should include pointer1 }
         its(:pointers) { should include pointer2 }
       end
-      describe "adding identical Pointers with different destinations" do
-        let(:source1) { Pointer.new("source", "destination") }
-        let(:source2) { Pointer.new("source", "destination2") }
+      describe "adding identical Symlinks with different destinations" do
+        let(:source1) { Symlink.new("source", "destination") }
+        let(:source2) { Symlink.new("source", "destination2") }
         before { FileList.add source1, source2 }
         it { should have(1).pointers }
         its(:pointers) { should include source1 }
@@ -66,7 +66,7 @@ module Dotify
     end
 
     describe "sources and destinations" do
-      let(:pointers) { [Pointer.new(".source1", ".destination1"), Pointer.new(".remote-desination-source", "/Application/distant/source")] }
+      let(:pointers) { [Symlink.new(".source1", ".destination1"), Symlink.new(".remote-desination-source", "/Application/distant/source")] }
       before { FileList.add *pointers }
       describe "#sources" do
         it { should have(2).sources }

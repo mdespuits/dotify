@@ -5,7 +5,7 @@ module Dotify
 
     let(:source) { Pathname.new(Dir.home) + ".source" }
     let(:destination) { Pathname.new(Dir.home) + ".dotify" + ".destination" }
-    let(:pointer) { Pointer.new(source, destination) }
+    let(:pointer) { Symlink.new(source, destination) }
 
     subject { LinkBuilder.new(pointer) }
 
@@ -15,7 +15,7 @@ module Dotify
       FileUtils.rm_rf File.expand_path("~/.dotify")
     end
 
-    describe "receives the Pointer's attributes" do
+    describe "receives the Symlink's attributes" do
       it { should respond_to :pointer }
       it { should respond_to :source }
       it { should respond_to :destination }

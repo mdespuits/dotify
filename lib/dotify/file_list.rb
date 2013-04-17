@@ -6,12 +6,12 @@ module Dotify
         @pointers ||= []
       end
 
-      # Add the list of Pointers from the dotfiles every time.
+      # Add the list of Symlinks from the dotfiles every time.
       # Whether they are linked or not initially makes no
       # difference.
       def dotfile_pointers
         home_dotfiles.each do |file|
-          add(Pointer.new(Path.dotify_path(File.basename(file)), file))
+          add(Symlink.new(Path.dotify_path(File.basename(file)), file))
         end
       end
 

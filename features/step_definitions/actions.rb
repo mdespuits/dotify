@@ -1,6 +1,6 @@
 Given /^a pointer within an builder with attributes\:$/ do |table|
   point = table.hashes.first
-  @pointer = Dotify::Pointer.new(point["source"], point["destination"])
+  @pointer = Dotify::Symlink.new(point["source"], point["destination"])
   @builder = Dotify::LinkBuilder.new(@pointer)
 end
 

@@ -1,4 +1,4 @@
-require 'dotify/pointer'
+require 'dotify/symlink'
 
 module Dotify
   class Configure < Object
@@ -13,7 +13,7 @@ module Dotify
     end
 
     def symlink(source, destination)
-      symlinks << Pointer.new(source, Path.dotify_path(destination))
+      symlinks << Symlink.new(source, Path.dotify_path(destination))
     end
 
     def symlinks
