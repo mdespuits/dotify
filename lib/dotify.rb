@@ -20,10 +20,6 @@ module Dotify
       result
     end
 
-    def load!
-      setup_directory_and_config
-    end
-
     def setup(&blk)
       @instance.instance_eval &blk
     end
@@ -36,17 +32,18 @@ module Dotify
       @collection ||= Collection.home
     end
 
-    def setup_directory_and_config
-      FileUtils.mkdir_p(dotify_directory)
+    def setup
+      dotify_directory.mkpath
       copy_config_template unless configuration_file.exist?
+      FileUtils.touch(configuration_file)
     end
 
     def dotify_directory
-      @__dir ||= Pathname.new(File.expand_path("~/.dotify"))
+      home + ".dotify"
     end
 
     def configuration_file
-      @__configuration ||= dotify_directory + "config.rb"
+      dotify_directory + "config.rb"
     end
 
     def copy_config_template
@@ -54,7 +51,11 @@ module Dotify
     end
 
     def config_template
-      File.expand_path("../../templates/config.rb", __FILE__)
+      Pathname.new("../templates/config.rb").expand_path(File.basename(__FILE__))
+    end
+
+    def home
+      Pathname.new(Dir.home)
     end
 
   end

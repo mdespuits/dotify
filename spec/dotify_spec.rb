@@ -7,20 +7,20 @@ describe Dotify do
   describe ".load!" do
     after { FileUtils.rm_rf Dotify.dotify_directory }
     it "should create the ~/.dotify directory if it does not exist" do
-      Dotify.load!
+      Dotify.setup
       expect( Dotify.dotify_directory.exist? ).to be_true
     end
     it "should ensure the ~/.dotify/config.rb is created" do
       FileUtils.rm_rf Dotify.configuration_file
       Dotify.should_receive(:copy_config_template).and_call_original
-      Dotify.load!
+      Dotify.setup
       expect( Dotify.configuration_file.exist? ).to be_true
     end
     it "should not try to create the config.rb file if it exists" do
       FileUtils.mkdir_p(Dotify.dotify_directory)
       FileUtils.touch(Dotify.configuration_file)
       Dotify.should_not_receive(:copy_config_template)
-      Dotify.load!
+      Dotify.setup
     end
   end
 
@@ -31,12 +31,4 @@ describe Dotify do
     end
   end
 
-  describe ".setup" do
-    it 'should run in the context of the Maid::Maid instance' do
-      instance.should_receive(:foo)
-      Dotify.in_instance(instance) do
-        Dotify.setup { foo }
-      end
-    end
-  end
 end
